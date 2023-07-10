@@ -4,7 +4,6 @@
 /public/uploads
 /public/storage
 /storage/*.key
-/storage/installed
 /vendor
 .env
 .phpunit.result.cache
@@ -13,6 +12,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 composer.lock
+package-lock.lock
 
 /public/upload
 /resources/lang/*
