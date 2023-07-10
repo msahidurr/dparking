@@ -56,6 +56,7 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
@@ -186,6 +187,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="agent_name" class="col-form-label text-md-right">{{
@@ -203,6 +205,25 @@
                                             @endif
                                         </div>
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="parking_uid" class="col-form-label text-md-right">{{
+                                                __('application.id') }}</label>
+                                            <input id="parking_uid" type="text"
+                                                class="form-control {{ $errors->has('parking_uid') ? ' is-invalid' : '' }}"
+                                                name="parking_uid"
+                                                value="{{ old('parking_uid', $parking->parking_uid) }}"
+                                                autocomplete="off">
+
+                                            @if ($errors->has('parking_uid'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('parking_uid') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-md-7 parkingUI">
