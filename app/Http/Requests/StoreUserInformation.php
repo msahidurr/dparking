@@ -53,6 +53,8 @@ class StoreUserInformation extends FormRequest
         $rules['country_id'] = '';
         $rules['state_id'] = '';
         $rules['city_id'] = '';
+        $rules['phone_number'] = '';
+        $rules['address'] = '';
         
 
         return $rules;

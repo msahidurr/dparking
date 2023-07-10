@@ -26,7 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'category_wise_floor_slot_id',
         'country_id',
         'state_id',
-        'city_id'
+        'city_id',
+        'address',
+        'phone_number',
     ];
 
     /**

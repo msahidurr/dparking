@@ -25,6 +25,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('application.user.email_address') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
@@ -39,6 +40,33 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="phone_number" class="col-md-3 col-form-label text-md-right">{{ __('application.user.phone_number') }}</label>
+                            <div class="col-md-9">
+                                <input id="phone_number" type="text" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" autocomplete="off">
+   
+                                @if ($errors->has('phone_number'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('phone_number') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="address" class="col-md-3 col-form-label text-md-right">{{ __('application.user.address') }}</label>
+                            <div class="col-md-9">
+                                <textarea id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" name="address" value="{{ old('address') }}" autocomplete="off"></textarea>
+   
+                                @if ($errors->has('address'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="role" class="col-md-3 col-form-label text-md-right">{{ __('application.user.role') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">                                
@@ -116,7 +144,7 @@
                             <div class="col-md-9">                                
                                 <select id="country_id" name="country_id" class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>       
                                     @foreach($countries as $country)                                    
-                                        <option value="{{$country->id}}" {{ ( old('country_id')==$country->id ? ' selected' : ($country->default ? ' selected' : ''))  }}>{{ucfirst($country->name)}}</option>
+                                        <option value="{{$country->id}}" {{ ( 50 == $country->id ? ' selected' : ($country->default ? ' selected' : ''))  }}>{{ucfirst($country->name)}}</option>
                                     @endforeach                                    
                                 </select>
                                 @if ($errors->has('country_id'))
