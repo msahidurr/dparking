@@ -6,7 +6,7 @@ use Exception;
 use App\Models\Place;
 use App\Models\Section;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
