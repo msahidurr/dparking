@@ -136,7 +136,7 @@ class UserController extends Controller
             $user = User::create($data);
             $user->roles()->sync($validated['role']);
             $user->permissions()->sync($validated['permissions'] ?? []);
-            // $user->sendEmailVerificationNotification();
+            $user->sendEmailVerificationNotification();
 
             DB::commit();            
         } catch (\PDOException $e) {
