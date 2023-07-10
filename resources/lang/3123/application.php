@@ -1,5 +1,7 @@
 <?php
-return[
+return [
+'user.address' => 'Address',
+'user.phone_number' => 'Phone Number',
 'category.add_category' => 'Add Category',
 'category.category_list' => 'Category List',
 'category.clear' => 'Clear',

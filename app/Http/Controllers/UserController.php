@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserInformation;
 use App\Models\CategoryWiseFloorSlot;
-use Illuminate\Support\Facades\{Hash, Mail};
+use Illuminate\Support\Facades\{DB, Hash, Mail};
 
 
 class UserController extends Controller
@@ -101,6 +101,7 @@ class UserController extends Controller
         $data['countries'] = Country::get();
         $data['states'] = State::get();
         $data['cities'] = City::get();
+
         return view('user.create', $data);
     }
 
@@ -117,6 +118,8 @@ class UserController extends Controller
             $data = [
                 'name'     => $validated['name'],
                 'email'    => $validated['email'],
+                'phone_number'    => $validated['phone_number'],
+                'address'    => $validated['address'],
                 'password' => Hash::make($validated['password']),
                 'language_id' => $validated['language_id'],
                 'place_id' => $validated['place_id'],
@@ -124,24 +127,31 @@ class UserController extends Controller
                 'category_wise_floor_slot_id' => $validated['category_wise_floor_slot_id'],
                 'country_id' => $validated['country_id'],
                 'state_id' => $validated['state_id'],
-                'city_id' => $validated['city_id'],
+                'city_id' => $validated['city_id'] ?? null,
                 'status'   => 1
             ];
 
+            DB::beginTransaction();
+
             $user = User::create($data);
             $user->roles()->sync($validated['role']);
-            $user->permissions()->sync($validated['permissions']);
-            $user->sendEmailVerificationNotification();
+            $user->permissions()->sync($validated['permissions'] ?? []);
+            // $user->sendEmailVerificationNotification();
+
+            DB::commit();            
         } catch (\PDOException $e) {
+            DB::rollBack();
             return redirect()
                 ->back()
                 ->withInput($request->except('password'))
                 ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
+            DB::rollBack();
             return redirect()
                 ->route('user.list')
                 ->with(['flashMsg' => ['msg' => "The user successfully created but failed to send the email, because the email is not configured.", 'type' => 'error']]);
         }
+
         return redirect()
             ->route('user.list')
             ->with(['flashMsg' => ['msg' => 'User successfully created.', 'type' => 'success']]);
@@ -249,6 +259,8 @@ class UserController extends Controller
             try {
                 $user->name = $validated['name'];
                 $user->email = $validated['email'];
+                $user->address = $validated['address'];
+                $user->phone_number = $validated['phone_number'];
                 $user->language_id = $validated['language_id'];
                 $user->place_id = $validated['place_id'];
                 $user->floor_id = $validated['floor_id'];
