@@ -45,9 +45,9 @@
                                 <td class="w50">{{$parking->slot->slot_name ?? ''}}</td>                                
                             </tr>
                             <tr>
-                                <td class="w40">{{ __('application.parking.in_time') }}</td>                                
+                                <td class="w40">{{ __('application.tariff.start_date') }}</td>                                
                                 <td class="w10">:</td>                                
-                                <td class="w50"><b>{{appDate($parking->in_time)}}</b></td>
+                                <td class="w50"><b>{{$parking->in_time->format(env('DATE_FORMAT','m-d-Y H:i:s'))}}</b></td>
                             </tr>
                         </tbody>
                     </table>

@@ -25,6 +25,7 @@ class UpdateTariffRequest extends FormRequest
     {
         return [            
             'place_id'      => 'bail|required',
+            'type'          => 'bail|required',
             'name'          => 'bail|required|string',
             'category_id'   => 'bail|required|integer',
             'start_date'    => 'bail|required|date',

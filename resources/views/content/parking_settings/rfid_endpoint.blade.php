@@ -23,7 +23,7 @@ contact@siliconwireless.in
 
 Method: GET
 
-URL: {{route('parking_settings.rfid.sws').'?$1&1&E20010041276618521431021&19072022134120*'}}
+URL: {{route('parking_settings.rfid.sws').'?$99999&99&E20010041276618521431021&19072022134120*'}}
 
 Data Param:
 

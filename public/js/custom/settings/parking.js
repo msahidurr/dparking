@@ -18,7 +18,6 @@
         if (typeof categoryId != 'undefined' && categoryId != null) {
             let url = route('parking.slot', { 'category_id': categoryId });
             url += typeof id != 'undefined' ? '?id=' + id : '';
-
             axios.get(url).then(function (response) {
                 $('#slotSection').html(response.data);
             }).catch(function (error) {
@@ -26,6 +25,7 @@
             });
         }
     });
+    
 
     $(document).ready(function () {
 
@@ -80,7 +80,7 @@
                         let $returnData = '';
                         if (row.out_time == null) {
                             $returnData += '<a href="' + route('parking.barcode', data) + '"><i class="fa fa-barcode text-info" aria-hidden="true" title="Print Barcode"></i></a> | ' +
-                                '<a href="' + route('parking.end', data) + '"><i class="fa fa-car text-success" aria-hidden="true" title="End Parking"></i></a> | ' +
+                                '<a href="' + route('parking.end', data) + '"><i class="fa fa-car text-success" aria-hidden="true" title="Pay"></i></a> | ' +
                                 '<a href="' + route('parking.edit', data) + '"><i class="fa fa-pencil-square-o text-info" aria-hidden="true" title="Edit Parking"></i></a> | ';
                         }
 
@@ -158,7 +158,7 @@
                     data: 'id', class: 'text-end width-5-per', render: function (data, type, row, col) {
                         let deleteUrl = route('parking.destroy', data);
                         return '<a href="' + route('parking.barcode', data) + '"><i class="fa fa-barcode text-info" aria-hidden="true" title="Print Barcode"></i></a> | ' +
-                            '<a href="' + route('parking.end', data) + '"><i class="fa fa-car text-success" aria-hidden="true" title="End Parking"></i></a> | ' +
+                            '<a href="' + route('parking.end', data) + '"><i class="fa fa-car text-success" aria-hidden="true" title="Pay"></i></a> | ' +
                             '<a href="' + route('parking.edit', data) + '"><i class="fa fa-pencil-square-o text-info" aria-hidden="true" title="Edit Parking"></i></a> | ' +
                             '<button class="btn btn-link p-0" onclick="deleteData(\'' + deleteUrl + '\')"><i class="fs-6 fa fa-trash-o text-danger" aria-hidden="true" title="Delete Parking"></i></button>';
                     }
@@ -272,7 +272,7 @@
 
     $(document).on('change', '#place_id', function(){
         let category = categories.filter(val => val.place_id == $(this).val());
-        let html = '';
+        var html = '';
         $.each(category, function(ind,val){
             html += `<option value="${val.id}">${val.type}</option>`;
         });
@@ -280,6 +280,15 @@
         $(document).find('#category_id').html(html);
 
         $('#category_id').trigger('change');
+
+        let tariff = tariffs.filter(val => ( val.place_id == $(this).val()));
+        var html = '';
+        $.each(tariff, function(ind,val){
+            html += `<option value="${val.id}">${val.name}</option>`;
+        });
+
+        $(document).find('#tariff_id').html(html);
+        $('#tariff_id').trigger('change');
     });
 
     $(document).on('click', '#frm-rfid', function(){

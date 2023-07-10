@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryWiseFloorSlotController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:slots.index', ['only' => ['index']]);
+        $this->middleware('permission:slots.create', ['only' => ['create']]);
+        $this->middleware('permission:slots.store', ['only' => ['store']]);
+        $this->middleware('permission:slots.edit', ['only' => ['edit']]);
+        $this->middleware('permission:slots.update', ['only' => ['update']]);
+        $this->middleware('permission:slots.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:slots.status', ['only' => ['statusChange']]);
+    }
     /**
      * Display a listing of the resource.
      *

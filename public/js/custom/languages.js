@@ -37,7 +37,7 @@
                     data: "country",
                     name: "country",
                     render: function (data, type, row, col) {
-                        return `<img src="https://flagicons.lipis.dev/flags/1x1/${data.code}.svg" alt="${data.name}">`
+                        return `<img src="https://countryflagsapi.com/png/${data.code}" alt="${data.name}">`
                     }
                 },
                 {

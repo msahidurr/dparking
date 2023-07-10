@@ -36,9 +36,9 @@
 			</div>
 		</div>
 		<div class="col-xl-4 grid-margin">
-			<div class="card stretch-card mb-3 {{ auth()->user()->hasRole('admin') ? '' : 'd-none' }}">
+			<div class="card stretch-card mb-3 {{ auth()->user()->hasAllPermissions(allpermissions()) ? '' : 'd-none' }}">
 				<div
-					class="card-body {{ auth()->user()->hasRole('admin') ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
+					class="card-body {{ auth()->user()->hasAllPermissions(allpermissions()) ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
 					<form class="w-100" id="placeChangeForm" action="" method="get">
 						<div class="form-group mb-0 w-100">
 							<label for="status"
@@ -56,7 +56,7 @@
 			</div>
 			<div class="card stretch-card mb-3">
 				<div
-					class="card-body {{ auth()->user()->hasRole('admin') ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
+					class="card-body {{ auth()->user()->hasAllPermissions(allpermissions()) ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
 					<div>
 						<h4 class="font-weight-semibold mb-1 text-success"> {{
 							__('application.dashboard.daily_collection') }} </h4>
@@ -67,7 +67,7 @@
 			</div>
 			<div class="card stretch-card mb-3">
 				<div
-					class="card-body {{ auth()->user()->hasRole('admin') ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
+					class="card-body {{ auth()->user()->hasAllPermissions(allpermissions()) ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
 					<div>
 						<h4 class="font-weight-semibold mb-1 text-behance"> {{
 							__('application.dashboard.monthly_collection') }} </h4>
@@ -78,7 +78,7 @@
 			</div>
 			<div class="card mt-3">
 				<div
-					class="card-body {{ auth()->user()->hasRole('admin') ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
+					class="card-body {{ auth()->user()->hasAllPermissions(allpermissions()) ? 'dashboard-right-card' : 'dashboard-right-sm-card' }} d-flex flex-wrap justify-content-between">
 					<div>
 						<h4 class="font-weight-semibold mb-1 text-facebook"> {{
 							__('application.dashboard.yearly_collection') }} </h4>
@@ -109,7 +109,7 @@
 					<h3 class="text-behance font-weight-bold">{{ $data['currently_parking'] }}</h3>
 				</div>
 			</div>
-			<div class="card mt-3">
+			{{--  <div class="card mt-3">
 				<div class="card-body dashboard-left-card d-flex flex-wrap justify-content-between">
 					<div>
 						<h4 class="font-weight-semibold mb-1 text-facebook"> {{
@@ -119,7 +119,7 @@
 					<h3 class="text-facebook font-weight-bold">{{ $data['total_slots'] - $data['currently_parking'] }}
 					</h3>
 				</div>
-			</div>
+			</div>  --}}
 		</div>
 		<div class="col-xl-8 stretch-card grid-margin">
 			<div class="card">

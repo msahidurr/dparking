@@ -12,6 +12,15 @@ use App\Models\Place;
 
 class TariffController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:tariffs.index', ['only' => ['index']]);
+        $this->middleware('permission:tariffs.create', ['only' => ['create']]);
+        $this->middleware('permission:tariffs.store', ['only' => ['store']]);
+        $this->middleware('permission:tariffs.edit', ['only' => ['edit']]);
+        $this->middleware('permission:tariffs.update', ['only' => ['update']]);
+        $this->middleware('permission:tariffs.delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -90,6 +99,7 @@ class TariffController extends Controller
                 'place_id'          => $validated['place_id'],
                 'name'          => $validated['name'],
                 'category_id'   => $validated['category_id'],
+                'type'          => $validated['type'],
                 'start_date'    => $validated['start_date'],
                 'end_date'      => $validated['end_date'],                
                 'min_amount'    => $validated['min_amount'],                
@@ -152,6 +162,7 @@ class TariffController extends Controller
 
             $tariff = Tariff::where('id', $tariff->id)->update([
                 'place_id'      => $validated['place_id'],
+                'type'          => $validated['type'],
                 'name'          => $validated['name'],
                 'category_id'   => $validated['category_id'],
                 'start_date'    => $validated['start_date'],

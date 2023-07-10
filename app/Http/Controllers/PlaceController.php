@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class PlaceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:places.index', ['only' => ['index']]);
+        $this->middleware('permission:places.create', ['only' => ['create']]);
+        $this->middleware('permission:places.store', ['only' => ['store']]);
+        $this->middleware('permission:places.edit', ['only' => ['edit']]);
+        $this->middleware('permission:places.update', ['only' => ['update']]);
+        $this->middleware('permission:places.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:places.status', ['only' => ['statusChange']]);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -8,7 +8,9 @@
             <div class="card">
                 <div class="card-header">
                     {{ __('application.floor.edit_floor') }}
+                    @can("floors.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('floors.index') }}">{{ __('application.floor.floor_list') }}</a>
+                    @endcan
                 </div>
 
                 <div class="card-body">

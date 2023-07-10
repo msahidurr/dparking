@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 
 class SiteController extends Controller
 {
@@ -23,9 +22,6 @@ class SiteController extends Controller
 		]);
 
 		$data['site_title'] = $request->site_title;
-		$data['date_format'] = $request->date_format;
-		$data['date_format_sql'] = $request->date_format_sql;
-		$data['app_timezone'] = $request->app_timezone;
 
 		if($request->hasFile('logo')){
 			$fileName = $this->imageName($request->logo->getClientOriginalName(), 1, 'logo');
@@ -42,18 +38,10 @@ class SiteController extends Controller
 		}
 
 		$setting = Setting::first();
-		$old_app_timezone = $setting->app_timezone;
 		$setting->update($data);
 
 		cache()->forget('settings');
-		cache()->remember('settings', now()->addHours(2), function () {
-            return Setting::first();
-        });
-        
-        Artisan::call('config:clear');
-        overWriteEnvFile('APP_TIMEZONE',$request->input('app_timezone'),$old_app_timezone);        
-        Artisan::call('config:cache');
-        
+
 		return back()->with(['flashMsg' => ['msg' => 'Settings successfully updated.', 'type' => 'success']]);
 	}
 
@@ -75,5 +63,5 @@ class SiteController extends Controller
 		}
 
 		return $name;
-	}	
+	}
 }

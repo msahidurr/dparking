@@ -16,6 +16,7 @@
         "laravel/ui": "^3.4",
         "milon/barcode": "^8.0",
         "rachidlaasri/laravel-installer": "^4.1",
+        "spatie/laravel-permission": "^5.5",
         "tightenco/ziggy": "^1.4"
     },
     "require-dev": {

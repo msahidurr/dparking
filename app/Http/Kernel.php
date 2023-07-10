@@ -64,6 +64,9 @@ class Kernel extends HttpKernel
         'installed' => \App\Http\Middleware\InstallMiddleware::class,
         'xss_clean' => \App\Http\Middleware\XSSProtection::class,
         'language' => \App\Http\Middleware\Language::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 
     /**

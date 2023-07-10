@@ -1,0 +1,110 @@
+@font-face {
+    font-family: "flaticon";
+    src: url("./flaticon.ttf?75dfea36437fa3c5903968f3a09a46c3") format("truetype"),
+url("./flaticon.woff?75dfea36437fa3c5903968f3a09a46c3") format("woff"),
+url("./flaticon.woff2?75dfea36437fa3c5903968f3a09a46c3") format("woff2"),
+url("./flaticon.eot?75dfea36437fa3c5903968f3a09a46c3#iefix") format("embedded-opentype"),
+url("./flaticon.svg?75dfea36437fa3c5903968f3a09a46c3#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-report:before {
+    content: "\f101";
+}
+.flaticon-best:before {
+    content: "\f102";
+}
+.flaticon-success:before {
+    content: "\f103";
+}
+.flaticon-login:before {
+    content: "\f104";
+}
+.flaticon-qr-code:before {
+    content: "\f105";
+}
+.flaticon-growth:before {
+    content: "\f106";
+}
+.flaticon-search:before {
+    content: "\f107";
+}
+.flaticon-success-1:before {
+    content: "\f108";
+}
+.flaticon-light-bulb:before {
+    content: "\f109";
+}
+.flaticon-language:before {
+    content: "\f10a";
+}
+.flaticon-best-price:before {
+    content: "\f10b";
+}
+.flaticon-credit-card:before {
+    content: "\f10c";
+}
+.flaticon-domain:before {
+    content: "\f10d";
+}
+.flaticon-feature:before {
+    content: "\f10e";
+}
+.flaticon-email:before {
+    content: "\f10f";
+}
+.flaticon-log:before {
+    content: "\f110";
+}
+.flaticon-websites:before {
+    content: "\f111";
+}
+.flaticon-data-management:before {
+    content: "\f112";
+}
+.flaticon-presale:before {
+    content: "\f113";
+}
+.flaticon-kanban:before {
+    content: "\f114";
+}
+.flaticon-warehouse:before {
+    content: "\f115";
+}
+.flaticon-integration:before {
+    content: "\f116";
+}
+.flaticon-wrench:before {
+    content: "\f117";
+}
+.flaticon-car:before {
+    content: "\f118";
+}
+.flaticon-body-repair:before {
+    content: "\f119";
+}
+.flaticon-body-repair-1:before {
+    content: "\f11a";
+}
+.flaticon-car-1:before {
+    content: "\f11b";
+}
+.flaticon-inspection:before {
+    content: "\f11c";
+}
+.flaticon-manufacturing:before {
+    content: "\f11d";
+}
+.flaticon-accident:before {
+    content: "\f11e";
+}

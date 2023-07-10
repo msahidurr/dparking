@@ -29,12 +29,14 @@ class StoreParkingRequest extends FormRequest
 		$rules =  [
 			'vehicle_no'    => 'bail|required|string',
 			'category_id'   => 'bail|required|integer',
+            'tariff_id'       => 'bail|required|integer',
 			'slot_id'   	=> 'bail|required|integer',
 			'driver_mobile' => 'bail|nullable|string',
+            'agent_name'   => 'bail|nullable|string',
 			'driver_name'   => 'bail|nullable|string',
 		];
 
-		if(auth()->user()->hasRole('admin')){
+		if(auth()->user()->hasAllPermissions(allpermissions())){
 			$rules['place_id'] = 'required';
 		}
 
@@ -43,7 +45,7 @@ class StoreParkingRequest extends FormRequest
 
 	public function withValidator(Validator $validator){        
 		$validator->after(function(Validator $validator){     
-			$place_id = auth()->user()->hasRole('admin') ? $this->input('place_id') : auth()->user()->place_id;       
+			$place_id = auth()->user()->hasAllPermissions(allpermissions()) ? $this->input('place_id') : auth()->user()->place_id;       
 			if(Tariff::getCurrent($this->input('category_id'), $place_id) == null){
 				$validator->errors()->add('category_id','No tariff found');
 			}

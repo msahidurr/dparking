@@ -3,18 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Models\Role;
-use Illuminate\Http\Request;
-
-use App\Http\Requests\StoreUserInformation;
-use App\Models\Language;
-use App\Models\Place;
 use Exception;
+use App\Models\City;
+
+use App\Models\Floor;
+use App\Models\Place;
+use App\Models\State;
+use App\Models\Country;
+use App\Models\Section;
+use App\Models\Language;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Requests\StoreUserInformation;
+use App\Models\CategoryWiseFloorSlot;
 use Illuminate\Support\Facades\{Hash, Mail};
 
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:users.index', ['only' => ['index']]);
+        $this->middleware('permission:users.create', ['only' => ['create']]);
+        $this->middleware('permission:users.store', ['only' => ['store']]);
+        $this->middleware('permission:users.edit', ['only' => ['edit']]);
+        $this->middleware('permission:users.update', ['only' => ['update']]);
+        $this->middleware('permission:users.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:users.status', ['only' => ['status']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -63,7 +79,7 @@ class UserController extends Controller
             $where['status'] = request()->input('status');
         }
 
-        $where['id NOTEQ'] = auth()->id();
+        // $where['id NOTEQ'] = auth()->id();
 
         $users = $users->getDataForDataTable($limit, $offset, $search, $where, $with, $join, $orderBy,  $request->all());
         return response()->json($users);
@@ -77,8 +93,14 @@ class UserController extends Controller
     public function create()
     {
         $data['roles'] = Role::get();
+        $data['sections'] = Section::get();
         $data['languages'] = Language::where('status', '>=', 1)->where('code', '!=', 'master')->get();
         $data['places'] = Place::whereStatus(1)->get();
+        $data['floors'] = Floor::whereStatus(1)->get();
+        $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
+        $data['countries'] = Country::get();
+        $data['states'] = State::get();
+        $data['cities'] = City::get();
         return view('user.create', $data);
     }
 
@@ -97,15 +119,18 @@ class UserController extends Controller
                 'email'    => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'language_id' => $validated['language_id'],
+                'place_id' => $validated['place_id'],
+                'floor_id' => $validated['floor_id'],
+                'category_wise_floor_slot_id' => $validated['category_wise_floor_slot_id'],
+                'country_id' => $validated['country_id'],
+                'state_id' => $validated['state_id'],
+                'city_id' => $validated['city_id'],
                 'status'   => 1
             ];
 
-            if ($request->role == 2) {
-                $data['place_id'] = $validated['place_id'];
-            }
-
             $user = User::create($data);
-            $user->roles()->attach($validated['role']);
+            $user->roles()->sync($validated['role']);
+            $user->permissions()->sync($validated['permissions']);
             $user->sendEmailVerificationNotification();
         } catch (\PDOException $e) {
             return redirect()
@@ -198,7 +223,13 @@ class UserController extends Controller
         $viewData = array(
             'user' => $user,
             'roles' => Role::get(),
+            'sections' => Section::get(),
             'places' => Place::whereStatus(1)->get(),
+            'floors' => Floor::whereStatus(1)->get(),
+            'slots' => CategoryWiseFloorSlot::whereStatus(1)->get(),
+            'countries' => Country::get(),
+            'states' => State::get(),
+            'cities' => City::get(),
             'languages' => Language::where('status', '>=', 1)->where('code', '!=', 'master')->get()
         );
         return view('user.edit', $viewData);
@@ -219,19 +250,28 @@ class UserController extends Controller
                 $user->name = $validated['name'];
                 $user->email = $validated['email'];
                 $user->language_id = $validated['language_id'];
-                
-                if ($request->role == 2) {
-                    $user->place_id = $validated['place_id'];
-                }
-                else{
-                    $user->place_id = NULL;
-                }
+                $user->place_id = $validated['place_id'];
+                $user->floor_id = $validated['floor_id'];
+                $user->category_wise_floor_slot_id = $validated['category_wise_floor_slot_id'];
+                $user->country_id = $validated['country_id'];
+                $user->state_id = $validated['state_id'];
+                $user->city_id = $validated['city_id'];                
+                // if ($request->role == 2) {
+                //     $user->place_id = $validated['place_id'];
+                // }
+                // else{
+                //     $user->place_id = NULL;
+                // }
 
                 if ($validated['password']) {
                     $user->password = Hash::make($validated['password']);
                 }
                 $user->update();
                 $user->roles()->sync($validated['role']);
+                if(isset($validated['permissions'])){
+                    $user->permissions()->sync($validated['permissions']);
+
+                }
             } catch (\PDOException $e) {
                 return redirect()
                     ->back()

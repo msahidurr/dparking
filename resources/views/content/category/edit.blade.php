@@ -8,8 +8,10 @@
             <div class="card">
                 <div class="card-header">
                     {{ __('application.category.edit_category') }}
+                    @can("categories.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('category.index') }}">{{
                         __('application.category.category_list') }}</a>
+                    @endcan
                 </div>
 
                 <div class="card-body">

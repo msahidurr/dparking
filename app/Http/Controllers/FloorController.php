@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 
 class FloorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:floors.index', ['only' => ['index']]);
+        $this->middleware('permission:floors.create', ['only' => ['create']]);
+        $this->middleware('permission:floors.store', ['only' => ['store']]);
+        $this->middleware('permission:floors.edit', ['only' => ['edit']]);
+        $this->middleware('permission:floors.update', ['only' => ['update']]);
+        $this->middleware('permission:floors.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:floors.status', ['only' => ['statusChange']]);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -10,9 +10,9 @@
             <div class="seats">
                 @foreach ($florSlots as $index => $slot)
                     <div
-                        class="seat {{ $slot->active_parking != null && $slot->active_parking->id != $id ? 'text-white' : '' }}">
+                        class="seat">
                         <input type="radio" value="{{ $slot->id }}" required name="slot_id"
-                            {{ $slot->active_parking != null && $slot->active_parking->id != $id ? 'disabled' : ($slot->active_parking != null && $slot->active_parking->id == $id ? 'checked' : '') }}
+                            {{ ($slot->active_parking != null && $slot->active_parking->id == $id ? 'checked' : '') }}
                             id="{{ $slot->slotId }}" />
                         <label for="{{ $slot->slotId }}">
                             {{ $slot->slot_name }}<br>

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Role;
+use Log;
 use App\User;
 use App\Models\Tariff;
 use App\Models\Parking;
 use App\Models\RfidVehicle;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use App\Models\CategoryWiseFloorSlot;
-use Log;
 
 class RFIDController extends Controller
 {
@@ -68,7 +68,6 @@ class RFIDController extends Controller
                 $parking->amount = $amt;
                 $parking->modified_by = $user->id;
                 $parking->status = 3;
-                $parking->exit_floor_id = $getKeys[1];
                 $parking->update();
             }else{
                 $availableSlot = CategoryWiseFloorSlot::whereDoesntHave('active_parking')->where('category_id',$rfidVehicle->category_id)->where('floor_id',$getKeys[1])->first();

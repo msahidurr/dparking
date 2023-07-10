@@ -1,0 +1,145 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?75dfea36437fa3c5903968f3a09a46c3") format("truetype"),
+url("./flaticon.woff?75dfea36437fa3c5903968f3a09a46c3") format("woff"),
+url("./flaticon.woff2?75dfea36437fa3c5903968f3a09a46c3") format("woff2"),
+url("./flaticon.eot?75dfea36437fa3c5903968f3a09a46c3#iefix") format("embedded-opentype"),
+url("./flaticon.svg?75dfea36437fa3c5903968f3a09a46c3#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "report": "\f101",
+    "best": "\f102",
+    "success": "\f103",
+    "login": "\f104",
+    "qr-code": "\f105",
+    "growth": "\f106",
+    "search": "\f107",
+    "success-1": "\f108",
+    "light-bulb": "\f109",
+    "language": "\f10a",
+    "best-price": "\f10b",
+    "credit-card": "\f10c",
+    "domain": "\f10d",
+    "feature": "\f10e",
+    "email": "\f10f",
+    "log": "\f110",
+    "websites": "\f111",
+    "data-management": "\f112",
+    "presale": "\f113",
+    "kanban": "\f114",
+    "warehouse": "\f115",
+    "integration": "\f116",
+    "wrench": "\f117",
+    "car": "\f118",
+    "body-repair": "\f119",
+    "body-repair-1": "\f11a",
+    "car-1": "\f11b",
+    "inspection": "\f11c",
+    "manufacturing": "\f11d",
+    "accident": "\f11e",
+);
+
+.flaticon-report:before {
+    content: map-get($flaticon-map, "report");
+}
+.flaticon-best:before {
+    content: map-get($flaticon-map, "best");
+}
+.flaticon-success:before {
+    content: map-get($flaticon-map, "success");
+}
+.flaticon-login:before {
+    content: map-get($flaticon-map, "login");
+}
+.flaticon-qr-code:before {
+    content: map-get($flaticon-map, "qr-code");
+}
+.flaticon-growth:before {
+    content: map-get($flaticon-map, "growth");
+}
+.flaticon-search:before {
+    content: map-get($flaticon-map, "search");
+}
+.flaticon-success-1:before {
+    content: map-get($flaticon-map, "success-1");
+}
+.flaticon-light-bulb:before {
+    content: map-get($flaticon-map, "light-bulb");
+}
+.flaticon-language:before {
+    content: map-get($flaticon-map, "language");
+}
+.flaticon-best-price:before {
+    content: map-get($flaticon-map, "best-price");
+}
+.flaticon-credit-card:before {
+    content: map-get($flaticon-map, "credit-card");
+}
+.flaticon-domain:before {
+    content: map-get($flaticon-map, "domain");
+}
+.flaticon-feature:before {
+    content: map-get($flaticon-map, "feature");
+}
+.flaticon-email:before {
+    content: map-get($flaticon-map, "email");
+}
+.flaticon-log:before {
+    content: map-get($flaticon-map, "log");
+}
+.flaticon-websites:before {
+    content: map-get($flaticon-map, "websites");
+}
+.flaticon-data-management:before {
+    content: map-get($flaticon-map, "data-management");
+}
+.flaticon-presale:before {
+    content: map-get($flaticon-map, "presale");
+}
+.flaticon-kanban:before {
+    content: map-get($flaticon-map, "kanban");
+}
+.flaticon-warehouse:before {
+    content: map-get($flaticon-map, "warehouse");
+}
+.flaticon-integration:before {
+    content: map-get($flaticon-map, "integration");
+}
+.flaticon-wrench:before {
+    content: map-get($flaticon-map, "wrench");
+}
+.flaticon-car:before {
+    content: map-get($flaticon-map, "car");
+}
+.flaticon-body-repair:before {
+    content: map-get($flaticon-map, "body-repair");
+}
+.flaticon-body-repair-1:before {
+    content: map-get($flaticon-map, "body-repair-1");
+}
+.flaticon-car-1:before {
+    content: map-get($flaticon-map, "car-1");
+}
+.flaticon-inspection:before {
+    content: map-get($flaticon-map, "inspection");
+}
+.flaticon-manufacturing:before {
+    content: map-get($flaticon-map, "manufacturing");
+}
+.flaticon-accident:before {
+    content: map-get($flaticon-map, "accident");
+}

@@ -52,27 +52,6 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">{{ __('application.setting.date_format') }} <small
-                                                class="font-italic text-info"><a href="https://www.w3schools.com/php/func_date_date_format.asp" target="_blank">View Format</a></small></label>
-                                        <input type="text" name="date_format" class="form-control" value="{{$settings->date_format}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">{{ __('application.setting.date_format_sql') }} <small
-                                                class="font-italic text-info"><a href="https://www.w3schools.com/sql/func_mysql_date_format.asp" target="_blank">View Format</a></small></label>
-                                        <input type="text" name="date_format_sql" class="form-control" value="{{$settings->date_format_sql}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">{{ __('application.setting.app_timezone') }} <small
-                                                class="font-italic text-info"><a href="https://www.php.net/manual/en/timezones.php" target="_blank">View Format</a></small></label>
-                                        <input type="text" name="app_timezone" class="form-control" value="{{config('app.timezone')}}">
-                                    </div>
-                                </div>
                                 <div class="col-12">
                                     <button class="btn btn-success pull-right"
                                         type="submit">{{ __('application.setting.save_change') }}</button>

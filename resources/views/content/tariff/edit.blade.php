@@ -8,7 +8,9 @@
             <div class="card  mb-5">
                 <div class="card-header">
                     {{ __('application.tariff.edit_tariff') }}
+                    @can("tariffs.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('tariff.index') }}">{{ __('application.tariff.tariff_list') }}</a>
+                    @endcan
                 </div>
 
                 <div class="card-body">
@@ -85,6 +87,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right"> {{ __('application.tariff.period') }} <span class="tcr i-req">*</span></label>
+                            <div class="col-md-8">
+                                <select name="type" id="type" class="select2 form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" required>
+                                    @foreach (getPeriods() as $key => $period)
+                                       <option {{ ($key == old('type', $tariff->type)) ? 'selected' : '' }} value="{{ $key }}">{{ $period }}</option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('type'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="min_amount" class="col-md-4 col-form-label text-md-right"> {{ __('application.tariff.min_amount') }}<span class="tcr i-req">*</span> </label>
 
                             <div class="col-md-8">
@@ -98,7 +116,7 @@
                             </div>                            
                         </div>
                         <div class="form-group row">
-                            <label for="amount" class="col-md-4 col-form-label text-md-right">{{ __('application.tariff.amount') }}<span class="tcr i-req">*</span>  <i class="f-12"> (Per/hour)</i></label>
+                            <label for="amount" class="col-md-4 col-form-label text-md-right">{{ __('application.tariff.amount') }}<span class="tcr i-req">*</span>  </label>
 
                             <div class="col-md-8">
                                 <input id="amount" type="number" step="any" class="form-control {{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" value="{{ old('amount')??$tariff->amount }}" autocomplete="off" required>
@@ -148,5 +166,5 @@
 <script>
     var categories = @json($categories);
 </script>
-<script src="{{ assetz('js/custom/settings/tariff.js') }}"></script>
+<script src="{{ asset('js/custom/settings/tariff.js') }}"></script>
 @endpush

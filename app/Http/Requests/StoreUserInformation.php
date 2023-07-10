@@ -42,13 +42,18 @@ class StoreUserInformation extends FormRequest
                 Rule::unique('users')->ignore($this->route('user'))
             ],
             'role'  => 'bail|required_if:required_role,true|integer',
+            'permissions'  => '',
             'password'        => 'bail|required_if:required_password,true|confirmed|max:191',
         ];
 
         $rules['language_id'] = 'bail|required';
-        if (request()->get('role') == 2) {
-            $rules['place_id'] = 'bail|required';
-        }
+        $rules['place_id'] = '';
+        $rules['floor_id'] = '';
+        $rules['category_wise_floor_slot_id'] = '';
+        $rules['country_id'] = '';
+        $rules['state_id'] = '';
+        $rules['city_id'] = '';
+        
 
         return $rules;
     }
@@ -67,7 +72,7 @@ class StoreUserInformation extends FormRequest
             } elseif (
                 $this::user()
                 && Route::currentRouteName() !== 'user.store'
-                && !$this::user()->hasRole('admin')
+                && !$this::user()->hasAllPermissions(allpermissions())
                 && !Hash::check($validator->getData()['currentPassword'], $this::user()->makeVisible('password')->password)
             ) {
                 $validator->errors()->add('currentPassword', 'Current Password is not matched.');

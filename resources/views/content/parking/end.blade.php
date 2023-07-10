@@ -44,45 +44,22 @@
                                 <td class="w10">:</td>
                                 <td class="w50">{{$parking->slot->slot_name ?? ''}}</td>
                             </tr>
-                            @if($parking->exit_floor)
                             <tr>
-                                <td class="w40">{{ __('application.parking.exit_floor') }}</td>
-                                <td class="w10">:</td>
-                                <td class="w50">{{$parking->exit_floor->name ?? ''}}</td>
-                            </tr>
-                            @endif
-                            <tr>
-                                <td class="w40">{{ __('application.parking.in_time') }}</td>                                
+                                <td class="w40">{{ __('application.tariff.start_date') }}</td>                                
                                 <td class="w10">:</td>                                
-                                <td class="w50"><b>{{appDate($parking->in_time)}}</b></td>
+                                <td class="w50"><b>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $parking->in_time)->format(env('DATE_FORMAT','m-d-Y H:i:s'))}}</b></td>
                             </tr>
                             <tr>
-                                <td class="w40">{{ __('application.parking.out_time') }}</td>                                
-                                <td class="w10">:</td>   
-                                @php 
-                                if($parking->out_time){
-                                    $outTime = $parking->out_time;
-                                }
-                                elseif(session()->has('eDate_'.$parking->id)){
-                                    $outTime = session()->get('eDate_'.$parking->id);
-                                }
-                                
-                                @endphp                             
-                                <td class="w50"><b>{{appDate($outTime)}}</b></td>
+                                <td class="w40">{{ __('application.tariff.end_date') }}</td>                                
+                                <td class="w10">:</td>                                
+                                <td class="w50"><b>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $parking->in_time)->addDays($parking->tariff->type)->format(env('DATE_FORMAT','m-d-Y H:i:s'))}}</b></td>
                             </tr>
                             <tr>
                                 <td class="w40">{{ __('application.parking.duration') }}</td>                                
                                 <td class="w10">:</td>                                
                                 <td class="w50">
                                     <b>
-                                        <?php
-                                    $eDate = (is_string($outTime)) ? new \DateTime($outTime) : $outTime;
-                                    $dateDiff = $eDate->diff(new \DateTime($parking->in_time));
-                                    $hour = $dateDiff->h;                                    
-                                    if($dateDiff->days > 0)
-                                    $hour = $dateDiff->h + ($dateDiff->days * 24);
-                                    echo $hour.' hour, '.$dateDiff->i. ' min';
-                                    ?>
+                                        {{ $parking->tariff->type }}
                                     </b>
                                 </td>
                             </tr>
@@ -105,17 +82,6 @@
                         <tbody>
                         <form id="payForm" action="{{route('parking.pay',['parking' => $parking->id])}}" method="post">
                         @csrf
-                            <tr>
-                                <td class="w40">{{ __('application.parking.exit_floor') }}</td>                                
-                                <td class="w10">:</td>                                
-                                <td class="w50">
-                                    <select name="exit_floor_id" class="form-control" required>
-                                        @foreach($floors as $keyF => $floor)
-                                            <option value="{{$floor->id}}" @if(session()->get('exit_floor_id') == $floor->id) selected @endif>{{$floor->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
                             <tr>
                                 <td class="w40">{{ __('application.parking.receive_amount') }}</td>                                
                                 <td class="w10">:</td>                                
@@ -146,7 +112,7 @@
                                 <td class="w40"></td>                                
                                 <td class="w10"></td>                                
                                 <td class="w50">
-                                    <input type="submit" class="btn btn-info btn-sm pull-right" value="End Parking">
+                                    <input type="submit" class="btn btn-info btn-sm pull-right" value="Pay">
                                 </td>
                             </tr>
                         </form>
@@ -157,8 +123,12 @@
                 </div>
                 <div class="card-footer">
                     @if($parking->paid > 0)
+                    @can("parkings.index")
                     <a href="{{route('parking.index')}}" class="btn btn-warning" id="parking_list">{{ __('application.parking.go_to_parking_list') }}</a>
+                    @endcan
+                    @can("parkings.print")
                     <button class="btn btn-success" id="print_slip">{{ __('application.parking.print_slip') }}</button>
+                    @endcan
                     @endif
                 </div>
             </div>

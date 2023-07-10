@@ -1,0 +1,65 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?f36064547312ef59b459b305054622c7") format("truetype"),
+url("./flaticon.woff?f36064547312ef59b459b305054622c7") format("woff"),
+url("./flaticon.woff2?f36064547312ef59b459b305054622c7") format("woff2"),
+url("./flaticon.eot?f36064547312ef59b459b305054622c7#iefix") format("embedded-opentype"),
+url("./flaticon.svg?f36064547312ef59b459b305054622c7#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "immigration": "\f101",
+    "group": "\f102",
+    "logout": "\f103",
+    "expenses": "\f104",
+    "deposit": "\f105",
+    "paid": "\f106",
+    "bill": "\f107",
+    "briefing": "\f108",
+    "time-management": "\f109",
+    "loan": "\f10a",
+);
+
+.flaticon-immigration:before {
+    content: map-get($flaticon-map, "immigration");
+}
+.flaticon-group:before {
+    content: map-get($flaticon-map, "group");
+}
+.flaticon-logout:before {
+    content: map-get($flaticon-map, "logout");
+}
+.flaticon-expenses:before {
+    content: map-get($flaticon-map, "expenses");
+}
+.flaticon-deposit:before {
+    content: map-get($flaticon-map, "deposit");
+}
+.flaticon-paid:before {
+    content: map-get($flaticon-map, "paid");
+}
+.flaticon-bill:before {
+    content: map-get($flaticon-map, "bill");
+}
+.flaticon-briefing:before {
+    content: map-get($flaticon-map, "briefing");
+}
+.flaticon-time-management:before {
+    content: map-get($flaticon-map, "time-management");
+}
+.flaticon-loan:before {
+    content: map-get($flaticon-map, "loan");
+}

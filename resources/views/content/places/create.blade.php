@@ -7,8 +7,10 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('application.place.add_place') }}
+                        @can("places.index")
                         <a class="btn btn-sm btn-info pull-right"
                             href="{{ route('places.index') }}">{{ __('application.place.place_list') }}</a>
+                            @endcan
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('places.store') }}">

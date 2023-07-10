@@ -7,8 +7,10 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('application.language.edit_language') }}
+                        @can("languages.index")
                         <a class="btn btn-sm btn-primary pull-right"
                             href="{{ route('languages.index') }}">{{ __('application.language.all_language_list') }}</a>
+                            @endcan
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('language.language_update', ['language'=>$language->id]) }}">

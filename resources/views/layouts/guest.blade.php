@@ -14,13 +14,23 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    
+    <link rel="stylesheet" href="{{asset('assets/icons/font/flaticon.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/icons2/flaticon.css')}}" />
+    
     <!-- Styles -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
     <link href="{{ asset('css/public_site.css') }}" rel="stylesheet">
+    
+    @include('includes_for_css.universal_styles_landing')
+    
 </head>
 <body>
     <div id="app">
-        <nav class="bg-black">
+        <nav class="bg-black position-absolute">
             <div class="container">
                 <a class="m-0 navbar-brand p-0 text-white" href="{{ url('/') }}">
                 </a>
@@ -68,6 +78,35 @@
         </main>
     </div>
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
-    <script src="{{assetz('js/login.js')}}"></script>
+    <script src="{{asset('js/login.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+      // Add smooth scrolling to all links
+      $(".nav-item>a").on('click', function(event) {
+    
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
+          // Prevent default anchor click behavior
+          event.preventDefault();
+    
+          // Store hash
+          var hash = this.hash;
+    
+          // Using jQuery's animate() method to add smooth page scroll
+          // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 800, function(){
+       
+            // Add hash (#) to URL when done scrolling (default click behavior)
+            window.location.hash = hash;
+          });
+        } // End if
+      });
+    });
+      </script>
 </body>
 </html>

@@ -104,7 +104,7 @@ class ReportController extends Controller
             }
 
             if ($request->floor_id != NULL) {
-                $parkings->where('cwfs.floor_id', $request->floor_id)->orWhere('parkings.exit_floor_id', $request->floor_id);
+                $parkings->where('cwfs.floor_id', $request->floor_id);
             }
 
             if ($request->car_no != NULL) {

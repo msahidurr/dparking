@@ -2,16 +2,18 @@
 
 namespace App;
 
+use App\Models\CategoryWiseFloorSlot;
 use App\Models\Language;
 use App\Models\ModelCommonMethodTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, MustVerifyEmailTrait, ModelCommonMethodTrait;
+    use Notifiable, MustVerifyEmailTrait, ModelCommonMethodTrait,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +21,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'place_id', 'language_id'
+        'name', 'email', 'password', 'place_id', 'language_id',
+        'floor_id',
+        'category_wise_floor_slot_id',
+        'country_id',
+        'state_id',
+        'city_id'
     ];
 
     /**
@@ -31,19 +38,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
-    public function roles()
-    {
-        return $this->belongsToMany('App\Models\Role');
-    }
+    // public function roles()
+    // {
+    //     return $this->belongsToMany('App\Models\Role');
+    // }
 
-    public function hasRole($roles)
-    {
-        if (!is_array($roles)) {
-            $roles = [$roles];
-        }
+    // public function hasRole($roles)
+    // {
+    //     if (!is_array($roles)) {
+    //         $roles = [$roles];
+    //     }
 
-        return (bool) $this->roles()->whereIn('name', $roles)->first();
-    }
+    //     return (bool) $this->roles()->whereIn('name', $roles)->first();
+    // }
 
     /**
      * This function 
@@ -62,6 +69,40 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
     #end
+    public function place()
+    {
+        # code...   
+        return $this->belongsTo(Place::class, 'place_id', 'id');
+    }
 
+    public function floot()
+    {
+        # code...   
+        return $this->belongsTo(Floor::class, 'floot_id', 'id');
+    }
+
+    public function slot()
+    {
+        # code...   
+        return $this->belongsTo(CategoryWiseFloorSlot::class, 'category_wise_floor_slot_id', 'id');
+    }
+
+    public function country()
+    {
+        # code...   
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    public function state()
+    {
+        # code...   
+        return $this->belongsTo(State::class, 'state_id', 'id');
+    }
+
+    public function city()
+    {
+        # code...   
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
 
 }

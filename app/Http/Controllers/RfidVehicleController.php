@@ -11,6 +11,16 @@ use Log;
 
 class RfidVehicleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:rfids.index', ['only' => ['index']]);
+        $this->middleware('permission:rfids.create', ['only' => ['create']]);
+        $this->middleware('permission:rfids.store', ['only' => ['store']]);
+        $this->middleware('permission:rfids.edit', ['only' => ['edit']]);
+        $this->middleware('permission:rfids.update', ['only' => ['update']]);
+        $this->middleware('permission:rfids.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:rfids.status', ['only' => ['statusChange']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -81,7 +91,7 @@ class RfidVehicleController extends Controller
         $validated = $request->validate([
             'category_id' => 'bail|required|exists:categories,id',
             'vehicle_no' => 'bail|required|string|max:12|unique:rfid_vehicles,vehicle_no,NULL,NULL,category_id,'.$request->input('category_id'), 
-            'rfid_no' => 'bail|required|string|max:24|unique:rfid_vehicles,rfid_no,NULL,NULL,category_id,'.$request->input('category_id'), 
+            'rfid_no' => 'bail|required|string|max:12|unique:rfid_vehicles,rfid_no,NULL,NULL,category_id,'.$request->input('category_id'), 
             'driver_name' => 'bail|nullable|min:5',
             'driver_mobile' => 'bail|nullable|min:9'
         ]);
@@ -138,7 +148,7 @@ class RfidVehicleController extends Controller
                 ->where('vehicle_no',$request->vehicle_no)
                 ->where('category_id',$request->category_id);
             })],
-            'rfid_no' => ['bail','required','string','max:24',Rule::unique('rfid_vehicles')->where(function ($query) use($request, $rfidVehicle){
+            'rfid_no' => ['bail','required','string','max:12',Rule::unique('rfid_vehicles')->where(function ($query) use($request, $rfidVehicle){
                 return $query->where('id', '!=', $rfidVehicle->id)
                 ->where('rfid_no',$request->rfid_no)
                 ->where('category_id',$request->category_id);

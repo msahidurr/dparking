@@ -1,0 +1,345 @@
+.main-panel>.content {
+  background-color: #eff2f9;
+}
+
+.page-inner {}
+
+.page-inner>div>h2 {
+  color: #333333 !important;
+}
+
+.form-control-sm,
+.input-group-sm>.form-control,
+.input-group-sm>.input-group-append>.btn,
+.input-group-sm>.input-group-append>.input-group-text,
+.input-group-sm>.input-group-prepend>.btn,
+.input-group-sm>.input-group-prepend>.input-group-text {
+  padding: 0.25rem 0.5rem !important;
+  font-size: .875rem !important;
+  line-height: 1.5;
+  background-color: #ffffff;
+  box-shadow: unset;
+  margin: 5px;
+  height: 35px;
+}
+
+
+.add_info {
+  align-items: flex-end;
+}
+
+.add_info .form-group {
+  padding-bottom: 0;
+}
+
+.imagecheck-image {
+  height: 300px;
+}
+
+ul.nav.nav-collapse {
+  margin-left: 20px;
+}
+
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:hover,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:focus,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a[data-toggle=collapse][aria-expanded=true] {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a p,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a i,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a .caret,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:hover p,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:hover i,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:hover .caret,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:focus p,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:focus i,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a:focus .caret,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a[data-toggle=collapse][aria-expanded=true] p,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a[data-toggle=collapse][aria-expanded=true] i,
+.sidebar[data-background-color="dark2"].sidebar-style-2 .nav .nav-item.active>a[data-toggle=collapse][aria-expanded=true] .caret {
+  color: #ffffff !important;
+}
+
+.sidebar .nav-collapse li a,
+.sidebar[data-background-color="white"] .nav-collapse li a {
+  margin-bottom: 3px !important;
+  padding: 10px 5px !important;
+}
+
+.sidebar[data-background-color="white"] .nav>.nav-item a,
+.sidebar.sidebar-style-2 .nav .nav-item a {
+  border: 4px;
+  border-style: groove;
+  border-color: #e0e0e0;
+  border-bottom: 0;
+  border-top: 0;
+  margin-bottom: 7px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar[data-background-color="dark2"] .nav>.nav-item a {
+  border: 4px;
+  border-style: groove;
+  border-color: #333333;
+  border-bottom: 0;
+  border-top: 0;
+  margin-bottom: 7px;
+  border-bottom: 1px solid #333333;
+}
+
+
+.sidebar.sidebar-style-2 .nav .nav-item a:hover,
+.sidebar.sidebar-style-2 .nav .nav-item a:focus,
+.sidebar.sidebar-style-2 .nav .nav-item a[data-toggle=collapse][aria-expanded=true] {
+  background: unset;
+  border-color: #1572e8;
+}
+
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a {
+  background: unset !important;
+  box-shadow: unset !important;
+  border-color: #1572e8;
+}
+
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a p,
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a i,
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a .caret,
+.sidebar.sidebar-style-2 .nav.nav-primary>.nav-item.active>a span {
+  color: #1572e8 !important;
+}
+
+.card,
+.card-light {
+  border-radius: 5px;
+  background-color: #ffffff;
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border: 2px;
+  border-style: groove;
+}
+
+.row-card-no-pd .card .card-header {
+  padding-left: 10px !important;
+}
+
+.card-header {
+  background-color: #f9f9f9 !important;
+}
+
+.btn {
+  padding: 5px 15px;
+  font-size: 14px;
+  position: relative;
+}
+
+.btn {
+  padding: 5px 15px;
+  font-size: 14px;
+  position: relative;
+}
+
+.main-header {
+  box-shadow: unset;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+.sidebar,
+.sidebar[data-background-color="white"] {
+  box-shadow: unset;
+}
+
+table.dataTable {
+  border-collapse: collapse !important;
+}
+
+table.dataTable td {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: 240px;
+}
+
+table.dataTable td select.form-control {
+  min-width: 80px;
+  height: 30px;
+}
+
+table.dataTable th {
+  background-color: #000000;
+  border: 0;
+  color: #f9f9f9;
+  white-space: nowrap;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, .02);
+}
+
+td>img.img-thumbnail {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
+
+div.table-responsive>div.dataTables_wrapper>div.row:last-child {
+  margin-bottom: 20px;
+}
+
+.page-item.disabled .page-link,
+.page-item .page-link {
+  border-radius: 5px !important;
+}
+
+@media(max-width:576px) {
+  div.dataTables_wrapper div.dataTables_filter input {
+    width: auto;
+  }
+
+  table.dataTable td {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .card-body {
+    padding: 30px 15px !important;
+  }
+
+  .users_table {}
+
+  .users_table tr>th {
+    height: unset;
+    padding: 12px 10px !important;
+  }
+
+  .users_table tr>td {
+    height: unset;
+    padding: 7px 10px !important;
+  }
+
+  .users_table tr:first-child>td {
+    padding-top: 10px !important;
+  }
+
+  .users_table tr:last-child>th {
+    padding-bottom: 10px !important;
+  }
+
+  .users_table tr>td:nth-child(2),
+  .users_table tr>th:nth-child(2) {
+    display: none !important;
+  }
+
+  .users_table tr>td {
+    white-space: nowrap;
+  }
+
+  .users_table a.btn,
+  .users_table button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  div#basic-datatables_length {
+    margin-top: 0px !important;
+    margin-bottom: -10px !important;
+  }
+
+  div#basic-datatables_paginate {
+    margin-top: -5px !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+@media screen and (max-width: 991px) {
+
+  .mobile.navbar-header {
+    transform: translate3d(0, 60px, 0) !important;
+    background-color: #ffffff;
+  }
+
+}
+
+.goog-logo-link,
+.goog-logo-link:link,
+.goog-logo-link:visited,
+.goog-logo-link:hover,
+.goog-logo-link:active {
+  display: none;
+}
+
+.goog-te-gadget:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 20px;
+  background-color: whitesmoke;
+  z-index: 1;
+}
+
+.img-thumbnail {
+  max-width: 400px;
+  max-height: 250px;
+}
+
+.dropdown-divider {
+  display: none;
+}
+
+.sidebar .nav-collapse li a .sub-item,
+.sidebar .nav>.nav-item a .caret,
+.sidebar .nav>.nav-item a i,
+.sidebar .nav>.nav-item a p {
+  color: #000000;
+}
+
+
+[data-background-color="dark"] .with-table.card-header,
+[data-background-color="dark"] .card-header {
+  background-color: #202940 !important;
+  border: 0 !important;
+  color: #ffffff !important;
+}
+
+body[data-background-color="dark"] .goog-te-gadget:after,
+body[data-background-color="dark"] .main-panel>.content,
+body[data-background-color="dark"] th,
+body[data-background-color="dark"] td {
+  background-color: #202940 !important;
+}
+
+body[data-background-color="dark"] .table tbody tr {
+  border-bottom: 0.5px solid #3f4962;
+}
+
+body[data-background-color="dark"] .alert,
+body[data-background-color="dark"] .card-statss [class*=card-] {
+  background-color: #202940 !important;
+}
+
+.card-statss .card-default i,
+body[data-background-color="dark"] .alert,
+body[data-background-color="dark"] .card-statss .card-category,
+.card-statss .card-title {
+  color: #ffffff !important;
+}
+
+
+body[data-background-color="dark"] .sidebar .nav-collapse li a .sub-item,
+body[data-background-color="dark"] .sidebar .nav>.nav-item a .caret,
+body[data-background-color="dark"] .sidebar .nav>.nav-item a i,
+body[data-background-color="dark"] .sidebar .nav>.nav-item a p {
+  color: #ffffff;
+}

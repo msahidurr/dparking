@@ -8,7 +8,9 @@
             <div class="card">
                 <div class="card-header">
                     {{ __('application.place.edit_place') }}
+                    @can("places.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('places.index') }}">{{ __('application.place.place_list') }}</a>
+                    @endcan
                 </div>
 
                 <div class="card-body">

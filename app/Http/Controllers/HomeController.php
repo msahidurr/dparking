@@ -34,7 +34,7 @@ class HomeController extends Controller
 
         $place_id = NULL;
 
-        if (!auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->hasAllPermissions(allpermissions())) {
             $place_id = auth()->user()->place_id;
         }
         else if($request->place_id){

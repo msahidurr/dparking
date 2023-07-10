@@ -11,9 +11,6 @@ class Setting extends Model
         'site_title',
         'favicon',
         'login_image',
-        'translation',
-        'date_format',
-        'date_format_sql',
-        'app_timezone'
+        'translation'
     ];
 }

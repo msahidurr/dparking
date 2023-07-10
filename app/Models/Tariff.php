@@ -11,6 +11,7 @@ class Tariff extends Model
         'id',
         'place_id',
         'name',
+        'type',
         'category_id',
         'start_date',
         'end_date',

@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "flaticon";
+    src: url("./flaticon.ttf?f36064547312ef59b459b305054622c7") format("truetype"),
+url("./flaticon.woff?f36064547312ef59b459b305054622c7") format("woff"),
+url("./flaticon.woff2?f36064547312ef59b459b305054622c7") format("woff2"),
+url("./flaticon.eot?f36064547312ef59b459b305054622c7#iefix") format("embedded-opentype"),
+url("./flaticon.svg?f36064547312ef59b459b305054622c7#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-immigration:before {
+    content: "\f101";
+}
+.flaticon-group:before {
+    content: "\f102";
+}
+.flaticon-logout:before {
+    content: "\f103";
+}
+.flaticon-expenses:before {
+    content: "\f104";
+}
+.flaticon-deposit:before {
+    content: "\f105";
+}
+.flaticon-paid:before {
+    content: "\f106";
+}
+.flaticon-bill:before {
+    content: "\f107";
+}
+.flaticon-briefing:before {
+    content: "\f108";
+}
+.flaticon-time-management:before {
+    content: "\f109";
+}
+.flaticon-loan:before {
+    content: "\f10a";
+}

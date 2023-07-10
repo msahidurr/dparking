@@ -143,7 +143,7 @@ trait ModelCommonMethodTrait
 				$totalData->orderBy($col, $by);
 			}
 		} else {
-			$totalData->orderBy($this->getTable() . '.id', 'DESC');
+			$totalData->orderBy($this->getTable() . '.id', 'ASC');
         }
 
         return [

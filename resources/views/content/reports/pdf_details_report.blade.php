@@ -83,7 +83,6 @@
                 <th>{{ __('application.report.type') }}</th>
                 <th>{{ __('application.report.floor') }}</th>
                 <th>{{ __('application.report.slot') }}</th>
-                <th>{{ __('application.report.exit_floor') }}</th>
                 <th>{{ __('application.report.in_time') }}</th>
                 <th>{{ __('application.report.out_time') }}</th>
                 <th>{{ __('application.report.amount') }} ({{ __('application.report.currency') }})</th>
@@ -102,9 +101,8 @@
                 <td>{{ $parking->category->type }}</td>
                 <td>{{ $parking->slot->floor->name ?? '' }}</td>
                 <td>{{ $parking->slot->slot_name ?? '' }}</td>
-                <td>{{ $parking->exit_floor->name ?? '' }}</td>
-                <td>{{ appDate($parking->in_time) }}</td>
-                <td>{{ $parking->out_time != null ? appDate($parking->out_time) :
+                <td>{{ $parking->in_time->format(env('DATE_FORMAT', 'm-d-Y H:i:s')) }}</td>
+                <td>{{ $parking->out_time != null ? $parking->out_time->format(env('DATE_FORMAT', 'm-d-Y H:i:s')) :
                     $parking->out_time }}
                 </td>
                 @php

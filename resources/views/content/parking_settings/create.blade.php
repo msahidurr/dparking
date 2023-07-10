@@ -8,8 +8,10 @@
             <div class="card">
                 <div class="card-header">
                     {{ __('application.slot.add_slot') }}
+                    @can("slots.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('parking_settings.index') }}">{{
                         __('application.slot.slot_list') }}</a>
+                    @endcan
                 </div>
 
                 <div class="card-body">
@@ -137,5 +139,5 @@
     var floors = @json($floors);
     var categories = @json($categories);
 </script>
-<script src="{{ assetz('js/custom/settings/parking_setting.js') }}"></script>
+<script src="{{ asset('js/custom/settings/parking_setting.js') }}"></script>
 @endpush
