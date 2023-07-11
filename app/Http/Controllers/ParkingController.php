@@ -356,6 +356,7 @@ class ParkingController extends Controller
 	public function edit(Parking $parking_crud)
 	{
 		if (auth()->user()->hasAllPermissions(allpermissions())) {
+			$data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['places'] = Place::where('status', 1)->get();
 			$data['categories'] = Category::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->count();
@@ -369,6 +370,7 @@ class ParkingController extends Controller
 				})->with('active_parking')->count();
 		} else {
 			$place_id = auth()->user()->place_id;
+			$data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['categories'] = Category::where('status', 1)->where('place_id', $place_id)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->where('place_id', $place_id)->count();
 			$data['parking'] = $parking_crud;
@@ -378,8 +380,11 @@ class ParkingController extends Controller
 				})
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
-				})->with('active_parking')->count();
+				})
+				->with('active_parking')
+				->count();
 		}
+
 		return view('content.parking.edit')->with($data);
 	}
 

@@ -284,7 +284,7 @@
         let tariff = tariffs.filter(val => ( val.place_id == $(this).val()));
         var html = '';
         $.each(tariff, function(ind,val){
-            html += `<option value="${val.id}">${val.name}</option>`;
+            html += `<option value="${val.id}" ${tariff_id == val.id ? 'selected' : ''}>${val.name}</option>`;
         });
 
         $(document).find('#tariff_id').html(html);
