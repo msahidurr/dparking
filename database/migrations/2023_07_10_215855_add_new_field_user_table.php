@@ -16,6 +16,7 @@ class AddNewFieldUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->text('address')->nullable();
             $table->string('phone_number')->nullable();
+            $table->tinyInteger('role_id')->nullable();
         });
     }
 
@@ -27,7 +28,7 @@ class AddNewFieldUserTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumns(['address', 'phone_number']);
+            $table->dropColumns(['address', 'phone_number', 'role_id']);
         });
     }
 }

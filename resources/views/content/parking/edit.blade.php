@@ -56,6 +56,7 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
@@ -140,10 +141,12 @@
                                                     class="tcr i-req">*</span>{{ __('application.parking.tariff')
                                                 }}</label>
                                             <select name="tariff_id" id="tariff_id"
-                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}"
-                                                required>
-                                                <option value="{{ $parking->tariff_id }}">{{ $parking->tariff->name
-                                                    }}</option>
+                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}" required>
+                                                @isset($tariffs)
+                                                    @foreach($tariffs as $key => $tariff)
+                                                        <option value="{{ $tariff->id }}" @if($tariff->id == $parking->tariff_id) selected @endif>{{ $tariff->id }} {{ $parking->tariff_id }}</option>
+                                                    @endforeach
+                                                @endisset                                                
                                             </select>
 
                                             @if ($errors->has('tariff_id'))
@@ -186,6 +189,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="agent_name" class="col-form-label text-md-right">{{
@@ -199,6 +203,24 @@
                                             @if ($errors->has('agent_name'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('agent_name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="parking_uid" class="col-form-label text-md-right">{{
+                                                __('application.id') }}</label>
+                                            <input id="parking_uid" type="text"
+                                                class="form-control {{ $errors->has('parking_uid') ? ' is-invalid' : '' }}"
+                                                name="parking_uid"
+                                                value="{{ old('parking_uid', $parking->parking_uid) }}"
+                                                autocomplete="off">
+
+                                            @if ($errors->has('parking_uid'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('parking_uid') }}</strong>
                                             </span>
                                             @endif
                                         </div>
@@ -241,6 +263,19 @@
                     <div class="table-responsive">
 
                         <table class="table table-borderd table-condenced w-100 f12" id="parkingDatatable">
+                            <thead>
+                                <tr>
+                                    <th>{{__('application.table.serial')}}</th>
+                                    <th>{{__('application.parking.barcode')}}</th>
+                                    <th>{{__('application.parking.vehicle_no')}}</th>
+                                    <th>{{__('application.parking.type')}}</th>
+                                    <th>{{__('application.parking.in_time')}}</th>
+                                    <th>{{__('application.parking.out_time')}}</th>
+                                    <th>{{__('application.parking.payable_amount')}}</th>
+                                    <th>{{__('application.parking.parking_slot')}}</th>
+                                    <th>{{__('application.table.option')}}</th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
 
@@ -253,7 +288,9 @@
 @push('scripts')
 <script>
     var id = {{ $parking->id }}
+    const tariff_id = {{$parking->tariff_id}}
     var categories = @json($categories);
+    var tariffs = @json($tariffs);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

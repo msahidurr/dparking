@@ -181,6 +181,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="agent_name" class="col-form-label text-md-right">{{
@@ -193,6 +194,23 @@
                                             @if ($errors->has('agent_name'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('agent_name') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="parking_uid" class="col-form-label text-md-right">{{
+                                                __('application.id') }}</label>
+                                            <input id="parking_uid" type="text"
+                                                class="form-control {{ $errors->has('parking_uid') ? ' is-invalid' : '' }}"
+                                                name="parking_uid" value="{{ old('parking_uid') }}"
+                                                autocomplete="off">
+
+                                            @if ($errors->has('parking_uid'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('parking_uid') }}</strong>
                                             </span>
                                             @endif
                                         </div>

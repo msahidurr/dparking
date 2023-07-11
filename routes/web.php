@@ -32,6 +32,8 @@ Route::middleware(['installed', 'auth', 'xss_clean', 'language'])->group(functio
     Route::get('activation', 'ActivationController@activeLicense')->name('activation.active_form')->middleware("permission:activation.index");
     Route::post('activation', 'ActivationController@active')->name('activation.active')->middleware("permission:activation.index");
     
+    // User
+
     Route::get('user-list', 'UserController@index')->name('user.list');
     Route::get('user-status/{user}', 'UserController@status')->name('user.status');
 
@@ -43,6 +45,18 @@ Route::middleware(['installed', 'auth', 'xss_clean', 'language'])->group(functio
 
     Route::get('user-edit/{user}', 'UserController@edit')->name('user.edit');
     Route::put('user-edit/{user}', 'UserController@update')->name('user.update');
+
+    // Customer
+
+    Route::get('customer-list', 'CustomerController@index')->name('customer.list');
+    Route::get('customer-status/{customer?}', 'CustomerController@status')->name('customer.status');
+    Route::get('customer/getListForDataTable', 'CustomerController@getListForDataTable')->name('customerListJson');
+    Route::get('customer-create', 'CustomerController@create')->name('customer.create');
+    Route::post('customer-create', 'CustomerController@store')->name('customer.store');
+    Route::delete('customer/{customer?}', 'CustomerController@destroy')->name('customer.destroy');
+    Route::get('customer-edit/{customer?}', 'CustomerController@edit')->name('customer.edit');
+    Route::put('customer-edit/{customer?}', 'CustomerController@update')->name('customer.update');
+
 
     Route::resource('category', 'CategoryController')->except(['show']);
 

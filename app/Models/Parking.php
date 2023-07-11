@@ -8,26 +8,29 @@ use App\Models\ModelCommonMethodTrait;
 class Parking extends Model
 {
 	use ModelCommonMethodTrait;
+
 	protected $fillable = [
-				'id',
-				'place_id',
-				'slot_id',
-				'category_id',
-				'vehicle_no',
-				'rfid_no',
-				'barcode',
-				'driver_name',
-				'driver_mobile',
-				'in_time',
-				'out_time',
-				'amount',
-				'paid',
-				'status',
-				'tariff_id',
-				'created_by',
-				'modified_by',
-				'agent_name'
-			];
+		'id',
+		'place_id',
+		'slot_id',
+		'category_id',
+		'vehicle_no',
+		'rfid_no',
+		'barcode',
+		'driver_name',
+		'driver_mobile',
+		'in_time',
+		'out_time',
+		'amount',
+		'paid',
+		'status',
+		'tariff_id',
+		'created_by',
+		'modified_by',
+		'agent_name',
+		'parking_uid',
+	];
+	
 	protected $guarded = [];
 
 	protected $casts = [

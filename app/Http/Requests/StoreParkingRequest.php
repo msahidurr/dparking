@@ -34,6 +34,7 @@ class StoreParkingRequest extends FormRequest
 			'driver_mobile' => 'bail|nullable|string',
             'agent_name'   => 'bail|nullable|string',
 			'driver_name'   => 'bail|nullable|string',
+			'parking_uid'   => 'bail|nullable|string',
 		];
 
 		if(auth()->user()->hasAllPermissions(allpermissions())){

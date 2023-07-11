@@ -1,5 +1,10 @@
 <?php
 return [
+'id' => 'ID',
+'menu.customer' => 'Customer',
+'add_customer' => 'Add Customer',
+'create_new' => 'Create New',
+'customer_list' => 'Customer List',
 'user.address' => 'Address',
 'user.phone_number' => 'Phone Number',
 'category.add_category' => 'Add Category',
