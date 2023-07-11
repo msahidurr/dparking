@@ -93,6 +93,32 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#ui-customer-management" aria-expanded="false"
+                        aria-controls="ui-customer-management">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">{{ __('application.menu.customer') }}</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="ui-customer-management">
+                        <ul class="nav flex-column sub-menu">
+                            @can("users.create")
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer.create') }}">{{ __('application.add_customer')
+                                    }}</a>
+                            </li>
+                            @endcan
+                            @can("users.index")
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer.list') }}">{{ __('application.customer_list')
+                                    }}
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 @if (Auth::user()->hasAnyPermission(["roles.index","roles.create"]))
                 <li class="nav-item">
