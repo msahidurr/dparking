@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        {{ __('application.customer_list') }}
+                        {{ __('application.customer.customer_list') }}
                         @can("users.create")
                         <a class="btn btn-sm btn-info pull-right"
                             href="{{ route('customer.create') }}">{{ __('application.user.create_new') }}</a>
@@ -18,8 +18,9 @@
                                 <thead>
                                     <tr>
                                         <th>{{__('application.table.serial')}}</th>
-                                        <th>{{__('application.user.name')}}</th>
-                                        <th>{{__('application.user.email_address')}}</th>
+                                        <th>{{__('application.customer.driver_name')}}</th>
+                                        <th>{{__('application.customer.vehicle_no')}}</th>
+                                        <th>{{__('application.customer.driver_phone_no')}}</th>
                                         <th>{{__('application.user.role')}}</th>
                                         <th>{{__('application.user.status')}}</th>
                                         <th>{{__('application.table.option')}}</th>
@@ -75,8 +76,15 @@
                             },
                         },
                         {
-                            data: "email",
-                            name: "email",
+                            data: "vehicle_no",
+                            name: "vehicle_no",
+                            render: function (data, type, row, index) {
+                                return data;
+                            },
+                        },
+                        {
+                            data: "phone_number",
+                            name: "phone_number",
                             render: function (data, type, row, index) {
                                 return data;
                             },

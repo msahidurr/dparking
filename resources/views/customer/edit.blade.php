@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', ' - Edit User')
+@section('title', ' - Edit Customer')
 @section('content')
 <div class="container-fluid mb100">
 
@@ -7,18 +7,19 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    {{ __('application.user.edit_user') }}
+                    {{ __('application.customer.edit_customer') }}
                     @can("users.index")
                     <a class="btn btn-sm btn-primary pull-right" href="{{ route('customer.list') }}">{{
-                        __('application.user.user_list') }}</a>
+                        __('application.customer.edit_customer') }}</a>
                     @endcan
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('customer.update', ['user' => $user->id]) }}">
                         @csrf
                         @method('PUT')
+
                         <div class="form-group row">
-                            <label for="name" class="col-md-3 col-form-label text-md-right"> {{ __('Name') }}
+                            <label for="name" class="col-md-3 col-form-label text-md-right"> {{ __('application.customer.driver_name') }}
                                 <span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
                                 <input id="name" type="text"
@@ -32,27 +33,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.email_address') }} <span class="tcr i-req">*</span> </label>
-                            <div class="col-md-9">
-                                <input id="email" type="email"
-                                    class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                                    value="{{ old('email') ?? $user->email }}" autocomplete="off" required>
-                                <span class="form-text text-muted">
-                                    {{ __('application.user.this_email_will_be_used_as_your_login_email') }}
-                                </span>
-                                @if ($errors->has('email'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group row">
                             <label for="phone_number" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.phone_number') }}</label>
+                                __('application.customer.driver_phone_no') }}</label>
                             <div class="col-md-9">
                                 <input id="phone_number" type="text"
                                     class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number"
@@ -67,40 +51,58 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="address" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.address') }}</label>
+                            <label for="id_number" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.id_number') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
-
-                                <textarea id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" name="address" value="{{ old('address') }}" autocomplete="off">{{ old('address') ?? $user->address }}</textarea>
-
-                                @if ($errors->has('address'))
+                                <input type="text" name="id_number" id="id_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" value="{{ old('phone_number') ?? $user->id_number }}"/>
+                                @if ($errors->has('id_number'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('address') }}</strong>
+                                        <strong>{{ $errors->first('id_number') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group row" id="language_div">
-                            <label for="language_id" class="col-md-3 col-form-label text-md-right">
-                                {{ __('application.user.language') }}<span class="tcr i-req"></span></label>
-
+                        <div class="form-group row">
+                            <label for="vehicle_no" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.vehicle_no') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
-                                <select id="language_id" name="language_id"
-                                    class="form-control{{ $errors->has('language_id') ? ' is-invalid' : '' }}" required>
-                                    @foreach ($languages as $language)
-                                    <option value="{{ $language->id }}" @if (old('language_id')==$language->id) {{ '
-                                        selected' }} @endif>
-                                        {{ ucfirst($language->name) }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('language_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('language_id') }}</strong>
-                                </span>
+                                <input type="text" name="vehicle_no" id="vehicle_no" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" value="{{ old('phone_number') ?? $user->vehicle_no }}" />
+                                @if ($errors->has('vehicle_no'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('vehicle_no') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="driver_owner_name" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.owner_name') }}<span class="tcr i-req">*</span></label>
+                            <div class="col-md-9">
+                                <select name="driver_owner_id" id="driver_owner_name" class="form-control{{ $errors->has('driver_owner_id') ? ' is-invalid' : '' }}" >
+                                    <option value="0">Select</option>
+                                    @foreach($owners as $owner)
+                                        <option value="{{$owner->id}}" @if($owner->id == $user->driver_owner_id) selected @endif>{{$owner->name}}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('driver_owner_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('driver_owner_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="owner_phone_no" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.owner_phone_no') }}<span class="tcr i-req">*</span></label>
+                            <div class="col-md-9">
+                                <input type="text" name="owner_phone_no" id="owner_phone_no" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" value="{{ old('phone_number') ?? $user->phone_number }}"/>
+                                @if ($errors->has('owner_phone_no'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('owner_phone_no') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row" id="place_div">
                             <label for="place_id" class="col-md-3 col-form-label text-md-right">
                                 {{ __('application.user.place') }}<span class="tcr i-req"></span></label>
@@ -137,6 +139,21 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="category_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.type') }}<span class="tcr i-req">*</span></label>
+                            <div class="col-md-9">
+                                <select name="category_id" id="category_id" class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" required>
+
+                                </select>
+                                @if ($errors->has('category_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('category_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="slot_id" class="col-md-3 col-form-label text-md-right">{{
                                 __('application.user.slot') }}<span class="tcr i-req"></span></label>
@@ -152,156 +169,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group row" id="country_div">
-                            <label for="country_id" class="col-md-3 col-form-label text-md-right">
-                                {{ __('application.user.country') }}<span class="tcr i-req"></span></label>
 
-                            <div class="col-md-9">
-                                <select id="country_id" name="country_id"
-                                    class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>
-                                    @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}" @if (old('country_id',$user->country_id) ==
-                                        $country->id) {{ ' selected' }} @endif>
-                                        {{ ucfirst($country->name) }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('country_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('country_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="state_id" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.state') }}<span class="tcr i-req"></span></label>
-                            <div class="col-md-9">
-                                <select id="state_id" name="state_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
-
-                                </select>
-                                @if ($errors->has('state_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('state_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="city_id" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.city') }}<span class="tcr i-req"></span></label>
-                            <div class="col-md-9">
-                                <select id="city_id" name="city_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
-
-                                </select>
-                                @if ($errors->has('city_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('city_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="role" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.role') }} <span class="tcr i-req">*</span></label>
-
-                            <div class="col-md-9">
-                                <select id="role" name="role" onchange="role_select()"
-                                    class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}">
-                                    @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}" @if ($user->hasRole($role->name)) selected @endif>
-                                        {{ ucfirst($role->name) }}</option>
-                                    @endforeach
-                                </select>
-                                <input type="hidden" name="required_role" value="true">
-                                @if ($errors->has('role'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('role') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.password') }}<span class="tcr i-req">*</span></label>
-
-                            <div class="col-md-9">
-                                <input id="password" type="password"
-                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                    name="password">
-
-                                @if ($errors->has('password'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.user.confirm_password') }}
-                                <span class="tcr i-req">*</span></label>
-                            <div class="col-md-9">
-                                <input id="password-confirm" type="password" class="form-control"
-                                    name="password_confirmation">
-                            </div>
-                        </div>
-                        @if (!auth()->user()->hasAllPermissions(allpermissions()))
-                        <div class="form-group row">
-                            <label for="currentPassword" class="col-md-3 col-form-label text-md-right">
-                                {{ __('Old Password') }} <span class="tcr i-req">*</span></label>
-                            <div class="col-md-9">
-                                <input id="currentPassword" type="password"
-                                    class="form-control{{ $errors->has('currentPassword') ? ' is-invalid' : '' }}"
-                                    name="currentPassword" required>
-                                <span class="form-text text-muted">
-                                    You need to provide your current password to update profile
-                                </span>
-                                @if ($errors->has('currentPassword'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('currentPassword') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    @foreach ($sections as $section)
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>{{ $section->name }}</h5>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="checkbox" class="permission_checkbox" /> Select All
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                @foreach ($section->permissions as $permission)
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>{{ str_replace('_', ' ', $permission->name)}}</label>
-                                                        <input type="checkbox" data-toggle="toggle"
-                                                            class="checkbox_package permission_assign"
-                                                            name="permissions[]" data-onstyle="primary" {{
-                                                            in_array($permission->id,$user->permissions->pluck('id')->toArray())?
-                                                        "checked":'' }} value="{{ $permission->id }}">
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group row mb-0 d-flex justify-content-end">
                             <div class="col-md-9 offset-md-3 d-flex justify-content-end">
                                 <button type="reset" class="btn btn-secondary me-2" id="frmClear">
@@ -328,7 +196,8 @@
     var countries = @json($countries);
     var states = @json($states);
     var cities = @json($cities);
-
+    var categories = @json($categories);
+    var tariffs = @json([]);
 
     setTimeout(() => {
         $('#place_id').trigger('change');
@@ -453,5 +322,7 @@
 
         $('#slot_id').trigger('change');
     });
+
 </script>
+    <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

@@ -49,13 +49,13 @@ Route::middleware(['installed', 'auth', 'xss_clean', 'language'])->group(functio
     // Customer
 
     Route::get('customer-list', 'CustomerController@index')->name('customer.list');
-    Route::get('customer-status/{customer?}', 'CustomerController@status')->name('customer.status');
+    Route::get('customer-status/{user?}', 'CustomerController@status')->name('customer.status');
     Route::get('customer/getListForDataTable', 'CustomerController@getListForDataTable')->name('customerListJson');
     Route::get('customer-create', 'CustomerController@create')->name('customer.create');
     Route::post('customer-create', 'CustomerController@store')->name('customer.store');
-    Route::delete('customer/{customer?}', 'CustomerController@destroy')->name('customer.destroy');
-    Route::get('customer-edit/{customer?}', 'CustomerController@edit')->name('customer.edit');
-    Route::put('customer-edit/{customer?}', 'CustomerController@update')->name('customer.update');
+    Route::delete('customer/{user?}', 'CustomerController@destroy')->name('customer.destroy');
+    Route::get('customer-edit/{user?}', 'CustomerController@edit')->name('customer.edit');
+    Route::put('customer-edit/{user}', 'CustomerController@update')->name('customer.update');
 
 
     Route::resource('category', 'CategoryController')->except(['show']);

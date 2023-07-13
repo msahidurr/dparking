@@ -8,7 +8,7 @@
         
 
         <div class="sign_in_wrapper">
-          <a class="btn btn-outline-light px-4" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">S'identifier</a>
+          <a class="btn btn-outline-light px-4" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">{{__('application.login.login')}}</a>
           <div class="collapse sign_in_collapse multi-collapse" id="multiCollapseExample1">
             <div class="card card-body">
            
@@ -92,8 +92,8 @@
       <div class="container">
           <div class="row">
             <div class="col-lg-7">
-              <h1 class="title home">Le meilleur système de gestion de stationnement</h1>
-              <h5>Simplifions les choses : contrôle de la sécurité signifie uniformité, réglementation, inspection et conformité.</h5>
+              <h1 class="title home">{{ __('application.login.the_best_parking_management_system')}}</h1>
+              <h5>{{__('application.login.page_details')}}</h5>
             </div>
             <div class="col-lg col-sm-6 ml-lg-auto">
               {{-- <div class="icons_wrapper">
@@ -129,7 +129,7 @@
     <div class="container">
     <div class="row align-items-center">
         <div class="col-lg text-lg-left text-center">
-        <span class="footerbottom">{{ trans('Copyright © 2023 Le meilleur système de gestion de stationnement, Tous les droits sont réservés.')}}</span>
+        <span class="footerbottom">{{ trans('application.login.copy_right')}}</span>
         </div>
         <div class="col-lg text-lg-right text-center">
         <span class="footerbottom mr-4 powered">Alimenté par </span> <img src="{{asset('assets/img/africinc_white.png')}}" class="copyright_logo" alt="" width="80">

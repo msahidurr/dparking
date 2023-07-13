@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\User;
 use Exception;
 use App\Models\City;
-
 use App\Models\Floor;
 use App\Models\Place;
 use App\Models\State;
 use App\Models\Country;
 use App\Models\Section;
 use App\Models\Language;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserInformation;
@@ -23,13 +23,13 @@ class CustomerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:users.index', ['only' => ['index']]);
-        $this->middleware('permission:users.create', ['only' => ['create']]);
-        $this->middleware('permission:users.store', ['only' => ['store']]);
-        $this->middleware('permission:users.edit', ['only' => ['edit']]);
-        $this->middleware('permission:users.update', ['only' => ['update']]);
-        $this->middleware('permission:users.delete', ['only' => ['destroy']]);
-        $this->middleware('permission:users.status', ['only' => ['status']]);
+        $this->middleware('permission:customers.index', ['only' => ['index']]);
+        $this->middleware('permission:customers.create', ['only' => ['create']]);
+        $this->middleware('permission:customers.store', ['only' => ['store']]);
+        $this->middleware('permission:customers.edit', ['only' => ['edit']]);
+        $this->middleware('permission:customers.update', ['only' => ['update']]);
+        $this->middleware('permission:customers.delete', ['only' => ['destroy']]);
+        $this->middleware('permission:customers.status', ['only' => ['status']]);
     }
     /**
      * Display a listing of the resource.
@@ -38,14 +38,6 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        try {
-            Artisan::call('migrate', [
-                '--force' => true
-             ]);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-
         return view('customer.list');
     }
 
@@ -112,6 +104,10 @@ class CustomerController extends Controller
         $data['countries'] = Country::get();
         $data['states'] = State::get();
         $data['cities'] = City::get();
+        $data['categories'] = Category::where('status', 1)->get();
+        $data['owners'] = User::whereHas('roles', function($query) {
+                $query->where('id', 2);
+            })->get();
 
         return view('customer.create', $data);
     }
@@ -122,23 +118,24 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserInformation $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $request->validate([
+            'name' => 'required',
+        ]);
+
         try {
             $data = [
-                'name'     => $validated['name'],
-                'email'    => $validated['email'],
-                'phone_number'    => $validated['phone_number'],
-                'address'    => $validated['address'],
-                'password' => Hash::make($validated['password']),
-                'language_id' => $validated['language_id'],
-                'place_id' => $validated['place_id'],
-                'floor_id' => $validated['floor_id'],
-                'category_wise_floor_slot_id' => $validated['category_wise_floor_slot_id'],
-                'country_id' => $validated['country_id'],
-                'state_id' => $validated['state_id'],
-                'city_id' => $validated['city_id'] ?? null,
+                'name'     => $request['name'],
+                'phone_number'    => $request['phone_number'],
+                'id_number'    => $request['id_number'],
+                'vehicle_no'    => $request['vehicle_no'],
+                'driver_owner_id'    => $request['driver_owner_id'],
+                'owner_phone_no'    => $request['owner_phone_no'],
+                'place_id' => $request['place_id'],
+                'floor_id' => $request['floor_id'],
+                'category_id' => $request['category_id'],
+                'category_wise_floor_slot_id' => $request['category_wise_floor_slot_id'],
                 'status'   => 1,
                 'role_id'   => 4
             ];
@@ -158,7 +155,9 @@ class CustomerController extends Controller
                 ->withInput($request->except('password'))
                 ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
         } catch (Exception $e) {
+
             DB::rollBack();
+
             return redirect()
                 ->route('customer.list')
                 ->with(['flashMsg' => ['msg' => "The customer successfully created but failed to send the email, because the email is not configured.", 'type' => 'error']]);
@@ -169,19 +168,22 @@ class CustomerController extends Controller
             ->with(['flashMsg' => ['msg' => 'customer successfully created.', 'type' => 'success']]);
     }
 
-    public function status(User $user)
+    public function status($id)
     {
-        if (env('DEMO') != true) {
-            $user->status = !$user->status;
+        try {
+            $user = User::findOrFail($id);
+            $user->status = ! $user->status;
             $user->update();
             return redirect()
                 ->route('customer.list')
                 ->with(['flashMsg' => ['msg' => 'customer status change successfully.', 'type' => 'success']]);
-        } else {
+        } catch (\Throwable $th) {
             return redirect()
                 ->route('customer.list')
-                ->with(['flashMsg' => ['msg' => "You can't change customer mode in demo version.", 'type' => 'warning']]);
+                ->with(['flashMsg' => ['msg' => 'customer status change Faild.', 'type' => 'error']]);
         }
+            
+
     }
 
     /**
@@ -242,12 +244,12 @@ class CustomerController extends Controller
      */
     public function edit($id = 0)
     {
-        // print_r("<pre>");
-        // print_r($user);die();
-
         try {
             $viewData = array(
                 'user' => User::where('role_id', 4)->findOrFail($id),
+                'owners' => User::whereHas('roles', function($query) {
+                            $query->where('id', 2);
+                        })->get(),
                 'roles' => Role::get(),
                 'sections' => Section::get(),
                 'places' => Place::whereStatus(1)->get(),
@@ -256,6 +258,7 @@ class CustomerController extends Controller
                 'countries' => Country::get(),
                 'states' => State::get(),
                 'cities' => City::get(),
+                'categories' => Category::where('status', 1)->get(),
                 'languages' => Language::where('status', '>=', 1)->where('code', '!=', 'master')->get()
             );
             return view('customer.edit', $viewData);
@@ -272,51 +275,37 @@ class CustomerController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUserInformation $request, User $user)
+    public function update(Request $request, User $user)
     {
-        if (!env('DEMO', false)) {
-            $validated = $request->validated();
-            try {
-                $user->name = $validated['name'];
-                $user->email = $validated['email'];
-                $user->address = $validated['address'];
-                $user->phone_number = $validated['phone_number'];
-                $user->language_id = $validated['language_id'];
-                $user->place_id = $validated['place_id'];
-                $user->floor_id = $validated['floor_id'];
-                $user->category_wise_floor_slot_id = $validated['category_wise_floor_slot_id'];
-                $user->country_id = $validated['country_id'];
-                $user->state_id = $validated['state_id'];
-                $user->city_id = $validated['city_id'];                
-                // if ($request->role == 2) {
-                //     $user->place_id = $validated['place_id'];
-                // }
-                // else{
-                //     $user->place_id = NULL;
-                // }
+        $request->validate([
+            'name' => 'required',
+        ]);
 
-                if ($validated['password']) {
-                    $user->password = Hash::make($validated['password']);
-                }
-                $user->update();
-                $user->roles()->sync($validated['role']);
-                if(isset($validated['permissions'])){
-                    $user->permissions()->sync($validated['permissions']);
+        try {
+            $user->name = $request['name'];
+            $user->phone_number = $request['phone_number'];
+            $user->id_number = $request['id_number'];
+            $user->vehicle_no = $request['vehicle_no'];
+            $user->driver_owner_id = $request['driver_owner_id'];
+            $user->owner_phone_no = $request['owner_phone_no'];
+            $user->category_id = $request['category_id'];
+            $user->place_id = $request['place_id'];
+            $user->floor_id = $request['floor_id'];
+            $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
+            $user->update();
 
-                }
-            } catch (\PDOException $e) {
-                return redirect()
-                    ->back()
-                    ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
-            }
-            return redirect()
-                ->route('customer.list')
-                ->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);
-        } else {
+            return redirect()->route('customer.list')->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);
+        } catch (\PDOException $e) {
+
+            throw $e;
             return redirect()
                 ->back()
-                ->with(['flashMsg' => ['msg' => 'This feature is not enable in demo mode.', 'type' => 'warning']]);
+                ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
         }
+        return redirect()
+            ->route('customer.list')
+            ->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);
+
     }
 
     /**
@@ -325,8 +314,21 @@ class CustomerController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
+        
+        try {
+
+            DB::beginTransaction();
+
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+        
     }
 }
