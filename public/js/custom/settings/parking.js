@@ -297,6 +297,7 @@
         if(driver.length > 0) {
             $("#vehicle_no").val(driver[0].vehicle_no)
             $("#driver_mobile").val(driver[0].phone_number)
+            $("#id_number").val(driver[0].id_number)
         }
         console.log(driver)
     });

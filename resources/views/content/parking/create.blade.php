@@ -210,16 +210,16 @@
 
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="parking_uid" class="col-form-label text-md-right">{{
+                                            <label for="id_number" class="col-form-label text-md-right">{{
                                                 __('application.parking.id_number') }}</label>
-                                            <input id="parking_uid" type="text"
-                                                class="form-control {{ $errors->has('parking_uid') ? ' is-invalid' : '' }}"
-                                                name="parking_uid" value="{{ old('parking_uid') }}"
+                                            <input id="id_number" type="text"
+                                                class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
+                                                name="id_number" value="{{ old('id_number') }}"
                                                 autocomplete="off">
 
-                                            @if ($errors->has('parking_uid'))
+                                            @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('parking_uid') }}</strong>
+                                                <strong>{{ $errors->first('id_number') }}</strong>
                                             </span>
                                             @endif
                                         </div>

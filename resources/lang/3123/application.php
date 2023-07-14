@@ -178,6 +178,7 @@ return[
 'parking.find' => 'Find',
 'parking.floor' => 'Floor',
 'parking.go_to_parking_list' => 'Go to Parking list',
+'parking.id_number' => 'Id Number',
 'parking.in_time' => 'In Time',
 'parking.out_time' => 'Out Time',
 'parking.paid_amount' => 'Paid Amount',
