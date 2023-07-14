@@ -291,6 +291,25 @@
         $('#tariff_id').trigger('change');
     });
 
+    if(driverId) {
+        let driver = drivers.filter(val => val.id == driverId);
+
+        if(driver.length > 0) {
+            $("#vehicle_no").val(driver[0].vehicle_no)
+            $("#driver_mobile").val(driver[0].phone_number)
+            $("#id_number").val(driver[0].id_number)
+
+            let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+
+            var html = '';
+            $.each(owner, function(ind,val){
+                html += `<option value="${val.id}">${val.name}</option>`;
+            });
+
+            $(document).find('#owner_id').html(html);
+            $('#owner_id').trigger('change');
+        }
+    }
     $(document).on('change', '#driver_id', function(){
         let driver = drivers.filter(val => val.id == $(this).val());
 
@@ -306,11 +325,8 @@
                 html += `<option value="${val.id}">${val.name}</option>`;
             });
 
-            $(document).find('#agent_name').html(html);
-            $('#agent_name').trigger('change');
-
-            console.log(owner)
-            console.log(driver)
+            $(document).find('#owner_id').html(html);
+            $('#owner_id').trigger('change');
         }
     });
 

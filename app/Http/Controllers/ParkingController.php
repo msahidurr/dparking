@@ -332,17 +332,17 @@ class ParkingController extends Controller
 
 		try {
 			$rfidVehicle = RfidVehicle::where('vehicle_no',$validated['vehicle_no'])->where('category_id',$validated['category_id'])->first();
-			$parking = Parking::create([
-				'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
+			Parking::create([
+				'place_id' => auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
 				'tariff_id'    	=> $validated['tariff_id'],
 				'slot_id'    	=> $validated['slot_id'],
 				'vehicle_no'    => $validated['vehicle_no'],
 				'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
 				'category_id'   => $validated['category_id'],
-				'driver_name'   => $validated['driver_name'],
+				'driver_id'   => $validated['driver_id'],
 				'driver_mobile' => $validated['driver_mobile'],
-				'agent_name' 	=> $validated['agent_name'],
-				'parking_uid' 	=> $validated['parking_uid'],
+				'owner_id' 	=> $validated['owner_id'],
+				'id_number' 	=> $validated['id_number'],
 				'barcode'       => date('YmdHis') . $request->user()->id,
 				'in_time'       => date('Y-m-d H:i:s'),
 				'created_by'    => $request->user()->id,
@@ -358,8 +358,12 @@ class ParkingController extends Controller
 		}
 
 		return redirect()
-			->route('parking.barcode', ['parking' => $parking->id])
+			->route('parking.index')
 			->with(['flashMsg' => ['msg' => 'Parking successfully added.', 'type' => 'success']]);
+
+		// return redirect()
+		// 	->route('parking.barcode', ['parking' => $parking->id])
+		// 	->with(['flashMsg' => ['msg' => 'Parking successfully added.', 'type' => 'success']]);
 	}
 
 	/**
@@ -460,10 +464,10 @@ class ParkingController extends Controller
 				'vehicle_no'    => $validated['vehicle_no'],
 				'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
 				'category_id'   => $validated['category_id'],
-				'driver_name'   => $validated['driver_name'],
+				'driver_id'   	=> $validated['driver_id'],
 				'driver_mobile' => $validated['driver_mobile'],
-				'agent_name' 	=> $validated['agent_name'],
-				'parking_uid' 	=> $validated['parking_uid'],
+				'owner_id' 		=> $validated['owner_id'],
+				'id_number' 	=> $validated['id_number'],
 				'status' 		=> 2,
 				'modified_by'   => $request->user()->id
 			]);

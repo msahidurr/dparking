@@ -121,16 +121,16 @@
                     @endif                    
                     <p class="dN tc fs-12" id="footer-p">{{ $settings->site_title }} - {{ __('application.parking.all_rights_reserved') }}</p>
                 </div>
-                <div class="card-footer">
-                    @if($parking->paid > 0)
-                    @can("parkings.index")
-                    <a href="{{route('parking.index')}}" class="btn btn-warning" id="parking_list">{{ __('application.parking.go_to_parking_list') }}</a>
-                    @endcan
-                    @can("parkings.print")
-                    <button class="btn btn-success" id="print_slip">{{ __('application.parking.print_slip') }}</button>
-                    @endcan
-                    @endif
-                </div>
+                @if($parking->paid > 0)
+                    <div class="card-footer">
+                        @can("parkings.index")
+                        <a href="{{route('parking.index')}}" class="btn btn-warning" id="parking_list">{{ __('application.parking.go_to_parking_list') }}</a>
+                        @endcan
+                        @can("parkings.print")
+                        <button class="btn btn-success" id="print_slip">{{ __('application.parking.print_slip') }}</button>
+                        @endcan
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@ class Parking extends Model
 		'vehicle_no',
 		'rfid_no',
 		'barcode',
-		'driver_name',
+		'driver_id',
 		'driver_mobile',
 		'in_time',
 		'out_time',
@@ -27,8 +27,8 @@ class Parking extends Model
 		'tariff_id',
 		'created_by',
 		'modified_by',
-		'agent_name',
-		'parking_uid',
+		'owner_id',
+		'id_number',
 	];
 	
 	protected $guarded = [];

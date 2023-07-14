@@ -14,7 +14,9 @@ class AddNewFieldParkingTable extends Migration
     public function up()
     {
         Schema::table('parkings', function (Blueprint $table) {
-            $table->string('parking_uid')->nullable();
+            $table->integer('driver_id')->nullable();
+            $table->integer('owner_id')->nullable();
+            $table->string('id_number')->nullable();
         });
     }
 
@@ -26,7 +28,7 @@ class AddNewFieldParkingTable extends Migration
     public function down()
     {
         Schema::table('parkings', function (Blueprint $table) {
-            $table->dropColumn('parking_uid');
+            $table->dropColumns(['driver_id', 'owner_id', 'id_number']);
         });
     }
 }

@@ -97,23 +97,7 @@
                                         <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
                                         @endif
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="vehicle_no" class="col-form-label text-md-right"><span
-                                                    class="tcr i-req">*</span>{{ __('application.parking.vehicle_no')
-                                                }}</label>
-                                            <input id="vehicle_no" type="text"
-                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}"
-                                                name="vehicle_no" value="{{ old('vehicle_no', $parking->vehicle_no) }}"
-                                                autocomplete="off" required>
-
-                                            @if ($errors->has('vehicle_no'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('vehicle_no') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="category_id"
@@ -158,29 +142,67 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mb-1">
-                                            <label for="driver_name" class="col-form-label text-md-right">{{
-                                                __('application.parking.driver_name') }}</label>
+                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
                                         </div>
-                                        <input id="driver_name" type="text"
-                                            class="form-control {{ $errors->has('driver_name') ? ' is-invalid' : '' }}"
-                                            name="driver_name" value="{{ old('driver_name', $parking->driver_name) }}"
-                                            autocomplete="off">
+                                        <select id="driver_id" type="text"
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            <option value="">Select</option>
+                                            @isset($drivers)
+                                                @foreach($drivers as $driver)
+                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
 
-                                        @if ($errors->has('driver_name'))
+                                        @if ($errors->has('driver_id'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('driver_name') }}</strong>
+                                            <strong>{{ $errors->first('driver_id') }}</strong>
                                         </span>
                                         @endif
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="owner_id" class="col-form-label text-md-right">{{
+                                                __('application.parking.agent_name') }}</label>
+                                            <select id="owner_id" type="text"
+                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}" name="owner_id" value="{{ old('owner_id') }}" readonly>
+                                            
+                                            </select>
+
+                                            @if ($errors->has('owner_id'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('owner_id') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="vehicle_no" class="col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.vehicle_no')
+                                                }}</label>
+                                            <input id="vehicle_no" type="text"
+                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}" name="vehicle_no" autocomplete="off"
+                                                required readonly>
+
+                                            @if ($errors->has('vehicle_no'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('vehicle_no') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="driver_mobile" class="col-form-label text-md-right">{{
                                                 __('application.parking.driver_mobile') }}</label>
                                             <input id="driver_mobile" type="number"
                                                 class="form-control {{ $errors->has('driver_mobile') ? ' is-invalid' : '' }}"
-                                                name="driver_mobile"
-                                                value="{{ old('driver_mobile', $parking->driver_mobile) }}"
-                                                autocomplete="off">
+                                                name="driver_mobile" value="{{ old('driver_mobile') }}"
+                                                autocomplete="off" readonly>
 
                                             @if ($errors->has('driver_mobile'))
                                             <span class="invalid-feedback" role="alert">
@@ -192,35 +214,16 @@
 
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="agent_name" class="col-form-label text-md-right">{{
-                                                __('application.parking.agent_name') }}</label>
-                                            <input id="agent_name" type="text"
-                                                class="form-control {{ $errors->has('agent_name') ? ' is-invalid' : '' }}"
-                                                name="agent_name"
-                                                value="{{ old('agent_name', $parking->agent_name) }}"
-                                                autocomplete="off">
+                                            <label for="id_number" class="col-form-label text-md-right">{{
+                                                __('application.parking.id_number') }}</label>
+                                            <input id="id_number" type="text"
+                                                class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
+                                                name="id_number" value="{{ old('id_number') }}"
+                                                autocomplete="off" readonly>
 
-                                            @if ($errors->has('agent_name'))
+                                            @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('agent_name') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="parking_uid" class="col-form-label text-md-right">{{
-                                                __('application.id') }}</label>
-                                            <input id="parking_uid" type="text"
-                                                class="form-control {{ $errors->has('parking_uid') ? ' is-invalid' : '' }}"
-                                                name="parking_uid"
-                                                value="{{ old('parking_uid', $parking->parking_uid) }}"
-                                                autocomplete="off">
-
-                                            @if ($errors->has('parking_uid'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('parking_uid') }}</strong>
+                                                <strong>{{ $errors->first('id_number') }}</strong>
                                             </span>
                                             @endif
                                         </div>
@@ -291,6 +294,9 @@
     const tariff_id = {{$parking->tariff_id}}
     var categories = @json($categories);
     var tariffs = @json($tariffs);
+    var drivers = @json($drivers);
+    var driverId = @json(old('driver_id', $parking->driver_id));
+    var owners = @json($owners);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

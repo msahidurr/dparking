@@ -26,13 +26,13 @@ class UpdateParkingRequest extends FormRequest
     {
         $rules =  [
             'vehicle_no'    => 'bail|required|string',
-            'category_id'   => 'bail|required|integer',
+			'category_id'   => 'bail|required|integer',
             'tariff_id'       => 'bail|required|integer',
-            'slot_id'       => 'bail|required|integer',
-            'driver_mobile' => 'bail|nullable|string',
-            'driver_name'   => 'bail|nullable|string',
-            'agent_name'   => 'bail|nullable|string',
-            'parking_uid'   => 'bail|nullable|string',
+			'slot_id'   	=> 'bail|required|integer',
+			'driver_mobile' => 'bail|nullable|string',
+            'owner_id'   => 'bail|nullable|string',
+			'driver_id'   => 'bail|required|string',
+			'id_number'   => 'bail|nullable|string',
         ];
 
         if(auth()->user()->hasAllPermissions(allpermissions())){
