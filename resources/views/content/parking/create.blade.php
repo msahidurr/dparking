@@ -295,6 +295,7 @@
     var categories = @json($categories);
     var tariffs = @json($tariffs);
     var drivers = @json($drivers);
+    var owners = @json($owners);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush
