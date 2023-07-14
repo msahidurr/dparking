@@ -48,7 +48,7 @@ class CustomerController extends Controller
         $offset = 0;
         $search = [];
         $where = [];
-        $with = ['roles'];
+        $with = ['roles', 'place', 'owner', 'floor', 'slot', 'country', 'state', 'city', 'category'];
         $join = [];
         $orderBy = [];
 
@@ -77,6 +77,7 @@ class CustomerController extends Controller
 
         if (request()->input('status') != null && request()->input('status') != "") {
             $where['status'] = request()->input('status');
+            $where['role_id'] = 4;
         }
 
         $where['role_id'] = 4;
@@ -85,6 +86,8 @@ class CustomerController extends Controller
 
         $users = $users->getDataForDataTable($limit, $offset, $search, $where, $with, $join, $orderBy, $request->all());
 
+        // print_r("<pre>");
+        // print_r($users);die();
         return response()->json($users);
     }
 
@@ -136,6 +139,9 @@ class CustomerController extends Controller
                 'floor_id' => $request['floor_id'],
                 'category_id' => $request['category_id'],
                 'category_wise_floor_slot_id' => $request['category_wise_floor_slot_id'],
+                'country_id' => $request['country_id'],
+                'state_id' => $request['state_id'],
+                'city_id' => $request['city_id'],
                 'status'   => 1,
                 'role_id'   => 4
             ];
@@ -290,7 +296,10 @@ class CustomerController extends Controller
             $user->owner_phone_no = $request['owner_phone_no'];
             $user->category_id = $request['category_id'];
             $user->place_id = $request['place_id'];
-            $user->floor_id = $request['floor_id'];
+            $user->country_id = $request['country_id'];
+            $user->state_id = $request['state_id'];
+            $user->state_id = $request['state_id'];
+            $user->city_id = $request['city_id'];
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
             $user->update();
 

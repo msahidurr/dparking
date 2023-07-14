@@ -41,7 +41,7 @@
                         <div class="form-group row">
                             <label for="id_number" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.id_number') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
-                                <input type="text" name="id_number" id="id_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}"/>
+                                <input type="text" name="id_number" id="id_number" class="form-control{{ $errors->has('id_number') ? ' is-invalid' : '' }}"/>
                                 @if ($errors->has('id_number'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('id_number') }}</strong>
@@ -149,6 +149,48 @@
                             </div>
                         </div>
                         
+                        <div class="form-group row" id="country_div">
+                            <label for="country_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.country') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                                
+                                <select id="country_id" name="country_id" class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>       
+                                    @foreach($countries as $country)                                    
+                                        <option value="{{$country->id}}" {{ ( 50 == $country->id ? ' selected' : ($country->default ? ' selected' : ''))  }}>{{ucfirst($country->name)}}</option>
+                                    @endforeach                                    
+                                </select>
+                                @if ($errors->has('country_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('country_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.state') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                                
+                                <select id="state_id" name="state_id" class="select2 form-control{{ $errors->has('state_id') ? ' is-invalid' : '' }}">       
+                                           
+                                </select>
+                                @if ($errors->has('state_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('state_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.city') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                                
+                                <select id="city_id" name="city_id" class="select2 form-control{{ $errors->has('city_id') ? ' is-invalid' : '' }}">       
+                                           
+                                </select>
+                                @if ($errors->has('city_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('city_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0 d-flex justify-content-end">
                             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
                                 <button type="reset" class="btn btn-secondary me-2" id="frmClear">

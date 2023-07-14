@@ -170,6 +170,57 @@
                             </div>
                         </div>
 
+                        <div class="form-group row" id="country_div">
+                            <label for="country_id" class="col-md-3 col-form-label text-md-right">
+                                {{ __('application.user.country') }}<span class="tcr i-req"></span></label>
+
+                            <div class="col-md-9">
+                                <select id="country_id" name="country_id"
+                                    class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>
+                                    @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" @if (old('country_id',$user->country_id) ==
+                                        $country->id) {{ ' selected' }} @endif>
+                                        {{ ucfirst($country->name) }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('country_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('country_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state_id" class="col-md-3 col-form-label text-md-right">{{
+                                __('application.customer.state') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">
+                                <select id="state_id" name="state_id"
+                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+
+                                </select>
+                                @if ($errors->has('state_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('state_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city_id" class="col-md-3 col-form-label text-md-right">{{
+                                __('application.customer.city') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">
+                                <select id="city_id" name="city_id"
+                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+
+                                </select>
+                                @if ($errors->has('city_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('city_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0 d-flex justify-content-end">
                             <div class="col-md-9 offset-md-3 d-flex justify-content-end">
                                 <button type="reset" class="btn btn-secondary me-2" id="frmClear">

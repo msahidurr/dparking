@@ -102,7 +102,8 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group row">
+
+                        {{-- <div class="form-group row">
                             <label for="min_amount" class="col-md-4 col-form-label text-md-right"> {{ __('application.tariff.min_amount') }}<span class="tcr i-req">*</span> </label>
 
                             <div class="col-md-8">
@@ -114,7 +115,8 @@
                                     </span>
                                 @endif
                             </div>                            
-                        </div>
+                        </div> --}}
+
                         <div class="form-group row">
                             <label for="amount" class="col-md-4 col-form-label text-md-right">{{ __('application.tariff.amount') }}<span class="tcr i-req">*</span>  </label>
 

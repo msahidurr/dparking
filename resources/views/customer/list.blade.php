@@ -19,10 +19,20 @@
                                     <tr>
                                         <th>{{__('application.table.serial')}}</th>
                                         <th>{{__('application.customer.driver_name')}}</th>
-                                        <th>{{__('application.customer.vehicle_no')}}</th>
                                         <th>{{__('application.customer.driver_phone_no')}}</th>
-                                        <th>{{__('application.user.role')}}</th>
-                                        <th>{{__('application.user.status')}}</th>
+                                        <th>{{__('application.customer.id_number')}}</th>
+                                        <th>{{__('application.customer.vehicle_no')}}</th>
+                                        <th>{{__('application.customer.owner_name')}}</th>
+                                        <th>{{__('application.customer.owner_phone_no')}}</th>
+                                        <th>{{__('application.customer.place')}}</th>
+                                        <th>{{__('application.customer.floor')}}</th>
+                                        <th>{{__('application.customer.type')}}</th>
+                                        <th>{{__('application.customer.lot')}}</th>
+                                        <th>{{__('application.customer.country')}}</th>
+                                        <th>{{__('application.customer.state')}}</th>
+                                        <th>{{__('application.customer.city')}}</th>
+                                        <th>{{__('application.customer.role')}}</th>
+                                        <th>{{__('application.customer.status')}}</th>
                                         <th>{{__('application.table.option')}}</th>
                                     </tr>
                                 </thead>
@@ -33,7 +43,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
     {{--  <script type="text/javascript" src="{{ assetz('js/user.js') }}"></script>  --}}
@@ -76,6 +85,21 @@
                             },
                         },
                         {
+                            data: "phone_number",
+                            name: "phone_number",
+                            render: function (data, type, row, index) {
+                                return data;
+                            },
+                        },
+                        
+                        {
+                            data: "id_number",
+                            name: "id_number",
+                            render: function (data, type, row, index) {
+                                return data;
+                            },
+                        },
+                        {
                             data: "vehicle_no",
                             name: "vehicle_no",
                             render: function (data, type, row, index) {
@@ -83,12 +107,71 @@
                             },
                         },
                         {
-                            data: "phone_number",
-                            name: "phone_number",
+                            data: "owner",
+                            name: "owner",
                             render: function (data, type, row, index) {
-                                return data;
+                                return data ? data.name.toUpperCase() : "";
                             },
                         },
+                        {
+                            data: "owner",
+                            name: "owner",
+                            render: function (data, type, row, index) {
+                                return data.phone_number ?? "";
+                            },
+                        },
+                        {
+                            data: "place",
+                            name: "place",
+                            render: function (data, type, row, index) {
+                                return data.name;
+                            },
+                        },
+                        {
+                            data: "floor",
+                            name: "floor",
+                            render: function (data, type, row, index) {
+                                return data ? data.name : "";
+                            },
+                        },
+                        {
+                            data: "category",
+                            name: "category",
+                            render: function (data, type, row, index) {
+                                return data ? data.type : '';
+                            },
+                        },
+                        {
+                            data: "slot",
+                            name: "slot",
+                            render: function (data, type, row, index) {
+                                
+                                console.log(data)
+                                return data.slot_name;
+                            },
+                        },
+                        {
+                            data: "country",
+                            name: "country",
+                            render: function (data, type, row, index) {
+                                return data.name;
+                            },
+                        },
+                        {
+                            data: "state",
+                            name: "state",
+                            render: function (data, type, row, index) {
+                                return data.name;
+                            },
+                        },
+                        {
+                            data: "city",
+                            name: "city",
+                            render: function (data, type, row, index) {
+                                return data.name;
+                            },
+                        },
+                        
                         {
                             data: "roles",
                             name: "roles",

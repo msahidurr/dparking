@@ -2,9 +2,15 @@
 
 namespace App;
 
+use App\Models\Category;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Floor;
 use App\Models\Language;
+use App\Models\Place;
 use App\Models\ModelCommonMethodTrait;
+use App\Models\State;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,10 +89,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Place::class, 'place_id', 'id');
     }
 
-    public function floot()
+    public function floor()
     {
         # code...   
-        return $this->belongsTo(Floor::class, 'floot_id', 'id');
+        return $this->belongsTo(Floor::class);
     }
 
     public function slot()
@@ -111,6 +117,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         # code...   
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function owner()
+    {
+        # code...   
+        return $this->hasOne(User::class, 'id', 'driver_owner_id');
+    }
+
+    public function category()
+    {
+        # code...   
+        return $this->belongsTo(Category::class);
     }
 
 }
