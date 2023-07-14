@@ -271,7 +271,7 @@
                                     <th>{{__('application.parking.type')}}</th>
                                     <th>{{__('application.parking.in_time')}}</th>
                                     <th>{{__('application.parking.out_time')}}</th>
-                                    <th>{{__('application.parking.payable_amount')}}</th>
+                                    <th>{{__('application.parking.paid_amount')}}</th>
                                     <th>{{__('application.parking.parking_slot')}}</th>
                                     <th>{{__('application.table.option')}}</th>
                                 </tr>

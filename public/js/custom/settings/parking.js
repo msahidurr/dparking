@@ -291,6 +291,16 @@
         $('#tariff_id').trigger('change');
     });
 
+    $(document).on('change', '#driver_id', function(){
+        let driver = drivers.filter(val => val.id == $(this).val());
+
+        if(driver.length > 0) {
+            $("#vehicle_no").val(driver[0].vehicle_no)
+            $("#driver_mobile").val(driver[0].phone_number)
+        }
+        console.log(driver)
+    });
+
     $(document).on('click', '#frm-rfid', function(){
         if($('input[name=slot_id]:checked').length == 0){
             new swal("Error","Please select a slot","error");

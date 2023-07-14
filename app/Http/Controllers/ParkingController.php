@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateParkingRequest;
 use App\Http\Requests\PayParkingRequest;
 use App\Models\CategoryWiseFloorSlot;
 use App\Models\Place;
+use App\User;
 use Exception;
 use Illuminate\Support\Facades\Session;
 
@@ -279,6 +280,12 @@ class ParkingController extends Controller
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
 				})->with('active_parking')->count();
+			
+			$data['drivers'] = User::whereHas('roles', function($query) {
+						$query->where('id', 4);
+					})
+					->where('status', 1)
+					->get();
 		} else {
 			$place_id = auth()->user()->place_id;
 			$data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
@@ -291,6 +298,12 @@ class ParkingController extends Controller
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
 				})->with('active_parking')->count();
+			
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->where('status', 1)
+				->get();
 		}
 		return view('content.parking.create')->with($data);
 	}
@@ -356,6 +369,11 @@ class ParkingController extends Controller
 	public function edit(Parking $parking_crud)
 	{
 		if (auth()->user()->hasAllPermissions(allpermissions())) {
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->where('status', 1)
+				->get();
 			$data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['places'] = Place::where('status', 1)->get();
 			$data['categories'] = Category::where('status', 1)->get();
@@ -370,6 +388,11 @@ class ParkingController extends Controller
 				})->with('active_parking')->count();
 		} else {
 			$place_id = auth()->user()->place_id;
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->where('status', 1)
+				->get();
 			$data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['categories'] = Category::where('status', 1)->where('place_id', $place_id)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->where('place_id', $place_id)->count();

@@ -250,6 +250,7 @@ return [
     'parking.duration' => 'Duration',
     'parking.payable_amount' => 'Payable Amount',
     'parking.paid_amount' => 'Paid Amount',
+    'parking.id_number' => 'Id Number',
     'parking.receive_amount' => 'Receive Amount',
     'parking.return_amount' => 'Return Amount',
     'parking.all_rights_reserved' => 'All Rights Reserved',
