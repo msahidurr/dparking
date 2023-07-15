@@ -89,23 +89,41 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="owner_id" class="col-form-label text-md-right">{{
+                                            <label for="agent_id" class="col-form-label text-md-right">{{
                                                 __('application.parking.agent_name') }}</label>
                                             
-                                            <select id="owner_id" type="text"
-                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}" name="owner_id" value="{{ old('owner_id') }}">
-                                            
+                                            <select id="agent_id" type="text"
+                                                class="form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}" name="agent_id" value="{{ old('agent_id') }}">
+                                                <option value="">Select</option>
+                                                @isset($agents)
+                                                    @foreach($agents as $agent)
+                                                        <option value="{{$agent->id}}">{{$agent->name}}</option>
+                                                    @endforeach
+                                                    
+                                                @endisset
                                             </select>
 
-                                            @if ($errors->has('owner_id'))
+                                            @if ($errors->has('agent_id'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('owner_id') }}</strong>
+                                                <strong>{{ $errors->first('agent_id') }}</strong>
                                             </span>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="place_id"
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.place')
+                                                }}</label>
+                                            <input type="text" id="place_id_name" class="form-control" required readonly />
+                                            
+                                            <input id="place_id" name="place_id" type="hidden" />
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-12">
                                         @if(auth()->user()->hasAllPermissions(allpermissions()))
                                         <div class="form-group mb-1">
                                             <label for="place_id"
@@ -114,7 +132,7 @@
                                                 }}</label>
                                             <select name="place_id" id="place_id"
                                                 class="select2 form-control{{ $errors->has('place_id') ? ' is-invalid' : '' }}"
-                                                required>
+                                                required readonly>
                                                 <?php
                                                     foreach ($places as $key => $value) {
                                                         echo '<option value="' . $value->id . '" ' . (old('place_id') == $value->id ? ' selected' : '') . '>' . $value->name . '</option>';
@@ -131,7 +149,7 @@
                                         @else
                                         <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
                                         @endif
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-12">
                                         <div class="form-group mb-1">
@@ -140,7 +158,7 @@
                                                 }}</label>
                                             <select name="category_id" id="category_id"
                                                 class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}"
-                                                required>
+                                                required readonly>
 
                                             </select>
 
@@ -160,7 +178,7 @@
                                                 }}</label>
                                             <select name="tariff_id" id="tariff_id"
                                                 class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}"
-                                                required>
+                                                required readonly>
 
                                             </select>
 
@@ -168,6 +186,34 @@
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('tariff_id') }}</strong>
                                             </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">                    
+                                        <label for="floor_id" class="col-form-label text-md-right">{{ __('application.customer.floor') }}<span class="tcr i-req"></span></label>
+                                            <select id="floor_id" name="floor_id" class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" readonly>       
+                                                       
+                                            </select>
+                                            @if ($errors->has('floor_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('floor_id') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="slot_id" class="col-md-12 col-form-label text-md-right">{{ __('application.customer.lot') }}<span class="tcr i-req"></span></label>
+                                        <div class="col-md-12">                                
+                                            <select id="slot_id" name="category_wise_floor_slot_id" class="select2 form-control{{ $errors->has('slot_id') ? ' is-invalid' : '' }}" readonly>       
+                                                       
+                                            </select>
+                                            @if ($errors->has('slot_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('slot_id') }}</strong>
+                                                </span>
                                             @endif
                                         </div>
                                     </div>
@@ -281,7 +327,9 @@
     var tariffs = @json($tariffs);
     var drivers = @json($drivers);
     var driverId = @json(old('driver_id'));
-    var owners = @json($owners);
+    var owners = @json($agents);
+    var floors = @json($floors);
+    var slots = @json($slots);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

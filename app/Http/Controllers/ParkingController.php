@@ -11,6 +11,7 @@ use App\Http\Requests\StoreParkingRequest;
 use App\Http\Requests\UpdateParkingRequest;
 use App\Http\Requests\PayParkingRequest;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\Floor;
 use App\Models\Place;
 use App\User;
 use Carbon\Carbon;
@@ -285,14 +286,17 @@ class ParkingController extends Controller
 			$data['drivers'] = User::whereHas('roles', function($query) {
 						$query->where('id', 4);
 					})
+					->with('place')
 					->where('status', 1)
 					->get();
 
-			$data['owners'] = User::whereHas('roles', function($query) {
+			$data['agents'] = User::whereHas('roles', function($query) {
 					$query->where('id', 2);
 				})
 				->where('status', 1)
 				->get();
+			$data['floors'] = Floor::whereStatus(1)->get();
+			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
 			$data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
@@ -312,11 +316,13 @@ class ParkingController extends Controller
 				->where('status', 1)
 				->get();
 			
-			$data['owners'] = User::whereHas('roles', function($query) {
+			$data['agents'] = User::whereHas('roles', function($query) {
 					$query->where('id', 2);
 				})
 				->where('status', 1)
 				->get();
+				$data['floors'] = Floor::whereStatus(1)->get();
+				$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		}
 		return view('content.parking.create')->with($data);
 	}
@@ -404,11 +410,13 @@ class ParkingController extends Controller
 					$query->where('status', '1');
 				})->with('active_parking')->count();
 			
-			$data['owners'] = User::whereHas('roles', function($query) {
+			$data['agents'] = User::whereHas('roles', function($query) {
 					$query->where('id', 2);
 				})
 				->where('status', 1)
 				->get();
+			$data['floors'] = Floor::whereStatus(1)->get();
+			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
 			$data['drivers'] = User::whereHas('roles', function($query) {
@@ -430,11 +438,13 @@ class ParkingController extends Controller
 				->with('active_parking')
 				->count();
 			
-			$data['owners'] = User::whereHas('roles', function($query) {
+			$data['agents'] = User::whereHas('roles', function($query) {
 					$query->where('id', 2);
 				})
 				->where('status', 1)
 				->get();
+			$data['floors'] = Floor::whereStatus(1)->get();
+			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		}
 
 		return view('content.parking.edit')->with($data);

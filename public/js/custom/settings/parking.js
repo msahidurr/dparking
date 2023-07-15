@@ -289,6 +289,16 @@
 
         $(document).find('#tariff_id').html(html);
         $('#tariff_id').trigger('change');
+
+        let floor = floors.filter(val => val.place_id == $(this).val());
+        var html2 = '';
+        $.each(floor, function(ind,val){
+            html2 += `<option value="${val.id}">${val.name}</option>`;
+        });
+
+        $(document).find('#floor_id').html(html2);
+
+        $('#floor_id').trigger('change');
     });
 
     if(driverId) {
@@ -325,8 +335,11 @@
                 html += `<option value="${val.id}">${val.name}</option>`;
             });
 
+            $('#place_id').val(driver[0].place_id);
+
             $(document).find('#owner_id').html(html);
             $('#owner_id').trigger('change');
+            $('#place_id').trigger('change');
         }
     });
 
