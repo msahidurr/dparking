@@ -25,6 +25,7 @@ class PayParkingRequest extends FormRequest
     {
         return [
             'paid_amt'    => 'bail|required|numeric|min:0',
+            'fine_amount'    => 'bail|nullable|numeric|min:0',
         ];
     }
 

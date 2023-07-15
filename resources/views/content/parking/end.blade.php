@@ -50,7 +50,7 @@
                                 <td class="w50"><b>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $parking->in_time)->format(env('DATE_FORMAT','m-d-Y H:i:s'))}}</b></td>
                             </tr>
                             <tr>
-                                <td class="w40">{{ __('application.tariff.end_date') }}</td>                                
+                                <td class="w40">{{ __('application.tariff.end_date') }}</td>                              
                                 <td class="w10">:</td>                                
                                 <td class="w50"><b>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $parking->in_time)->addDays($parking->tariff->type)->format(env('DATE_FORMAT','m-d-Y H:i:s'))}}</b></td>
                             </tr>
@@ -63,6 +63,20 @@
                                     </b>
                                 </td>
                             </tr>
+                            @if($total_duration)
+                                <tr style="color: red;">
+                                    <td class="w40">{{ __('application.parking.total_duration') }}</td>                                
+                                    <td class="w10">:</td>  
+                                    <td class="w50"><b>{{ $total_duration }}</b></td>
+                                </tr>
+                            @endif
+                            @if($fine_amount)
+                                <tr style="color: red;">
+                                    <td class="w40">{{ __('application.parking.fine_amount') }}</td>                                
+                                    <td class="w10">:</td>  
+                                    <td class="w50" ><b>{{ $fine_amount }}</b></td>
+                                </tr>
+                            @endif
                             <tr>
                                 <td class="w40">{{ __('application.parking.payable_amount') }}</td>                                
                                 <td class="w10">:</td>  
@@ -81,6 +95,8 @@
                     <table class="table table-condensed rTable">
                         <tbody>
                         <form id="payForm" action="{{route('parking.pay',['parking' => $parking->id])}}" method="post">
+
+                            <input type="hidden" name="fine_amount" value="{{$fine_amount}}">    
                         @csrf
                             <tr>
                                 <td class="w40">{{ __('application.parking.receive_amount') }}</td>                                
@@ -135,9 +151,9 @@
         </div>
     </div>
 </div> 
-<script src="{{ assetz('js/custom/content/end-parking.js') }}"></script>
 <script>
-   var paidAmount={{$parking->paid}};  
+    var paidAmount={{$parking->paid}};  
 </script>
+<script src="{{ assetz('js/custom/content/end-parking.js') }}"></script>
 
 @endsection

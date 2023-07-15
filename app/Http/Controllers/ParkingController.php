@@ -13,6 +13,7 @@ use App\Http\Requests\PayParkingRequest;
 use App\Models\CategoryWiseFloorSlot;
 use App\Models\Place;
 use App\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Session;
 
@@ -507,9 +508,13 @@ class ParkingController extends Controller
 	public function end(Request $request, Parking $parking)
 	{
 		$viewData = [];
+		$viewData['amt'] = 0;
+		$viewData['fine_amount'] = 0;
+		$viewData['total_duration'] = 0;
 		if ($parking->status <= 2) {
 			try {
 				$tariff = $parking->tariff;
+
 				if ($tariff == NULL) {
 					return redirect()
 						->back()
@@ -524,6 +529,18 @@ class ParkingController extends Controller
 
 				// \Exceptio\Utlt::look($dateDiff);
 				$amt = $tariff->min_amount + $tariff->amount;
+
+				$now = now();
+				$endDate = Carbon::parse($parking->in_time)->addDays($parking->tariff->type);
+
+				if($now->gt($endDate)) {
+					$differenceDay = $now->diffInDays($endDate);
+					$backlogDay = (round($differenceDay / $parking->tariff->type));
+					$viewData['fine_amount'] = round($amt * $backlogDay, 2);
+					$amt = $amt + $viewData['fine_amount'];
+					$viewData['total_duration'] = $differenceDay;
+				}
+
 				// $hour = $dateDiff->h;
 				// if ($dateDiff->days > 0)
 				// 	$hour = $dateDiff->h + ($dateDiff->days * 24);
@@ -534,7 +551,11 @@ class ParkingController extends Controller
 				// Session::put('eAmt_' . $parking->id, $amt);
 				$viewData['parking'] = $parking;
 				$viewData['amt'] = $amt;
+				
 				// $viewData['amt'] = $tariff->min_amount > $amt ? $tariff->min_amount : $amt;
+
+				// print_r("<pre>");
+				// print_r($viewData);die();
 				return view('content.parking.end')->with($viewData);
 			} catch (Exception $e) {
 
@@ -577,6 +598,15 @@ class ParkingController extends Controller
 				$tariff = $parking->tariff;
 				$amt = $tariff->min_amount + $tariff->amount;
 
+				// $totalAmount = $amt;
+				$paidAmt = $validated['paid_amt'];
+
+				// if($totalAmount != $paidAmt) {
+				// 	return redirect()
+				// 	->back()
+				// 	->withInput()
+				// 	->with(['flashMsg' => ['msg' => "Partial payment is not available. Please pay full amount.", 'type' => 'error']]);
+				// }
 				// //amount 
 				// if (Session::has('eAmt_' . $parking->id)) {
 				// 	$amt = Session::get('eAmt_' . $parking->id);
@@ -594,8 +624,10 @@ class ParkingController extends Controller
 				// }
 
 				$parking->amount = $amt;
+				$parking->fine_amount = $request->fine_amount;
+				$parking->fine_count_at = now();
 				$parking->modified_by = $request->user()->id;
-				$parking->paid = $validated['paid_amt'];
+				$parking->paid = $paidAmt;
 				$parking->status = 4;
 				$parking->update();
 

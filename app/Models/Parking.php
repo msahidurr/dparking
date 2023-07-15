@@ -29,6 +29,7 @@ class Parking extends Model
 		'modified_by',
 		'owner_id',
 		'id_number',
+		'fine_amount',
 	];
 	
 	protected $guarded = [];
