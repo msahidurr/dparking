@@ -31,6 +31,9 @@
                                         <th>{{__('application.customer.country')}}</th>
                                         <th>{{__('application.customer.state')}}</th>
                                         <th>{{__('application.customer.city')}}</th>
+                                        <th>{{__('application.customer.tariff')}}</th>
+                                        <th>{{__('application.customer.start_at')}}</th>
+                                        <th>{{__('application.customer.end_at')}}</th>
                                         <th>{{__('application.customer.role')}}</th>
                                         <th>{{__('application.customer.status')}}</th>
                                         <th>{{__('application.table.option')}}</th>
@@ -107,24 +110,24 @@
                             },
                         },
                         {
-                            data: "owner",
-                            name: "owner",
+                            data: "driver_owner_name",
+                            name: "driver_owner_name",
                             render: function (data, type, row, index) {
-                                return data ? data.name.toUpperCase() : "";
+                                return data ? data.toUpperCase() : "";
                             },
                         },
                         {
-                            data: "owner",
-                            name: "owner",
+                            data: "owner_phone_no",
+                            name: "owner_phone_no",
                             render: function (data, type, row, index) {
-                                return data.phone_number ?? "";
+                                return data;
                             },
                         },
                         {
                             data: "place",
                             name: "place",
                             render: function (data, type, row, index) {
-                                return data.name;
+                                return data ? data.name : '';
                             },
                         },
                         {
@@ -145,30 +148,53 @@
                             data: "slot",
                             name: "slot",
                             render: function (data, type, row, index) {
-                                
-                                console.log(data)
-                                return data.slot_name;
+                                return data ? data.slot_name : '';
                             },
                         },
                         {
                             data: "country",
                             name: "country",
                             render: function (data, type, row, index) {
-                                return data.name;
+                                return data ? data.name : '';
                             },
                         },
                         {
                             data: "state",
                             name: "state",
                             render: function (data, type, row, index) {
-                                return data.name;
+                                return data ? data.name : '';
                             },
                         },
                         {
                             data: "city",
                             name: "city",
                             render: function (data, type, row, index) {
-                                return data.name;
+                                return data ? data.name : '';
+                            },
+                        },
+                        {
+                            data: "has_parking",
+                            name: "has_parking",
+                            render: function (data, type, row, index) {
+                                if(data) {
+                                    return data.tariff ? data.tariff.name : '-';
+
+                                }
+                                return '-';
+                            },
+                        },
+                        {
+                            data: "has_parking",
+                            name: "has_parking",
+                            render: function (data, type, row, index) {
+                                return data ? data.tariff_start_at : '-';
+                            },
+                        },
+                        {
+                            data: "has_parking",
+                            name: "has_parking",
+                            render: function (data, type, row, index) {
+                                return data ? data.tariff_end_at : '-';
                             },
                         },
                         

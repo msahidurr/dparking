@@ -342,7 +342,7 @@ class ParkingController extends Controller
 				'category_id'   => $validated['category_id'],
 				'driver_id'   => $validated['driver_id'],
 				'driver_mobile' => $validated['driver_mobile'],
-				'owner_id' 	=> $validated['owner_id'],
+				'owner_id' 	=> $validated['owner_id'] ?? 0,
 				'id_number' 	=> $validated['id_number'],
 				'barcode'       => date('YmdHis') . $request->user()->id,
 				'in_time'       => date('Y-m-d H:i:s'),
@@ -452,26 +452,30 @@ class ParkingController extends Controller
 		$validated = $request->validated();
 
 		try {
-			if ($parking_crud->status > 2)
+			if ($parking_crud->status > 2) {
 				return redirect()
 					->back()
 					->withInput()
 					->with(['flashMsg' => ['msg' => "You are not allow to update parking.", 'type' => 'warning']]);
+			}
+				
 			$rfidVehicle = RfidVehicle::where('vehicle_no',$validated['vehicle_no'])->where('category_id',$validated['category_id'])->first();
-			$parking = Parking::where('id', $parking_crud->id)->update([
-				'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
-				'tariff_id'    	=> $validated['tariff_id'],
-				'slot_id'    	=> $validated['slot_id'],
-				'vehicle_no'    => $validated['vehicle_no'],
-				'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
-				'category_id'   => $validated['category_id'],
-				'driver_id'   	=> $validated['driver_id'],
-				'driver_mobile' => $validated['driver_mobile'],
-				'owner_id' 		=> $validated['owner_id'],
-				'id_number' 	=> $validated['id_number'],
-				'status' 		=> 2,
-				'modified_by'   => $request->user()->id
-			]);
+
+			Parking::where('id', $parking_crud->id)
+				->update([
+					'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
+					'tariff_id'    	=> $validated['tariff_id'],
+					'slot_id'    	=> $validated['slot_id'],
+					'vehicle_no'    => $validated['vehicle_no'],
+					'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
+					'category_id'   => $validated['category_id'],
+					'driver_id'   	=> $validated['driver_id'],
+					'driver_mobile' => $validated['driver_mobile'],
+					'owner_id' 		=> $validated['owner_id'] ?? 0,
+					'id_number' 	=> $validated['id_number'],
+					'status' 		=> 2,
+					'modified_by'   => $request->user()->id
+				]);
 		} catch (\PDOException $e) {
 
 			return redirect()

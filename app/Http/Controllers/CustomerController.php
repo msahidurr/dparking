@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserInformation;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\Parking;
+use App\Models\Tariff;
 use Illuminate\Support\Facades\{DB, Hash, Mail};
 use Illuminate\Support\Facades\Artisan;
 
@@ -48,7 +50,7 @@ class CustomerController extends Controller
         $offset = 0;
         $search = [];
         $where = [];
-        $with = ['roles', 'place', 'owner', 'floor', 'slot', 'country', 'state', 'city', 'category'];
+        $with = ['roles', 'place', 'floor', 'slot', 'country', 'state', 'city', 'category', 'hasParking'];
         $join = [];
         $orderBy = [];
 
@@ -87,7 +89,7 @@ class CustomerController extends Controller
         $users = $users->getDataForDataTable($limit, $offset, $search, $where, $with, $join, $orderBy, $request->all());
 
         // print_r("<pre>");
-        // print_r($users);die();
+        // print_r($users['data'][0]->toArray());die();
         return response()->json($users);
     }
 
@@ -104,13 +106,15 @@ class CustomerController extends Controller
         $data['places'] = Place::whereStatus(1)->get();
         $data['floors'] = Floor::whereStatus(1)->get();
         $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
-        $data['countries'] = Country::get();
+        $data['countries'] = Country::where('id', 50)->get();
         $data['states'] = State::get();
         $data['cities'] = City::get();
         $data['categories'] = Category::where('status', 1)->get();
-        $data['owners'] = User::whereHas('roles', function($query) {
-                $query->where('id', 2);
-            })->get();
+        $data['tariffs'] = Tariff::where('status', 1)->get();
+
+        // $data['owners'] = User::whereHas('roles', function($query) {
+        //         $query->where('id', 2);
+        //     })->get();
 
         return view('customer.create', $data);
     }
@@ -125,16 +129,40 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'phone_number' => 'required|unique:users,phone_number',
+            'id_number' => 'required|unique:users,id_number',
+            'vehicle_no' => 'required|unique:users,vehicle_no',
         ]);
 
         try {
+            $place_id = auth()->user()->hasAllPermissions(allpermissions()) ? $this->input('place_id') : auth()->user()->place_id;
+
+			if(Tariff::getCurrent($request['category_id'], $place_id) == null) {
+                return redirect()
+                    ->back()
+                    ->withInput($request->all())
+                    ->withErrors(['category_id' =>'No tariff found']);
+			}
+
+            $activeParking = Parking::where('vehicle_no', $request['vehicle_no'])
+                    ->where('out_time', null)
+                    ->first();
+
+            if ($activeParking) {
+                return redirect()
+                    ->back()
+                    ->withInput($request->all())
+                    ->withErrors(['vehicle_no' => 'This vehicle has currently parked in ' . $activeParking->slot->slot_name . ' slot.']);
+            }
+
             $data = [
                 'name'     => $request['name'],
                 'phone_number'    => $request['phone_number'],
                 'id_number'    => $request['id_number'],
                 'vehicle_no'    => $request['vehicle_no'],
-                'driver_owner_id'    => $request['driver_owner_id'],
-                'owner_phone_no'    => $request['owner_phone_no'],
+                'driver_owner_id'    => $request['driver_owner_id'] ?? 0,
+                'driver_owner_name'    => $request['driver_owner_name'] ?? 0,
+                'owner_phone_no'    => $request['owner_phone_no'] ?? "",
                 'place_id' => $request['place_id'],
                 'floor_id' => $request['floor_id'],
                 'category_id' => $request['category_id'],
@@ -142,8 +170,9 @@ class CustomerController extends Controller
                 'country_id' => $request['country_id'],
                 'state_id' => $request['state_id'],
                 'city_id' => $request['city_id'],
+                'tariff_id' => $request['tariff_id'],
                 'status'   => 1,
-                'role_id'   => 4
+                'role_id'   => 4 // Driver
             ];
 
             DB::beginTransaction();
@@ -161,9 +190,7 @@ class CustomerController extends Controller
                 ->withInput($request->except('password'))
                 ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
         } catch (Exception $e) {
-
             DB::rollBack();
-
             return redirect()
                 ->route('customer.list')
                 ->with(['flashMsg' => ['msg' => "The customer successfully created but failed to send the email, because the email is not configured.", 'type' => 'error']]);
@@ -203,45 +230,6 @@ class CustomerController extends Controller
         //
     }
 
-    public function profile(Request $request)
-    {
-        $viewData = array(
-            'user' => $request->user(),
-            'roles' => Role::get(),
-            'languages' => Language::where('status', '>=', 1)->where('code', '!=', 'master')->get()
-        );
-        return view('customer.profile')->with($viewData);
-    }
-
-    public function profileUpdate(StoreUserInformation $request)
-    {
-        if (!env('DEMO', false)) {
-            $validated = $request->validated();
-            try {
-                $user = $request->user();
-                $user->name = $validated['name'];
-                $user->email = $validated['email'];
-                $user->language_id = $validated['language_id'];
-                if ($validated['password']) {
-                    $user->password = Hash::make($validated['password']);
-                }
-                $user->update();
-            } catch (\PDOException $e) {
-                return redirect()
-                    ->back()
-                    ->withInput($request->except('password'))
-                    ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
-            }
-            return redirect()
-                ->route('customer.profile')
-                ->with(['flashMsg' => ['msg' => 'Profile successfully updated.', 'type' => 'success']]);
-        } else {
-            return redirect()
-                ->back()
-                ->with(['flashMsg' => ['msg' => 'This feature is not enable in demo mode.', 'type' => 'warning']]);
-        }
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -253,9 +241,9 @@ class CustomerController extends Controller
         try {
             $viewData = array(
                 'user' => User::where('role_id', 4)->findOrFail($id),
-                'owners' => User::whereHas('roles', function($query) {
-                            $query->where('id', 2);
-                        })->get(),
+                // 'owners' => User::whereHas('roles', function($query) {
+                //             $query->where('id', 2);
+                //         })->get(),
                 'roles' => Role::get(),
                 'sections' => Section::get(),
                 'places' => Place::whereStatus(1)->get(),
@@ -267,6 +255,9 @@ class CustomerController extends Controller
                 'categories' => Category::where('status', 1)->get(),
                 'languages' => Language::where('status', '>=', 1)->where('code', '!=', 'master')->get()
             );
+
+            $viewData['tariffs'] = Tariff::where('status', 1)->get();
+
             return view('customer.edit', $viewData);
         } catch (\Throwable $th) {
             return redirect()->back()->withError($th->getMessage());
@@ -285,21 +276,45 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'phone_number' => 'required|unique:users,phone_number,'. $user->id. 'id',
+            'id_number' => 'required|unique:users,id_number,'. $user->id. 'id',
+            'vehicle_no' => 'required|unique:users,vehicle_no,'. $user->id. 'id',
         ]);
+        
+        if(Tariff::getCurrent($request['category_id'], $request['place_id']) == null) {
+            return redirect()
+                ->back()
+                ->withInput($request->all())
+                ->withErrors(['category_id' =>'No tariff found']);
+        }
+
+        $activeParking = Parking::where('vehicle_no', $request['vehicle_no'])
+                ->where('driver_id', $user->id)
+                ->where('out_time', null)
+                ->first();
+
+        if ($activeParking) {
+            return redirect()
+                ->back()
+                ->withInput($request->all())
+                ->withErrors(['vehicle_no' => 'This vehicle has currently parked in ' . $activeParking->slot->slot_name . ' slot.']);
+        }
 
         try {
             $user->name = $request['name'];
             $user->phone_number = $request['phone_number'];
             $user->id_number = $request['id_number'];
             $user->vehicle_no = $request['vehicle_no'];
-            $user->driver_owner_id = $request['driver_owner_id'];
-            $user->owner_phone_no = $request['owner_phone_no'];
+            $user->driver_owner_id = $request['driver_owner_id'] ?? 0;
+            $user->driver_owner_name = $request['driver_owner_name'] ?? "";
+            $user->owner_phone_no = $request['owner_phone_no'] ?? "";
             $user->category_id = $request['category_id'];
             $user->place_id = $request['place_id'];
             $user->country_id = $request['country_id'];
             $user->state_id = $request['state_id'];
             $user->state_id = $request['state_id'];
             $user->city_id = $request['city_id'];
+            $user->tariff_id = $request['tariff_id'];
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
             $user->update();
 

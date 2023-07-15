@@ -77,15 +77,19 @@
                         <div class="form-group row">
                             <label for="driver_owner_name" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.owner_name') }}<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
-                                <select name="driver_owner_id" id="driver_owner_name" class="form-control{{ $errors->has('driver_owner_id') ? ' is-invalid' : '' }}" >
+                                
+                                <input type="text" name="driver_owner_name" id="driver_owner_name" class="form-control{{ $errors->has('driver_owner_name') ? ' is-invalid' : '' }}" value="{{ old('driver_owner_name', $user->driver_owner_name)}}">
+
+                                {{-- <select name="driver_owner_id" id="driver_owner_name" class="form-control{{ $errors->has('driver_owner_id') ? ' is-invalid' : '' }}" >
                                     <option value="0">Select</option>
                                     @foreach($owners as $owner)
                                         <option value="{{$owner->id}}" @if($owner->id == $user->driver_owner_id) selected @endif>{{$owner->name}}</option>
                                     @endforeach
-                                </select>
-                                @if ($errors->has('driver_owner_id'))
+                                </select> --}}
+
+                                @if ($errors->has('driver_owner_name'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('driver_owner_id') }}</strong>
+                                        <strong>{{ $errors->first('driver_owner_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -99,6 +103,57 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('owner_phone_no') }}</strong>
                                     </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="country_div">
+                            <label for="country_id" class="col-md-3 col-form-label text-md-right">
+                                {{ __('application.user.country') }}<span class="tcr i-req"></span></label>
+
+                            <div class="col-md-9">
+                                <select id="country_id" name="country_id"
+                                    class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>
+                                    @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" @if (old('country_id',$user->country_id) ==
+                                        $country->id) {{ ' selected' }} @endif>
+                                        {{ ucfirst($country->name) }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('country_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('country_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state_id" class="col-md-3 col-form-label text-md-right">{{
+                                __('application.customer.state') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">
+                                <select id="state_id" name="state_id"
+                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+
+                                </select>
+                                @if ($errors->has('state_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('state_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city_id" class="col-md-3 col-form-label text-md-right">{{
+                                __('application.customer.city') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">
+                                <select id="city_id" name="city_id"
+                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+
+                                </select>
+                                @if ($errors->has('city_id'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('city_id') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -169,54 +224,16 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="form-group row" id="country_div">
-                            <label for="country_id" class="col-md-3 col-form-label text-md-right">
-                                {{ __('application.user.country') }}<span class="tcr i-req"></span></label>
-
-                            <div class="col-md-9">
-                                <select id="country_id" name="country_id"
-                                    class="form-control{{ $errors->has('country_id') ? ' is-invalid' : '' }}" required>
-                                    @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}" @if (old('country_id',$user->country_id) ==
-                                        $country->id) {{ ' selected' }} @endif>
-                                        {{ ucfirst($country->name) }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('country_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('country_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
+                        
                         <div class="form-group row">
-                            <label for="state_id" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.customer.state') }}<span class="tcr i-req"></span></label>
-                            <div class="col-md-9">
-                                <select id="state_id" name="state_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
-
+                            <label for="tariff_id" class="col-md-3 col-form-label text-md-right">{{ __('application.parking.tariff') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                             
+                                <select id="tariff_id" name="tariff_id" class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}">
                                 </select>
-                                @if ($errors->has('state_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('state_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="city_id" class="col-md-3 col-form-label text-md-right">{{
-                                __('application.customer.city') }}<span class="tcr i-req"></span></label>
-                            <div class="col-md-9">
-                                <select id="city_id" name="city_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
-
-                                </select>
-                                @if ($errors->has('city_id'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('city_id') }}</strong>
-                                </span>
+                                @if ($errors->has('tariff_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('tariff_id') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -249,6 +266,9 @@
     var cities = @json($cities);
     var categories = @json($categories);
     var tariffs = @json([]);
+    var tariffs = @json($tariffs);
+    var driverId = 0;
+    var tariff_id = "{{$user->tariff_id}}";
 
     setTimeout(() => {
         $('#place_id').trigger('change');

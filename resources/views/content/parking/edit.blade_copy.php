@@ -70,28 +70,6 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="row">
-
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
-                                        </div>
-                                        <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
-                                            <option value="">Select</option>
-                                            @isset($drivers)
-                                                @foreach($drivers as $driver)
-                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
-                                                @endforeach
-                                            @endisset
-                                        </select>
-
-                                        @if ($errors->has('driver_id'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('driver_id') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-                                    
                                     <div class="col-12">
                                         @if(auth()->user()->hasAllPermissions(allpermissions()))
                                         <div class="form-group mb-1">
@@ -140,7 +118,6 @@
                                             @endif
                                         </div>
                                     </div>
-
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="tariff_id"
@@ -162,6 +139,26 @@
                                             </span>
                                             @endif
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
+                                        </div>
+                                        <select id="driver_id" type="text"
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            <option value="">Select</option>
+                                            @isset($drivers)
+                                                @foreach($drivers as $driver)
+                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+
+                                        @if ($errors->has('driver_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('driver_id') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-12">

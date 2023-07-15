@@ -10,6 +10,7 @@ use App\Models\Floor;
 use App\Models\Language;
 use App\Models\Place;
 use App\Models\ModelCommonMethodTrait;
+use App\Models\Parking;
 use App\Models\State;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -41,6 +42,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'driver_owner_id',
         'owner_phone_no',
         'category_id',
+        'driver_owner_name',
+        'tariff_id',
     ];
 
     /**
@@ -129,6 +132,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         # code...   
         return $this->belongsTo(Category::class);
+    }
+
+    public function parking()
+    { 
+        return $this->hasOne(Parking::class, 'driver_id', 'id');
+    }
+
+    public function hasParking()
+    { 
+        return $this->parking()->whereNull('out_time');
     }
 
 }

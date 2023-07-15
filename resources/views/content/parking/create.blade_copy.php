@@ -1,9 +1,10 @@
 @extends('layouts.app')
-@section('title', ' - Edit Parking')
-@section('content')
+@section('title', ' - Add Parking')
 @push('css')
 <link rel="stylesheet" href="{{ asset('css/custom/parking.css') }}">
 @endpush
+
+@section('content')
 <div class="container-fluid mb100">
     <div class="row customEqual">
         <div class="col-sm-12 col-md-4 mb-2">
@@ -32,7 +33,7 @@
                     <h5>{{ __('application.parking.total_available') }}</h5>
                 </div>
                 <div class="card-body">
-                    <h1>{{$total_slots - $currently_parking}}</h1>
+                    <h1>{{ $total_slots - $currently_parking }}</h1>
                 </div>
             </div>
         </div>  --}}
@@ -40,15 +41,14 @@
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
                 <div class="card-body p-2">
-                    <form action="{{route('parking.quick_end')}}" method="post">
+                    <form action="{{ route('parking.quick_end') }}" method="post">
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1"
-                                    placeholder="Barcode" autocomplete="off">
+                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1" placeholder="{{__('application.parking.barcode')}}" autocomplete="off">
                             </div>
                             <div class="col-md-12">
-                                <input value="Find" class="btn btn-sm btn-outline-info pull-right mt-2" type="submit">
+                                <input value="{{__('application.parking.find')}}" class="btn btn-sm btn-outline-info pull-right mt-2" type="submit">                                
                             </div>
                         </div>
                     </form>
@@ -56,42 +56,17 @@
             </div>
         </div>
     </div>
-
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-2">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">{{ __('application.parking.edit_parking') }}</div>
+                <div class="card-header">{{ __('application.parking.add_parking') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('parking.update', $parking->id) }}">
+                    <form method="POST" action="{{ route('parking.store') }}">
                         @csrf
-                        @method('PUT')
-                        <input type="hidden" name="is_edit" value="1">
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="row">
-
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
-                                        </div>
-                                        <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
-                                            <option value="">Select</option>
-                                            @isset($drivers)
-                                                @foreach($drivers as $driver)
-                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
-                                                @endforeach
-                                            @endisset
-                                        </select>
-
-                                        @if ($errors->has('driver_id'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('driver_id') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-                                    
                                     <div class="col-12">
                                         @if(auth()->user()->hasAllPermissions(allpermissions()))
                                         <div class="form-group mb-1">
@@ -103,10 +78,10 @@
                                                 class="select2 form-control{{ $errors->has('place_id') ? ' is-invalid' : '' }}"
                                                 required>
                                                 <?php
-                                                foreach ($places as $key => $value) {
-                                                    echo '<option value="' . $value->id . '" ' . (old('place_id', $parking->place_id) == $value->id ? ' selected' : '') . '>' . $value->name . '</option>';
-                                                }
-                                                ?>
+                                                    foreach ($places as $key => $value) {
+                                                        echo '<option value="' . $value->id . '" ' . (old('place_id') == $value->id ? ' selected' : '') . '>' . $value->name . '</option>';
+                                                    }
+                                                    ?>
                                             </select>
 
                                             @if ($errors->has('place_id'))
@@ -119,18 +94,16 @@
                                         <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
                                         @endif
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="category_id"
-                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
-                                                    class="tcr i-req">*</span>{{ __('application.parking.type')
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.type')
                                                 }}</label>
                                             <select name="category_id" id="category_id"
                                                 class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}"
                                                 required>
-                                                <option value="{{ $parking->category_id }}">{{ $parking->category->type
-                                                    }}</option>
+
                                             </select>
 
                                             @if ($errors->has('category_id'))
@@ -148,12 +121,9 @@
                                                     class="tcr i-req">*</span>{{ __('application.parking.tariff')
                                                 }}</label>
                                             <select name="tariff_id" id="tariff_id"
-                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}" required>
-                                                @isset($tariffs)
-                                                    @foreach($tariffs as $key => $tariff)
-                                                        <option value="{{ $tariff->id }}" @if($tariff->id == $parking->tariff_id) selected @endif>{{ $tariff->id }} {{ $parking->tariff_id }}</option>
-                                                    @endforeach
-                                                @endisset                                                
+                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}"
+                                                required>
+
                                             </select>
 
                                             @if ($errors->has('tariff_id'))
@@ -162,6 +132,27 @@
                                             </span>
                                             @endif
                                         </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
+                                        </div>
+                                        <select id="driver_id" type="text"
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            <option value="">Select</option>
+                                            @isset($drivers)
+                                                @foreach($drivers as $driver)
+                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id')) selected @endif>{{ $driver->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+
+                                        @if ($errors->has('driver_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('driver_id') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-12">
@@ -187,7 +178,8 @@
                                                     class="tcr i-req">*</span>{{ __('application.parking.vehicle_no')
                                                 }}</label>
                                             <input id="vehicle_no" type="text"
-                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}" name="vehicle_no" autocomplete="off"
+                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}"
+                                                name="vehicle_no" value="{{ old('vehicle_no') }}" autocomplete="off"
                                                 required readonly>
 
                                             @if ($errors->has('vehicle_no'))
@@ -238,6 +230,12 @@
                                     <div class="cockpit">
                                         <h3>{{ __('application.parking.please_select_a_slot') }}</h3>
                                     </div>
+                                    @if ($errors->has('slot_id'))
+                                    <div class="d-none flashMessage">
+                                        <div id="msgType">warning</div>
+                                        <div id="msg">{{ $errors->first('slot_id') }}</div>
+                                    </div>
+                                    @endif
                                     <div id="slotSection">
 
                                     </div>
@@ -249,7 +247,7 @@
                                         {{ __('application.parking.clear') }}
                                     </button>
                                     <button type="submit" class="btn btn-success">
-                                        {{ __('application.parking.update') }}
+                                        {{ __('application.parking.save') }}
                                     </button>
                                 </div>
                             </div>
@@ -260,14 +258,13 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('application.parking.all_parking_list') }}</div>
 
                 <div class="card-body">
                     <div class="table-responsive">
-
                         <table class="table table-borderd table-condenced w-100 f12" id="parkingDatatable">
                             <thead>
                                 <tr>
@@ -289,16 +286,15 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection
 @push('scripts')
 <script>
-    var id = {{ $parking->id }}
-    const tariff_id = {{$parking->tariff_id}}
     var categories = @json($categories);
     var tariffs = @json($tariffs);
     var drivers = @json($drivers);
-    var driverId = @json(old('driver_id', $parking->driver_id));
+    var driverId = @json(old('driver_id'));
     var owners = @json($owners);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>

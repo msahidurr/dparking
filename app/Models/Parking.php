@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ModelCommonMethodTrait;
+use Carbon\Carbon;
 
 class Parking extends Model
 {
 	use ModelCommonMethodTrait;
+
+	protected $with = ['tariff'];
+
+	protected $appends = ['tariff_start_at', 'tariff_end_at'];
 
 	protected $fillable = [
 		'id',
@@ -37,7 +42,24 @@ class Parking extends Model
 	protected $casts = [
 		'in_time' => 'datetime:m-d-Y H:i:s',
 		'out_time' => 'datetime:m-d-Y H:i:s',
-	];	
+	];
+
+	public function getTariffStartAtAttribute()
+	{
+		if($this->in_time) {
+			return Carbon::parse($this->in_time)->format(env('DATE_FORMAT','m-d-Y h:i A'));
+		}
+		return "";
+	}
+
+	public function getTariffEndAtAttribute()
+	{
+		if(isset($this->tariff->type)) {
+			return Carbon::parse($this->in_time)->addDays($this->tariff->type)->format(env('DATE_FORMAT','m-d-Y h:i A'));
+		}
+
+		return "";
+	}
 
 	public function category()
 	{
