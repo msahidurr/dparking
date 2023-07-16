@@ -136,6 +136,8 @@ class CustomerController extends Controller
             'phone_number' => 'required|unique:users,phone_number',
             'id_number' => 'required|unique:users,id_number',
             'vehicle_no' => 'required|unique:users,vehicle_no',
+            'district_id'    => 'bail|nullable|numeric|min:0',
+            'commune_id'    => 'bail|nullable|numeric|min:0',
         ]);
 
         try {
@@ -175,8 +177,8 @@ class CustomerController extends Controller
                 'state_id' => $request['state_id'],
                 'city_id' => $request['city_id'],
                 'tariff_id' => $request['tariff_id'],
-                'district_id' => $request['district_id'],
-                'commune_id' => $request['commune_id'],
+                'district_id' => $request['district_id'] ?: 0,
+                'commune_id' => $request['commune_id'] ?: 0,
                 'status'   => 1,
                 'role_id'   => 4 // Driver
             ];
@@ -289,26 +291,28 @@ class CustomerController extends Controller
             'phone_number' => 'required|unique:users,phone_number,'. $user->id. 'id',
             'id_number' => 'required|unique:users,id_number,'. $user->id. 'id',
             'vehicle_no' => 'required|unique:users,vehicle_no,'. $user->id. 'id',
+            'district_id'    => 'bail|nullable|numeric|min:0',
+            'commune_id'    => 'bail|nullable|numeric|min:0',
         ]);
         
-        if(Tariff::getCurrent($request['category_id'], $request['place_id']) == null) {
-            return redirect()
-                ->back()
-                ->withInput($request->all())
-                ->withErrors(['category_id' =>'No tariff found']);
-        }
+        // if(Tariff::getCurrent($request['category_id'], $request['place_id']) == null) {
+        //     return redirect()
+        //         ->back()
+        //         ->withInput($request->all())
+        //         ->withErrors(['category_id' =>'No tariff found']);
+        // }
 
-        $activeParking = Parking::where('vehicle_no', $request['vehicle_no'])
-                ->where('driver_id', $user->id)
-                ->where('out_time', null)
-                ->first();
+        // $activeParking = Parking::where('vehicle_no', $request['vehicle_no'])
+        //         ->where('driver_id', $user->id)
+        //         ->where('out_time', null)
+        //         ->first();
 
-        if ($activeParking) {
-            return redirect()
-                ->back()
-                ->withInput($request->all())
-                ->withErrors(['vehicle_no' => 'This vehicle has currently parked in ' . $activeParking->slot->slot_name . ' slot.']);
-        }
+        // if ($activeParking) {
+        //     return redirect()
+        //         ->back()
+        //         ->withInput($request->all())
+        //         ->withErrors(['vehicle_no' => 'This vehicle has currently parked in ' . $activeParking->slot->slot_name . ' slot.']);
+        // }
 
         try {
 
@@ -328,8 +332,8 @@ class CustomerController extends Controller
             $user->state_id = $request['state_id'];
             $user->city_id = $request['city_id'];
             $user->tariff_id = $request['tariff_id'];
-            $user->district_id = $request['district_id'] ?? 0;
-            $user->commune_id = $request['commune_id'] ?? 0;
+            $user->district_id = $request['district_id'] ?: 0;
+            $user->commune_id = $request['commune_id'] ?: 0;
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
             $user->update();
 
