@@ -305,41 +305,93 @@
         let driver = drivers.filter(val => val.id == driverId);
 
         if(driver.length > 0) {
-            $("#vehicle_no").val(driver[0].vehicle_no)
-            $("#driver_mobile").val(driver[0].phone_number)
-            $("#id_number").val(driver[0].id_number)
 
-            let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+            const details = driver[0]
 
-            var html = '';
-            $.each(owner, function(ind,val){
-                html += `<option value="${val.id}">${val.name}</option>`;
-            });
+            $("#vehicle_no").val(details.vehicle_no)
+            $("#driver_mobile").val(details.phone_number)
+            $("#id_number").val(details.id_number)
 
-            $(document).find('#owner_id').html(html);
-            $('#owner_id').trigger('change');
+            if(details.place) {
+                $("#place_id").val(details.place.id)
+                $("#place_id_text").val(details.place.name)
+            }
+
+            if(details.category) {
+                $("#category_id").val(details.category.id)
+                $("#category_id_text").val(details.category.type)
+            }
+
+            if(details.tariff) {
+                $("#tariff_id").val(details.tariff.id)
+                $("#tariff_id_text").val(details.tariff.name)
+            }
+
+            if(details.floor) {
+                $("#floor_id").val(details.floor.id)
+                $("#floor_id_text").val(details.floor.name)
+            }
+
+            if(details.floor) {
+                $("#slot_id").val(details.slot.id)
+                $("#slot_id_text").val(details.slot.slot_name)
+            }
+
+            // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+
+            // var html = '';
+            // $.each(owner, function(ind,val){
+            //     html += `<option value="${val.id}">${val.name}</option>`;
+            // });
+
+            // $(document).find('#owner_id').html(html);
+            // $('#owner_id').trigger('change');
         }
     }
     $(document).on('change', '#driver_id', function(){
         let driver = drivers.filter(val => val.id == $(this).val());
 
         if(driver.length > 0) {
-            $("#vehicle_no").val(driver[0].vehicle_no)
-            $("#driver_mobile").val(driver[0].phone_number)
-            $("#id_number").val(driver[0].id_number)
+            const details = driver[0]
+            $("#vehicle_no").val(details.vehicle_no)
+            $("#driver_mobile").val(details.phone_number)
+            $("#id_number").val(details.id_number)
 
-            let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+            if(details.place) {
+                $("#place_id").val(details.place.id)
+                $("#place_id_text").val(details.place.name)
+            }
 
-            var html = '';
-            $.each(owner, function(ind,val){
-                html += `<option value="${val.id}">${val.name}</option>`;
-            });
+            if(details.category) {
+                $("#category_id").val(details.category.id)
+                $("#category_id_text").val(details.category.type)
+            }
 
-            $('#place_id').val(driver[0].place_id);
+            if(details.tariff) {
+                $("#tariff_id").val(details.tariff.id)
+                $("#tariff_id_text").val(details.tariff.name)
+            }
 
-            $(document).find('#owner_id').html(html);
-            $('#owner_id').trigger('change');
-            $('#place_id').trigger('change');
+            if(details.floor) {
+                $("#floor_id").val(details.floor.id)
+                $("#floor_id_text").val(details.floor.name)
+            }
+
+            if(details.floor) {
+                $("#slot_id").val(details.slot.id)
+                $("#slot_id_text").val(details.slot.slot_name)
+            }
+
+            console.log(details)
+
+            // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+
+            // var html = '';
+            // $.each(owner, function(ind,val){
+            //     html += `<option value="${val.id}">${val.name}</option>`;
+            // });
+
+            
         }
     });
 

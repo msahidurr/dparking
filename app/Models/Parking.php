@@ -32,7 +32,7 @@ class Parking extends Model
 		'tariff_id',
 		'created_by',
 		'modified_by',
-		'owner_id',
+		'agent_id',
 		'id_number',
 		'fine_amount',
 	];

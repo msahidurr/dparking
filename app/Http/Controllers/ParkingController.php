@@ -271,9 +271,9 @@ class ParkingController extends Controller
 	public function create()
 	{
 		if (auth()->user()->hasAllPermissions(allpermissions())) {
-			$data['places'] = Place::where('status', 1)->get();
-			$data['tariffs'] = Tariff::where('status', 1)->get();
-			$data['categories'] = Category::where('status', 1)->get();
+			// $data['places'] = Place::where('status', 1)->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['categories'] = Category::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->count();
 			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
 				->whereHas('floor', function ($query) {
@@ -286,7 +286,7 @@ class ParkingController extends Controller
 			$data['drivers'] = User::whereHas('roles', function($query) {
 						$query->where('id', 4);
 					})
-					->with('place')
+					->with('place', 'category', 'tariff', 'floor', 'slot')
 					->where('status', 1)
 					->get();
 
@@ -295,14 +295,15 @@ class ParkingController extends Controller
 				})
 				->where('status', 1)
 				->get();
-			$data['floors'] = Floor::whereStatus(1)->get();
-			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
-			$data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
-			$data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->where('place_id', $place_id)->count();
-			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)->where('place_id', $place_id)
+			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
+				->where('place_id', $place_id)
 				->whereHas('floor', function ($query) {
 					$query->where('status', '1');
 				})
@@ -313,6 +314,7 @@ class ParkingController extends Controller
 			$data['drivers'] = User::whereHas('roles', function($query) {
 					$query->where('id', 4);
 				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
 				->where('status', 1)
 				->get();
 			
@@ -321,8 +323,8 @@ class ParkingController extends Controller
 				})
 				->where('status', 1)
 				->get();
-				$data['floors'] = Floor::whereStatus(1)->get();
-				$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		}
 		return view('content.parking.create')->with($data);
 	}
@@ -348,7 +350,7 @@ class ParkingController extends Controller
 				'category_id'   => $validated['category_id'],
 				'driver_id'   => $validated['driver_id'],
 				'driver_mobile' => $validated['driver_mobile'],
-				'owner_id' 	=> $validated['owner_id'] ?? 0,
+				'agent_id' 	=> $validated['agent_id'] ?? 0,
 				'id_number' 	=> $validated['id_number'],
 				'barcode'       => date('YmdHis') . $request->user()->id,
 				'in_time'       => date('Y-m-d H:i:s'),
@@ -395,11 +397,12 @@ class ParkingController extends Controller
 			$data['drivers'] = User::whereHas('roles', function($query) {
 					$query->where('id', 4);
 				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
 				->where('status', 1)
 				->get();
-			$data['tariffs'] = Tariff::where('status', 1)->get();
-			$data['places'] = Place::where('status', 1)->get();
-			$data['categories'] = Category::where('status', 1)->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['places'] = Place::where('status', 1)->get();
+			// $data['categories'] = Category::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->count();
 			$data['parking'] = $parking_crud;
 			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
@@ -415,13 +418,14 @@ class ParkingController extends Controller
 				})
 				->where('status', 1)
 				->get();
-			$data['floors'] = Floor::whereStatus(1)->get();
-			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
 			$data['drivers'] = User::whereHas('roles', function($query) {
 					$query->where('id', 4);
 				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
 				->where('status', 1)
 				->get();
 			$data['tariffs'] = Tariff::where('status', 1)->get();
@@ -481,7 +485,7 @@ class ParkingController extends Controller
 					'category_id'   => $validated['category_id'],
 					'driver_id'   	=> $validated['driver_id'],
 					'driver_mobile' => $validated['driver_mobile'],
-					'owner_id' 		=> $validated['owner_id'] ?? 0,
+					'agent_id' 		=> $validated['agent_id'] ?? 0,
 					'id_number' 	=> $validated['id_number'],
 					'status' 		=> 2,
 					'modified_by'   => $request->user()->id

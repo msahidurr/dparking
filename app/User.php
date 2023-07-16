@@ -12,6 +12,7 @@ use App\Models\Place;
 use App\Models\ModelCommonMethodTrait;
 use App\Models\Parking;
 use App\Models\State;
+use App\Models\Tariff;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,6 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'category_id',
         'driver_owner_name',
         'tariff_id',
+        'commune_id',
+        'district_id',
     ];
 
     /**
@@ -82,55 +85,51 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function language()
     {
-        # code...   
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
-    #end
+    
     public function place()
     {
-        # code...   
         return $this->belongsTo(Place::class, 'place_id', 'id');
     }
 
     public function floor()
-    {
-        # code...   
+    { 
         return $this->belongsTo(Floor::class);
     }
 
     public function slot()
     {
-        # code...   
         return $this->belongsTo(CategoryWiseFloorSlot::class, 'category_wise_floor_slot_id', 'id');
     }
 
     public function country()
-    {
-        # code...   
+    { 
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
     public function state()
     {
-        # code...   
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
 
     public function city()
     {
-        # code...   
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
     public function owner()
     {
-        # code...   
         return $this->hasOne(User::class, 'id', 'driver_owner_id');
+    }
+
+    public function tariff()
+    {
+        return $this->belongsTo(Tariff::class);
     }
 
     public function category()
     {
-        # code...   
         return $this->belongsTo(Category::class);
     }
 

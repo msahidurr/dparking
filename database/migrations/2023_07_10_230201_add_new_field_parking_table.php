@@ -15,7 +15,7 @@ class AddNewFieldParkingTable extends Migration
     {
         Schema::table('parkings', function (Blueprint $table) {
             $table->integer('driver_id')->nullable();
-            $table->integer('owner_id')->nullable();
+            $table->integer('agent_id')->nullable();
             $table->decimal('fine_amount',8,2)->default(0);
             $table->string('id_number')->nullable();
             $table->dateTime('fine_count_at')->nullable();

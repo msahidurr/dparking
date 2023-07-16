@@ -138,6 +138,37 @@
                                 @endif
                             </div>
                         </div>
+                        
+                        <div class="form-group row district_id_row">
+                            <label for="district_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.district') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                                
+                                <select id="district_id" name="district_id" class="select2 form-control{{ $errors->has('district_id') ? ' is-invalid' : '' }}">
+                                    <option value="">Select</option>     
+                                    @foreach($districts as $district)
+                                        <option value="{{$district->id}}">{{$district->name}}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('district_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('district_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row commune_id_row">
+                            <label for="commune_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.commune') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                                
+                                <select id="commune_id" name="commune_id" class="select2 form-control{{ $errors->has('commune_id') ? ' is-invalid' : '' }}">       
+                                    <option value="">Select</option>
+                                </select>
+                                @if ($errors->has('commune_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('commune_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group row" id="place_div">
                             <label for="place_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.place') }}<span class="tcr i-req"></span></label>
@@ -237,6 +268,7 @@
     var cities = @json($cities);
     var categories = @json($categories);
     var tariffs = @json($tariffs);
+    var communes = @json($communes);
     var driverId = 0;
     var tariff_id = 0;
 
@@ -302,8 +334,37 @@
 
         $('#state_id').trigger('change');
     });
+
+    
+    $(document).on('change', '#district_id', function(){
+        let commune = communes.filter(val => val.district_id == $(this).val());
+        var html = '<option value="">Select</option>';
+        $.each(commune, function(ind,val){
+            html += `<option value="${val.id}">${val.name}</option>`;
+        });
+
+        $(document).find('#commune_id').html(html);
+
+        $('#commune_id').trigger('change');
+    });
+
+    const districtId = $(".district_id_row")
+    const communeId = $(".commune_id_row")
+    districtId.hide()
+    communeId.hide()
+
     $(document).on('change', '#state_id', function(){
         let city = cities.filter(val => val.state_id == $(this).val());
+
+        console.log($(this).val())
+
+        if($(this).val() == 828) {
+            districtId.show()
+            communeId.show()
+        } else {
+            districtId.hide()
+            communeId.hide()
+        }
         var html = '';
         $.each(city, function(ind,val){
             html += `<option value="${val.id}">${val.name}</option>`;
@@ -313,6 +374,7 @@
 
         $('#city_id').trigger('change');
     });
+    
     $(document).on('change', '#place_id', function(){
         let floor = floors.filter(val => val.place_id == $(this).val());
         var html = '';

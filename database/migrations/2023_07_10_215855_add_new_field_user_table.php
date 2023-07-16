@@ -18,7 +18,9 @@ class AddNewFieldUserTable extends Migration
             $table->string('phone_number')->nullable();
             $table->tinyInteger('role_id')->nullable();
             $table->integer('driver_owner_id')->nullable();
-            $table->integer('driver_owner_name')->nullable();
+            $table->integer('district_id')->nullable();
+            $table->integer('commune_id')->nullable();
+            $table->string('driver_owner_name')->nullable();
             $table->string('owner_phone_no')->nullable();
             $table->integer('category_id')->nullable();
             $table->string('id_number')->nullable();

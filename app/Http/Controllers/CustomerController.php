@@ -11,11 +11,13 @@ use App\Models\State;
 use App\Models\Country;
 use App\Models\Section;
 use App\Models\Language;
+use App\Models\Commune;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserInformation;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\District;
 use App\Models\Parking;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\{DB, Hash, Mail};
@@ -111,6 +113,8 @@ class CustomerController extends Controller
         $data['cities'] = City::get();
         $data['categories'] = Category::where('status', 1)->get();
         $data['tariffs'] = Tariff::where('status', 1)->get();
+        $data['districts'] = District::where('state_id', 828)->get();
+        $data['communes'] = Commune::get();
 
         // $data['owners'] = User::whereHas('roles', function($query) {
         //         $query->where('id', 2);
@@ -135,7 +139,7 @@ class CustomerController extends Controller
         ]);
 
         try {
-            $place_id = auth()->user()->hasAllPermissions(allpermissions()) ? $this->input('place_id') : auth()->user()->place_id;
+            $place_id = auth()->user()->hasAllPermissions(allpermissions()) ? $request->place_id : auth()->user()->place_id;
 
 			if(Tariff::getCurrent($request['category_id'], $place_id) == null) {
                 return redirect()
@@ -171,6 +175,8 @@ class CustomerController extends Controller
                 'state_id' => $request['state_id'],
                 'city_id' => $request['city_id'],
                 'tariff_id' => $request['tariff_id'],
+                'district_id' => $request['district_id'],
+                'commune_id' => $request['commune_id'],
                 'status'   => 1,
                 'role_id'   => 4 // Driver
             ];
@@ -191,6 +197,8 @@ class CustomerController extends Controller
                 ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
         } catch (Exception $e) {
             DB::rollBack();
+
+            throw $e;
             return redirect()
                 ->route('customer.list')
                 ->with(['flashMsg' => ['msg' => "The customer successfully created but failed to send the email, because the email is not configured.", 'type' => 'error']]);
@@ -257,6 +265,8 @@ class CustomerController extends Controller
             );
 
             $viewData['tariffs'] = Tariff::where('status', 1)->get();
+            $viewData['districts'] = District::where('state_id', 828)->get();
+            $viewData['communes'] = Commune::get();
 
             return view('customer.edit', $viewData);
         } catch (\Throwable $th) {
@@ -301,6 +311,9 @@ class CustomerController extends Controller
         }
 
         try {
+
+            // print_r("<pre>");
+            // print_r($request->all());die();
             $user->name = $request['name'];
             $user->phone_number = $request['phone_number'];
             $user->id_number = $request['id_number'];
@@ -315,6 +328,8 @@ class CustomerController extends Controller
             $user->state_id = $request['state_id'];
             $user->city_id = $request['city_id'];
             $user->tariff_id = $request['tariff_id'];
+            $user->district_id = $request['district_id'] ?? 0;
+            $user->commune_id = $request['commune_id'] ?? 0;
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
             $user->update();
 
