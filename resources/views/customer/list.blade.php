@@ -184,19 +184,34 @@
                             },
                         },
                         {
-                            data: "has_parking",
-                            name: "has_parking",
+                            data: "start_at",
+                            name: "start_at",
                             render: function (data, type, row, index) {
-                                return data ? data.tariff_start_at : '-';
+                                return data ? data : '-';
                             },
                         },
                         {
-                            data: "has_parking",
-                            name: "has_parking",
+                            data: "end_at",
+                            name: "end_at",
                             render: function (data, type, row, index) {
-                                return data ? data.tariff_end_at : '-';
+                                return data ? data : '-';
                             },
                         },
+
+                        // {
+                        //     data: "has_parking",
+                        //     name: "has_parking",
+                        //     render: function (data, type, row, index) {
+                        //         return data ? data.tariff_start_at : '-';
+                        //     },
+                        // },
+                        // {
+                        //     data: "has_parking",
+                        //     name: "has_parking",
+                        //     render: function (data, type, row, index) {
+                        //         return data ? data.tariff_end_at : '-';
+                        //     },
+                        // },
                         
                         {
                             data: "roles",

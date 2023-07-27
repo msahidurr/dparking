@@ -241,6 +241,30 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="start_at" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.start_at') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                             
+                                <input type="date" id="start_at" name="start_at" class="form-control{{ $errors->has('start_at') ? ' is-invalid' : '' }}" />
+                                @if ($errors->has('start_at'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('start_at') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="end_at" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.end_at') }}<span class="tcr i-req"></span></label>
+                            <div class="col-md-9">                             
+                                <input type="date" id="end_at" name="end_at" class="form-control{{ $errors->has('end_at') ? ' is-invalid' : '' }}" />
+                                @if ($errors->has('end_at'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('end_at') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0 d-flex justify-content-end">
                             <div class="col-md-7 offset-md-3 d-flex justify-content-end">
                                 <button type="reset" class="btn btn-secondary me-2" id="frmClear">

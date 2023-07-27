@@ -267,7 +267,7 @@ class UserController extends Controller
                 $user->category_wise_floor_slot_id = $validated['category_wise_floor_slot_id'];
                 $user->country_id = $validated['country_id'];
                 $user->state_id = $validated['state_id'];
-                $user->city_id = $validated['city_id'];                
+                $user->city_id = $validated['city_id'] ?? null;                
                 // if ($request->role == 2) {
                 //     $user->place_id = $validated['place_id'];
                 // }

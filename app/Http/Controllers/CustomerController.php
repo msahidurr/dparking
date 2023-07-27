@@ -178,7 +178,8 @@ class CustomerController extends Controller
                 'city_id' => $request['city_id'],
                 'tariff_id' => $request['tariff_id'],
                 'district_id' => $request['district_id'] ?: 0,
-                'commune_id' => $request['commune_id'] ?: 0,
+                'start_at' => $request['start_at'] ?: null,
+                'end_at' => $request['end_at'] ?: null,
                 'status'   => 1,
                 'role_id'   => 4 // Driver
             ];
@@ -335,16 +336,17 @@ class CustomerController extends Controller
             $user->district_id = $request['district_id'] ?: 0;
             $user->commune_id = $request['commune_id'] ?: 0;
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
+            $user->start_at = $request['start_at'] ?: null;
+            $user->end_at = $request['end_at'] ?: null;
             $user->update();
 
             return redirect()->route('customer.list')->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);
         } catch (\PDOException $e) {
-
-            throw $e;
             return redirect()
                 ->back()
                 ->with(['flashMsg' => ['msg' => $this->getMessage($e), 'type' => 'error']]);
         }
+        
         return redirect()
             ->route('customer.list')
             ->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);
