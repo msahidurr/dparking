@@ -6,6 +6,7 @@ use App\Models\Parking;
 use App\Models\Category;
 use App\Models\Tariff;
 use App\Models\RfidVehicle;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreParkingRequest;
 use App\Http\Requests\UpdateParkingRequest;
@@ -596,6 +597,13 @@ class ParkingController extends Controller
 	 */
 	public function barcode(Parking $parking)
 	{
+		$setting = Setting::orderBy('created_at', 'desc')->first();
+
+		$parking->logo = $setting->logo ?? "";
+
+		// print_r("<pre>");
+		// print_r($parking->driver);die();
+
 		return view('content.parking.barcode')->with(['parking' => $parking]);
 	}
 

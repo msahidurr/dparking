@@ -9,9 +9,22 @@
                 <div class="card-header">{{ __('application.parking.barcode_print') }}</div>
 
                 <div class="card-body tc" id="printDiv">
+
                     <link rel="stylesheet" href="{{asset('css/custom/content/barcode.css')}}" />
+
+                    @isset($settings->logo)
+                        @if($settings->logo)
+                            <p class="dN tc fwb fs-16">
+                                <img src="{{ ($settings->logo) ? asset($settings->logo) : '' }}" alt="barcode" class="w70 ml15" style="width: 170px;margin-left: 10px;"/>
+                            </p>
+                        @endif
+                    @endisset
+                    
+
                     <p class="dN tc fwb fs-16">{{ ($settings->site_title) ? $settings->site_title : config('app.name', 'Demo Parking') }}</p>
+
                     <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($parking->barcode, 'C128', 50, 1366) }}" alt="barcode" class="w70 ml15"/>
+
                     <table class="table table-condensed rTable">
                         <tbody>
                             <tr>
@@ -27,7 +40,12 @@
                             <tr>
                                 <td class="w40">{{ __('application.parking.driver_name') }}</td>                                
                                 <td class="w10">:</td>                                
-                                <td class="w50">{{$parking->driver_name}}</td>                                
+                                <td class="w50">{{$parking->driver->name ?? ""}}</td>                                
+                            </tr>
+                            <tr>
+                                <td class="w40">{{ __('application.parking.barcode') }}</td>                                
+                                <td class="w10">:</td>                                
+                                <td class="w50">{{$parking->barcode ?? ""}}</td>                                
                             </tr>
                             <tr>
                                 <td class="w40">{{ __('application.parking.driver_mobile') }}</td>                                

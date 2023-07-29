@@ -57,7 +57,7 @@ class TariffController extends Controller
                 $search['start_date'] = $request->input('search')['value'];
                 $search['end_date'] = $request->input('search')['value'];
                 $search['amount'] = $request->input('search')['value'];
-                $search['min_amount'] = $request->input('search')['value'];
+                // $search['min_amount'] = $request->input('search')['value'];
             }
 
             if ($request->input('where')) {
@@ -110,8 +110,6 @@ class TariffController extends Controller
             ]);
 
         } catch(\PDOException $e) {
-
-            throw $e;
             return redirect()
                             ->back()
                             ->withInput()

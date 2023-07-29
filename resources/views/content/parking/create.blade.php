@@ -2,6 +2,13 @@
 @section('title', ' - Add Parking')
 @push('css')
 <link rel="stylesheet" href="{{ asset('css/custom/parking.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .select2-selection__rendered {
+        margin-top: -13px
+    }
+</style>
 @endpush
 
 @section('content')
@@ -72,7 +79,7 @@
                                             <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
                                         </div>
                                         <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            class="select2 form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
                                             <option value="">Select</option>
                                             @isset($drivers)
                                                 @foreach($drivers as $driver)
@@ -94,13 +101,12 @@
                                                 __('application.parking.agent_name') }}</label>
                                             
                                             <select id="agent_id" type="text"
-                                                class="form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}" name="agent_id" value="{{ old('agent_id') }}">
+                                                class="select2 form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}" name="agent_id" value="{{ old('agent_id') }}">
                                                 <option value="">Select</option>
                                                 @isset($agents)
                                                     @foreach($agents as $agent)
                                                         <option value="{{$agent->id}}">{{$agent->name}}</option>
                                                     @endforeach
-                                                    
                                                 @endisset
                                             </select>
 
@@ -265,6 +271,8 @@
 </div>
 @endsection
 @push('scripts')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     var categories = @json([]);
     var tariffs = @json([]);
@@ -273,6 +281,8 @@
     // var agents = @json($agents);
     var floors = @json([]);
     var slots = @json([]);
+
+    $(".select2").select2();
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

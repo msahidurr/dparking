@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ModelCommonMethodTrait;
 use Carbon\Carbon;
+use App\User;
 
 class Parking extends Model
 {
 	use ModelCommonMethodTrait;
 
-	protected $with = ['tariff'];
+	protected $with = ['tariff', 'driver'];
 
 	protected $appends = ['tariff_start_at', 'tariff_end_at'];
 
@@ -93,5 +94,10 @@ class Parking extends Model
 	public function rfid_entry()
 	{
 		return $this->hasOne('App\Models\RfidDeviceEntry');
+	}
+
+	public function driver()
+	{
+		return $this->hasOne(User::class, 'id', 'driver_id');
 	}
 }

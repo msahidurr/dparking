@@ -72,7 +72,7 @@ class StoreUserInformation extends FormRequest
                 $userParam = $userParam->id;
             if (
                 $this::user()->id == $userParam
-                && !Hash::check($validator->getData()['currentPassword'], $this::user()->makeVisible('password')->password)
+                && !Hash::check($validator->getData()['currentPassword'] ?? '', $this::user()->makeVisible('password')->password)
             ) {
                 $validator->errors()->add('currentPassword', 'Current Password is not matched.');
             } elseif (
