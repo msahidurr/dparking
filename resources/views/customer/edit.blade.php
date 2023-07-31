@@ -293,6 +293,23 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="period" class="col-md-3 col-form-label text-md-right"> {{ __('application.tariff.period') }} <span class="tcr i-req">*</span></label>
+                            <div class="col-md-9">
+                                <select name="period" id="period" class="select2 form-control {{ $errors->has('period') ? ' is-invalid' : '' }}" required>
+                                    @foreach(getPeriods() as $key => $period)
+                                        <option value="{{ $period }}" @if($user->period == $period) selected @endif>{{ $period }}</option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('period'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('period') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0 d-flex justify-content-end">
                             <div class="col-md-9 offset-md-3 d-flex justify-content-end">
                                 <button type="reset" class="btn btn-secondary me-2" id="frmClear">

@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="col-sm-12 col-md-3 mb-2">
+        {{-- <div class="col-sm-12 col-md-3 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5>{{ __('application.parking.total_available') }}</h5>
@@ -35,7 +35,7 @@
                     <h1>{{$total_slots - $currently_parking}}</h1>
                 </div>
             </div>
-        </div>  --}}
+        </div> --}}
         <div class="col-md-3 col-sm-12 mb-2">
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
@@ -73,38 +73,44 @@
 
                                     <div class="col-12">
                                         <div class="form-group mb-1">
-                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
+                                            <label for="driver_id" class="col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.driver_name')
+                                                }}</label>
                                         </div>
                                         <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}"
+                                            name="driver_id" value="{{ old('driver_id') }}" required>
                                             <option value="">Select</option>
                                             @isset($drivers)
-                                                @foreach($drivers as $driver)
-                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
-                                                @endforeach
+                                            @foreach($drivers as $driver)
+                                            <option value="{{$driver->id}}" @if($driver->id == old('driver_id',
+                                                $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
+                                            @endforeach
                                             @endisset
                                         </select>
 
                                         @if ($errors->has('driver_id'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('driver_id') }}</strong>
-                                            </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('driver_id') }}</strong>
+                                        </span>
                                         @endif
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="agent_id" class="col-form-label text-md-right">{{
                                                 __('application.parking.agent_name') }}</label>
-                                            
+
                                             <select id="agent_id" type="text"
-                                                class="form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}" name="agent_id" value="{{ old('agent_id') }}">
+                                                class="form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}"
+                                                name="agent_id" value="{{ old('agent_id') }}">
                                                 <option value="">Select</option>
                                                 @isset($agents)
-                                                    @foreach($agents as $agent)
-                                                        <option value="{{$agent->id}}" @if($agent->id == $parking->agent_id) selected @endif>{{$agent->name}}</option>
-                                                    @endforeach
-                                                    
+                                                @foreach($agents as $agent)
+                                                <option value="{{$agent->id}}" @if($agent->id == $parking->agent_id)
+                                                    selected @endif>{{$agent->name}}</option>
+                                                @endforeach
+
                                                 @endisset
                                             </select>
 
@@ -122,7 +128,8 @@
                                                 class="col-md-4 col-form-label col-form-label text-md-right"><span
                                                     class="tcr i-req">*</span>{{ __('application.parking.place')
                                                 }}</label>
-                                            <input type="text" id="place_id_text" class="form-control" required readonly />
+                                            <input type="text" id="place_id_text" class="form-control" required
+                                                readonly />
 
                                             <input id="place_id" name="place_id" type="hidden" />
                                         </div>
@@ -131,10 +138,12 @@
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="category_id"
-                                                class="col-md-4 col-form-label col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.type')
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.type')
                                                 }}</label>
-                                            <input type="text" id="category_id_text" class="form-control" required readonly/>
-                                            <input type="hidden" name="category_id" id="category_id"/>
+                                            <input type="text" id="category_id_text" class="form-control" required
+                                                readonly />
+                                            <input type="hidden" name="category_id" id="category_id" />
                                         </div>
                                     </div>
 
@@ -144,22 +153,26 @@
                                                 class="col-md-4 col-form-label col-form-label text-md-right"><span
                                                     class="tcr i-req">*</span>{{ __('application.parking.tariff')
                                                 }}</label>
-                                            <input type="text" name="tariff_id" id="tariff_id_text" class="form-control" required readonly>
+                                            <input type="text" name="tariff_id" id="tariff_id_text" class="form-control"
+                                                required readonly>
                                             <input type="hidden" name="tariff_id" id="tariff_id" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-md-12">                    
-                                        <label for="floor_id" class="col-form-label text-md-right">{{ __('application.customer.floor') }}<span class="tcr i-req"></span></label>
+                                        <div class="col-md-12">
+                                            <label for="floor_id" class="col-form-label text-md-right">{{
+                                                __('application.customer.floor') }}<span
+                                                    class="tcr i-req"></span></label>
                                             <input type="text" id="floor_id_text" class="form-control" readonly />
                                             <input type="hidden" id="floor_id" name="floor_id" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="slot_id" class="col-md-12 col-form-label text-md-right">{{ __('application.customer.lot') }}<span class="tcr i-req"></span></label>
-                                        <div class="col-md-12">                                
+                                        <label for="slot_id" class="col-md-12 col-form-label text-md-right">{{
+                                            __('application.customer.lot') }}<span class="tcr i-req"></span></label>
+                                        <div class="col-md-12">
                                             <input type="text" id="slot_id_text" class="form-control" readonly>
                                             <input type="hidden" id="slot_id" name="slot_id">
                                         </div>
@@ -206,8 +219,8 @@
                                                 __('application.parking.id_number') }}</label>
                                             <input id="id_number" type="text"
                                                 class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
-                                                name="id_number" value="{{ old('id_number') }}"
-                                                autocomplete="off" readonly>
+                                                name="id_number" value="{{ old('id_number') }}" autocomplete="off"
+                                                readonly>
 
                                             @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">
@@ -216,9 +229,25 @@
                                             @endif
                                         </div>
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="period" class="col-form-label text-md-right">{{
+                                                __('application.tariff.period') }}</label>
+                                            <input id="period" type="text"
+                                                class="form-control {{ $errors->has('period') ? ' is-invalid' : '' }}"
+                                                name="period" value="{{ old('period') }}" autocomplete="off" readonly>
+
+                                            @if ($errors->has('period'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('period') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="pull-right">
                                     <button type="reset" class="btn btn-secondary" id="frmClear">

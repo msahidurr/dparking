@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="col-sm-12 col-md-3 mb-2">
+        {{-- <div class="col-sm-12 col-md-3 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5>{{ __('application.parking.total_available') }}</h5>
@@ -32,7 +32,7 @@
                     <h1>{{$total_slots - $currently_parking}}</h1>
                 </div>
             </div>
-        </div>  --}}
+        </div> --}}
         <div class="col-md-3 col-sm-12 mb-2">
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
@@ -41,7 +41,8 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-8">
-                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1" placeholder="Barcode" autocomplete="off">
+                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1"
+                                    placeholder="Barcode" autocomplete="off">
                             </div>
                             <div class="col-md-4">
                                 <input value="Find" class="btn btn-outline-info" type="submit">
@@ -79,13 +80,12 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 @endsection
 @push('scripts')
-    {{--  <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>  --}}
-    <script>
-
+{{-- <script src="{{ assetz('js/custom/settings/parking.js') }}"></script> --}}
+<script>
     (function ($) {
         "use strict";
         var parkingDatatableEl = null;
@@ -431,6 +431,6 @@
         });
 
     })(jQuery);
-    </script>
+</script>
 
 @endpush

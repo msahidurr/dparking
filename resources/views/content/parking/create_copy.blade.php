@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="col-sm-12 col-md-3 mb-2">
+        {{-- <div class="col-sm-12 col-md-3 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5>{{ __('application.parking.total_available') }}</h5>
@@ -36,7 +36,7 @@
                     <h1>{{ $total_slots - $currently_parking }}</h1>
                 </div>
             </div>
-        </div>  --}}
+        </div> --}}
         <div class="col-md-3 col-sm-12 mb-2">
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
@@ -45,10 +45,12 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1" placeholder="{{__('application.parking.barcode')}}" autocomplete="off">
+                                <input type="text" name="barcode" id="barcode" class="form-control" tabindex="1"
+                                    placeholder="{{__('application.parking.barcode')}}" autocomplete="off">
                             </div>
                             <div class="col-md-12">
-                                <input value="{{__('application.parking.find')}}" class="btn btn-sm btn-outline-info pull-right mt-2" type="submit">                                
+                                <input value="{{__('application.parking.find')}}"
+                                    class="btn btn-sm btn-outline-info pull-right mt-2" type="submit">
                             </div>
                         </div>
                     </form>
@@ -91,14 +93,16 @@
                                             @endif
                                         </div>
                                         @else
-                                        <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
+                                        <input type="hidden" id="place_id" name="place_id"
+                                            value="{{auth()->user()->place_id}}">
                                         @endif
                                     </div>
 
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="category_id"
-                                                class="col-md-4 col-form-label col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.type')
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.type')
                                                 }}</label>
                                             <select name="category_id" id="category_id"
                                                 class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}"
@@ -136,15 +140,19 @@
 
                                     <div class="col-12">
                                         <div class="form-group mb-1">
-                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
+                                            <label for="driver_id" class="col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.driver_name')
+                                                }}</label>
                                         </div>
                                         <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}"
+                                            name="driver_id" value="{{ old('driver_id') }}" required>
                                             <option value="">Select</option>
                                             @isset($drivers)
-                                                @foreach($drivers as $driver)
-                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id')) selected @endif>{{ $driver->name }}</option>
-                                                @endforeach
+                                            @foreach($drivers as $driver)
+                                            <option value="{{$driver->id}}" @if($driver->id == old('driver_id'))
+                                                selected @endif>{{ $driver->name }}</option>
+                                            @endforeach
                                             @endisset
                                         </select>
 
@@ -160,8 +168,9 @@
                                             <label for="owner_id" class="col-form-label text-md-right">{{
                                                 __('application.parking.agent_name') }}</label>
                                             <select id="owner_id" type="text"
-                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}" name="owner_id" value="{{ old('owner_id') }}" readonly>
-                                            
+                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}"
+                                                name="owner_id" value="{{ old('owner_id') }}" readonly>
+
                                             </select>
 
                                             @if ($errors->has('owner_id'))
@@ -213,8 +222,8 @@
                                                 __('application.parking.id_number') }}</label>
                                             <input id="id_number" type="text"
                                                 class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
-                                                name="id_number" value="{{ old('id_number') }}"
-                                                autocomplete="off" readonly>
+                                                name="id_number" value="{{ old('id_number') }}" autocomplete="off"
+                                                readonly>
 
                                             @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">

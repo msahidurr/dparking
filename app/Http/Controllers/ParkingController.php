@@ -575,6 +575,11 @@ class ParkingController extends Controller
 
 				// print_r("<pre>");
 				// print_r($viewData);die();
+
+				$viewData['setting'] = Setting::orderBy('created_at', 'desc')->first();
+
+				// $viewData['logo'] = $setting->logo ?? "";
+				
 				return view('content.parking.end')->with($viewData);
 			} catch (Exception $e) {
 

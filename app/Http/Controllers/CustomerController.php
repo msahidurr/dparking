@@ -329,6 +329,7 @@ class CustomerController extends Controller
                 'district_id' => $request['district_id'] ?: 0,
                 'start_at' => $request['start_at'] ?: null,
                 'end_at' => $request['end_at'] ?: null,
+                'period' => $request['period'] ?: null,
                 'status'   => 1,
                 'role_id'   => 4 // Driver
             ];
@@ -487,6 +488,7 @@ class CustomerController extends Controller
             $user->category_wise_floor_slot_id = $request['category_wise_floor_slot_id'];
             $user->start_at = $request['start_at'] ?: null;
             $user->end_at = $request['end_at'] ?: null;
+            $user->period = $request['period'] ?: null;
             $user->update();
 
             return redirect()->route('customer.list')->with(['flashMsg' => ['msg' => 'Customer information successfully updated.', 'type' => 'success']]);

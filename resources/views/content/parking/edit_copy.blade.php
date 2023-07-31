@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="col-sm-12 col-md-3 mb-2">
+        {{-- <div class="col-sm-12 col-md-3 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5>{{ __('application.parking.total_available') }}</h5>
@@ -35,7 +35,7 @@
                     <h1>{{$total_slots - $currently_parking}}</h1>
                 </div>
             </div>
-        </div>  --}}
+        </div> --}}
         <div class="col-md-3 col-sm-12 mb-2">
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
@@ -94,10 +94,11 @@
                                             @endif
                                         </div>
                                         @else
-                                        <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
+                                        <input type="hidden" id="place_id" name="place_id"
+                                            value="{{auth()->user()->place_id}}">
                                         @endif
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="category_id"
@@ -125,12 +126,15 @@
                                                     class="tcr i-req">*</span>{{ __('application.parking.tariff')
                                                 }}</label>
                                             <select name="tariff_id" id="tariff_id"
-                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}" required>
+                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}"
+                                                required>
                                                 @isset($tariffs)
-                                                    @foreach($tariffs as $key => $tariff)
-                                                        <option value="{{ $tariff->id }}" @if($tariff->id == $parking->tariff_id) selected @endif>{{ $tariff->id }} {{ $parking->tariff_id }}</option>
-                                                    @endforeach
-                                                @endisset                                                
+                                                @foreach($tariffs as $key => $tariff)
+                                                <option value="{{ $tariff->id }}" @if($tariff->id ==
+                                                    $parking->tariff_id) selected @endif>{{ $tariff->id }} {{
+                                                    $parking->tariff_id }}</option>
+                                                @endforeach
+                                                @endisset
                                             </select>
 
                                             @if ($errors->has('tariff_id'))
@@ -142,15 +146,19 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mb-1">
-                                            <label for="driver_id" class="col-form-label text-md-right"><span class="tcr i-req">*</span>{{ __('application.parking.driver_name') }}</label>
+                                            <label for="driver_id" class="col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.driver_name')
+                                                }}</label>
                                         </div>
                                         <select id="driver_id" type="text"
-                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}" name="driver_id" value="{{ old('driver_id') }}" required>
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}"
+                                            name="driver_id" value="{{ old('driver_id') }}" required>
                                             <option value="">Select</option>
                                             @isset($drivers)
-                                                @foreach($drivers as $driver)
-                                                    <option value="{{$driver->id}}" @if($driver->id == old('driver_id', $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
-                                                @endforeach
+                                            @foreach($drivers as $driver)
+                                            <option value="{{$driver->id}}" @if($driver->id == old('driver_id',
+                                                $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
+                                            @endforeach
                                             @endisset
                                         </select>
 
@@ -166,8 +174,9 @@
                                             <label for="owner_id" class="col-form-label text-md-right">{{
                                                 __('application.parking.agent_name') }}</label>
                                             <select id="owner_id" type="text"
-                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}" name="owner_id" value="{{ old('owner_id') }}" readonly>
-                                            
+                                                class="form-control {{ $errors->has('owner_id') ? ' is-invalid' : '' }}"
+                                                name="owner_id" value="{{ old('owner_id') }}" readonly>
+
                                             </select>
 
                                             @if ($errors->has('owner_id'))
@@ -184,8 +193,8 @@
                                                     class="tcr i-req">*</span>{{ __('application.parking.vehicle_no')
                                                 }}</label>
                                             <input id="vehicle_no" type="text"
-                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}" name="vehicle_no" autocomplete="off"
-                                                required readonly>
+                                                class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}"
+                                                name="vehicle_no" autocomplete="off" required readonly>
 
                                             @if ($errors->has('vehicle_no'))
                                             <span class="invalid-feedback" role="alert">
@@ -218,8 +227,8 @@
                                                 __('application.parking.id_number') }}</label>
                                             <input id="id_number" type="text"
                                                 class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
-                                                name="id_number" value="{{ old('id_number') }}"
-                                                autocomplete="off" readonly>
+                                                name="id_number" value="{{ old('id_number') }}" autocomplete="off"
+                                                readonly>
 
                                             @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">

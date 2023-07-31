@@ -337,6 +337,12 @@
                 $("#slot_id_text").val(details.slot.slot_name)
             }
 
+            if(details.period) {
+                $("#period").val(details.period)
+                $("#period").val(details.period)
+            }
+
+            console.log(details)
             // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
 
             // var html = '';
@@ -382,7 +388,10 @@
                 $("#slot_id_text").val(details.slot.slot_name)
             }
 
-            console.log(details)
+            if(details.period) {
+                $("#period").val(details.period)
+                $("#period").val(details.period)
+            }
 
             // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
 
