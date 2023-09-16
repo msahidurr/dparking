@@ -98,7 +98,7 @@
             $availableSlot = $totalSlot - $bookedSlot;
             @endphp
             <th class="main-head">{{ __('application.report.parking_slots_place') }} : {{ $slot[0]->place_name }} , {{ __('application.report.parking_slots_floor') }} : {{ $floorWiseSlots[0]->floor_name }},
-                {{ __('application.report.parking_slots_total_slot') }} : {{ $totalSlot }}, {{ __('application.report.parking_slots_booked') }} : {{ $bookedSlot }}, {{ __('application.report.parking_slots_available') }} {{ $availableSlot }}</th>
+                {{ __('Total Customer') }} : {{ $totalSlot }}, {{ __('Total Paid') }} : {{ $bookedSlot }}, {{ __('Past Due') }} {{ $availableSlot }}</th>
         </tr>
         <tr>
             <td colspan="3">
@@ -106,9 +106,12 @@
                     <tr>
                         <th width="5%">{{ __('application.report.parking_slots_serial') }}</th>
                         <th>{{ __('application.report.parking_slots_category') }}</th>
-                        <th width="10%" class="tc">{{ __('application.report.parking_slots_total_slot') }}</th>
-                        <th width="10%" class="tc">{{ __('application.report.parking_slots_booked') }}</th>
-                        <th width="10%" class="tc">{{ __('application.report.parking_slots_available') }}</th>
+                        {{-- <th width="10%" class="tc">{{ __('application.report.parking_slots_total_slot') }}</th> --}}
+                        <th width="10%" class="tc">{{ __('Total Customer') }}</th>
+                        {{-- <th width="10%" class="tc">{{ __('application.report.parking_slots_booked') }}</th> --}}
+                        <th width="10%" class="tc">{{ __('Total Paid') }}</th>
+                        {{-- <th width="10%" class="tc">{{ __('application.report.parking_slots_available') }}</th> --}}
+                        <th width="10%" class="tc">{{ __('Past Due') }}</th>
                         <th width="40%" class="tc">{{ __('application.report.parking_slots_available_slot') }}</th>
                     </tr>
                     @php

@@ -37,7 +37,12 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right"> {{ __('application.tariff.name') }}<span class="tcr i-req">*</span></label>
 
                             <div class="col-md-8">
-                                <input id="name" type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" autocomplete="off" required>
+                                <select id="name" type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" autocomplete="off" required>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Bi Weekly">Bi Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Yearly">Yearly</option>
+                                </select>
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">

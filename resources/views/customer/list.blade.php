@@ -228,7 +228,8 @@
                         {
                             data: "status",
                             render: function (data, type, row) {
-                                return data == 1 ? "Active" : "Deactive";
+                                return data;
+                                // return data == 1 ? "Active" : "Deactive";
                             },
                         },
                         {

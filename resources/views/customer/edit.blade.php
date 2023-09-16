@@ -132,7 +132,7 @@
                                 __('application.customer.state') }}<span class="tcr i-req"></span></label>
                             <div class="col-md-9">
                                 <select id="state_id" name="state_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+                                    class="select2 form-control{{ $errors->has('state_id') ? ' is-invalid' : '' }}">
 
                                 </select>
                                 @if ($errors->has('state_id'))
@@ -147,7 +147,7 @@
                                 __('application.customer.city') }}<span class="tcr i-req"></span></label>
                             <div class="col-md-9">
                                 <select id="city_id" name="city_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+                                    class="select2 form-control{{ $errors->has('city_id') ? ' is-invalid' : '' }}">
 
                                 </select>
                                 @if ($errors->has('city_id'))
@@ -215,7 +215,7 @@
                                 __('application.user.floor') }}<span class="tcr i-req"></span></label>
                             <div class="col-md-9">
                                 <select id="floor_id" name="floor_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+                                    class="select2 form-control{{ $errors->has('floor_id') ? ' is-invalid' : '' }}">
 
                                 </select>
                                 @if ($errors->has('floor_id'))
@@ -227,7 +227,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="category_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.type') }}<span class="tcr i-req">*</span></label>
+                            <label for="category_id" class="col-md-3 col-form-label text-md-right">{{ __('application.customer.type') }} sss<span class="tcr i-req">*</span></label>
                             <div class="col-md-9">
                                 <select name="category_id" id="category_id" class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" required>
 
@@ -245,12 +245,12 @@
                                 __('application.user.slot') }}<span class="tcr i-req"></span></label>
                             <div class="col-md-9">
                                 <select id="slot_id" name="category_wise_floor_slot_id"
-                                    class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}">
+                                    class="select2 form-control{{ $errors->has('category_wise_floor_slot_id') ? ' is-invalid' : '' }}">
 
                                 </select>
-                                @if ($errors->has('slot_id'))
+                                @if ($errors->has('category_wise_floor_slot_id'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('slot_id') }}</strong>
+                                    <strong>{{ $errors->first('category_wise_floor_slot_id') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -331,15 +331,18 @@
 @push('scripts')
 <script>
     var floors = @json($floors);
+    var slot_id = "{{$user->category_wise_floor_slot_id}}";
     var slots = @json($slots);
     var countries = @json($countries);
     var states = @json($states);
     var cities = @json($cities);
+    var category_id = "{{$user->category_id}}";
     var categories = @json($categories);
     var tariffs = @json([]);
     var tariffs = @json($tariffs);
     var driverId = 0;
     var tariff_id = "{{$user->tariff_id}}";
+    var floor_id = "{{$user->floor_id}}";
     var communes = @json($communes);
     var communeid = "{{$user->commune_id}}";
 
@@ -395,17 +398,12 @@
         });
     });
 
+    var selected_state = "{{isset($user) ? $user->state_id : null}}";
     $(document).on('change', '#country_id', function(){
         let state = states.filter(val => val.country_id == $(this).val());
         var html = '';
-        var selected_state = "{{isset($user) ? $user->state_id : null}}";
         $.each(state, function(ind,val){
-            var selected = "";
-            if(selected_state == val.id )
-            {
-                selected = "selected";
-            }
-            html += `<option value="${val.id}" ${selected}>${val.name}</option>`;
+            html += `<option value="${val.id}" ${selected_state == val.id ? 'selected' : ''}>${val.name}</option>`;
         });
 
         $(document).find('#state_id').html(html);
@@ -449,18 +447,18 @@
 
         $('#floor_id').trigger('change');
     });
+    var selected_slot = "{{$user->slot_id}}";
     $(document).on('change', '#floor_id', function(){
         let slot = slots.filter(val => val.floor_id == $(this).val());
         var html = '';
-        var selected_slot = "{{isset($user) ? $user->slot_id : null}}";
-
+        
         $.each(slot, function(ind,val){
             var selected = "";
             if(selected_slot == val.id )
             {
                 selected = "selected";
             }
-            html += `<option value="${val.id}" ${selected}>${val.slot_name}</option>`;
+            html += `<option value="${val.id}" ${slot_id == val.id ? 'selected' : ''}>${val.slot_name}</option>`;
         });
 
         $(document).find('#slot_id').html(html);
@@ -487,9 +485,6 @@
     
     $(document).on('change', '#state_id', function(){
         let city = cities.filter(val => val.state_id == $(this).val());
-
-        console.log($(this).val())
-
         if($(this).val() == 828) {
             districtId.show()
             communeId.show()

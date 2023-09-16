@@ -22,6 +22,7 @@ use App\Models\Parking;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\{DB, Hash, Mail};
 use Illuminate\Support\Facades\Artisan;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -236,8 +237,27 @@ class CustomerController extends Controller
 			$totalData->orderBy($this->getTable() . '.id', 'ASC');
         }
 
+        $data = $totalData->where('role_id', 4)->get()->map(function($row) {
+
+            if($row->end_at) {
+                $now = now();
+                $endDate = Carbon::parse($row->end_at);
+                
+                if(! $endDate->gt($now)) {
+                    $row->status = '<span style="color:red;">Expried</span>';
+                }
+            } else {
+                if($row->status == 1) {
+                    $row->status = '<span style="color:blue;">Active</span>';
+                } else {
+                    $row->status = '<span style="color:red;">Deactive</span>';
+                }
+            }
+
+            return $row;
+        });
         return [
-            'data' => $totalData->where('role_id', 4)->get(),
+            'data' => $data,
             'draw'      => (int)request()->input('draw'), //prevent Cross Site Scripting (XSS) attacks. https://datatables.net/manual/server-side
             'recordsTotal'  => $totalCount->where('role_id', 4)->count(),
             'recordsFiltered'   => $filterData->where('role_id', 4)->count(),
@@ -480,7 +500,7 @@ class CustomerController extends Controller
             $user->place_id = $request['place_id'];
             $user->country_id = $request['country_id'];
             $user->state_id = $request['state_id'];
-            $user->state_id = $request['state_id'];
+            $user->floor_id = $request['floor_id'];
             $user->city_id = $request['city_id'];
             $user->tariff_id = $request['tariff_id'];
             $user->district_id = $request['district_id'] ?: 0;
@@ -511,8 +531,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        
+    {  
         try {
 
             DB::beginTransaction();

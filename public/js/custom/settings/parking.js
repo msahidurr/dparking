@@ -274,7 +274,7 @@
         let category = categories.filter(val => val.place_id == $(this).val());
         var html = '';
         $.each(category, function(ind,val){
-            html += `<option value="${val.id}">${val.type}</option>`;
+            html += `<option value="${val.id}" ${category_id == val.id ? 'selected' : ''}>${val.type}</option>`;
         });
 
         $(document).find('#category_id').html(html);
@@ -293,7 +293,7 @@
         let floor = floors.filter(val => val.place_id == $(this).val());
         var html2 = '';
         $.each(floor, function(ind,val){
-            html2 += `<option value="${val.id}">${val.name}</option>`;
+            html2 += `<option value="${val.id}" ${floor_id == val.id? 'selected' : ''}>${val.name}</option>`;
         });
 
         $(document).find('#floor_id').html(html2);
@@ -342,7 +342,7 @@
                 $("#period").val(details.period)
             }
 
-            console.log(details)
+            // console.log(details)
             // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
 
             // var html = '';
