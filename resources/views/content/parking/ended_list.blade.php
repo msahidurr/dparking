@@ -28,13 +28,12 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 @endsection
 @push('scripts')
-    {{--  <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>  --}}
-    <script>
-
+{{-- <script src="{{ assetz('js/custom/settings/parking.js') }}"></script> --}}
+<script>
     (function ($) {
         "use strict";
         var parkingDatatableEl = null;
@@ -380,6 +379,6 @@
         });
 
     })(jQuery);
-    </script>
+</script>
 
 @endpush

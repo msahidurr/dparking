@@ -14,9 +14,24 @@
             $("#parking_list").focus();
         }
 
-        $("#recive_amt").on('input', function (key) {
+        // $("#payForm").submit(function() {
+        //     let pay = parseFloat($("#recive_amt").val());
+        //     let amt = parseFloat($("#payble_amt").text());
+
+        //     if(pay == amt) {
+        //         return true;
+        //     }
+
+        //     alert("Partial payment is not available. Please pay full amount.")
+
+        //     return false;
+        // })
+
+
+        $("#recive_amt").on('input', function (key) { 
             let pay = parseFloat($("#recive_amt").val());
             let amt = parseFloat($("#payble_amt").text());
+
             $("#return_amt").val((pay - amt).toFixed(2));
             if (pay < amt) {
                 $("#paid_amt").val(pay);

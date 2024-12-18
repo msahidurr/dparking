@@ -2,9 +2,17 @@
 
 namespace App;
 
+use App\Models\Category;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Floor;
 use App\Models\Language;
+use App\Models\Place;
 use App\Models\ModelCommonMethodTrait;
+use App\Models\Parking;
+use App\Models\State;
+use App\Models\Tariff;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +37,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'city_id',
         'address',
         'phone_number',
+        'role_id',
+        'id_number',
+        'vehicle_no',
+        'driver_owner_id',
+        'owner_phone_no',
+        'category_id',
+        'driver_owner_name',
+        'tariff_id',
+        'commune_id',
+        'district_id',
+        'start_at',
+        'end_at',
+        'period',
     ];
 
     /**
@@ -67,44 +88,62 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function language()
     {
-        # code...   
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
-    #end
+    
     public function place()
     {
-        # code...   
         return $this->belongsTo(Place::class, 'place_id', 'id');
     }
 
-    public function floot()
-    {
-        # code...   
-        return $this->belongsTo(Floor::class, 'floot_id', 'id');
+    public function floor()
+    { 
+        return $this->belongsTo(Floor::class);
     }
 
     public function slot()
     {
-        # code...   
         return $this->belongsTo(CategoryWiseFloorSlot::class, 'category_wise_floor_slot_id', 'id');
     }
 
     public function country()
-    {
-        # code...   
+    { 
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
     public function state()
     {
-        # code...   
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
 
     public function city()
     {
-        # code...   
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne(User::class, 'id', 'driver_owner_id');
+    }
+
+    public function tariff()
+    {
+        return $this->belongsTo(Tariff::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function parking()
+    { 
+        return $this->hasOne(Parking::class, 'driver_id', 'id');
+    }
+
+    public function hasParking()
+    { 
+        return $this->parking()->whereNull('out_time');
     }
 
 }

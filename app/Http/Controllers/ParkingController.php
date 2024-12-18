@@ -6,12 +6,16 @@ use App\Models\Parking;
 use App\Models\Category;
 use App\Models\Tariff;
 use App\Models\RfidVehicle;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreParkingRequest;
 use App\Http\Requests\UpdateParkingRequest;
 use App\Http\Requests\PayParkingRequest;
 use App\Models\CategoryWiseFloorSlot;
+use App\Models\Floor;
 use App\Models\Place;
+use App\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Session;
 
@@ -268,9 +272,9 @@ class ParkingController extends Controller
 	public function create()
 	{
 		if (auth()->user()->hasAllPermissions(allpermissions())) {
-			$data['places'] = Place::where('status', 1)->get();
-			$data['tariffs'] = Tariff::where('status', 1)->get();
-			$data['categories'] = Category::where('status', 1)->get();
+			// $data['places'] = Place::where('status', 1)->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['categories'] = Category::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->count();
 			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
 				->whereHas('floor', function ($query) {
@@ -279,18 +283,49 @@ class ParkingController extends Controller
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
 				})->with('active_parking')->count();
+			
+			$data['drivers'] = User::whereHas('roles', function($query) {
+						$query->where('id', 4);
+					})
+					->with('place', 'category', 'tariff', 'floor', 'slot')
+					->where('status', 1)
+					->get();
+
+			$data['agents'] = User::whereHas('roles', function($query) {
+					$query->where('id', 2);
+				})
+				->where('status', 1)
+				->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
-			$data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
-			$data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['categories'] = Category::where(['status' => 1, 'place_id' => $place_id])->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->where('place_id', $place_id)->count();
-			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)->where('place_id', $place_id)
+			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
+				->where('place_id', $place_id)
 				->whereHas('floor', function ($query) {
 					$query->where('status', '1');
 				})
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
 				})->with('active_parking')->count();
+			
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
+				->where('status', 1)
+				->get();
+			
+			$data['agents'] = User::whereHas('roles', function($query) {
+					$query->where('id', 2);
+				})
+				->where('status', 1)
+				->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		}
 		return view('content.parking.create')->with($data);
 	}
@@ -307,16 +342,17 @@ class ParkingController extends Controller
 
 		try {
 			$rfidVehicle = RfidVehicle::where('vehicle_no',$validated['vehicle_no'])->where('category_id',$validated['category_id'])->first();
-			$parking = Parking::create([
-				'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
+			Parking::create([
+				'place_id' => auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
 				'tariff_id'    	=> $validated['tariff_id'],
 				'slot_id'    	=> $validated['slot_id'],
 				'vehicle_no'    => $validated['vehicle_no'],
 				'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
 				'category_id'   => $validated['category_id'],
-				'driver_name'   => $validated['driver_name'],
+				'driver_id'   => $validated['driver_id'],
 				'driver_mobile' => $validated['driver_mobile'],
-				'agent_name' 	=> $validated['agent_name'],
+				'agent_id' 	=> $validated['agent_id'] ?? 0,
+				'id_number' 	=> $validated['id_number'],
 				'barcode'       => date('YmdHis') . $request->user()->id,
 				'in_time'       => date('Y-m-d H:i:s'),
 				'created_by'    => $request->user()->id,
@@ -332,8 +368,12 @@ class ParkingController extends Controller
 		}
 
 		return redirect()
-			->route('parking.barcode', ['parking' => $parking->id])
+			->route('parking.index')
 			->with(['flashMsg' => ['msg' => 'Parking successfully added.', 'type' => 'success']]);
+
+		// return redirect()
+		// 	->route('parking.barcode', ['parking' => $parking->id])
+		// 	->with(['flashMsg' => ['msg' => 'Parking successfully added.', 'type' => 'success']]);
 	}
 
 	/**
@@ -355,8 +395,15 @@ class ParkingController extends Controller
 	public function edit(Parking $parking_crud)
 	{
 		if (auth()->user()->hasAllPermissions(allpermissions())) {
-			$data['places'] = Place::where('status', 1)->get();
-			$data['categories'] = Category::where('status', 1)->get();
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
+				->where('status', 1)
+				->get();
+			// $data['tariffs'] = Tariff::where('status', 1)->get();
+			// $data['places'] = Place::where('status', 1)->get();
+			// $data['categories'] = Category::where('status', 1)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->count();
 			$data['parking'] = $parking_crud;
 			$data['total_slots'] = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1)
@@ -366,8 +413,23 @@ class ParkingController extends Controller
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
 				})->with('active_parking')->count();
+			
+			$data['agents'] = User::whereHas('roles', function($query) {
+					$query->where('id', 2);
+				})
+				->where('status', 1)
+				->get();
+			// $data['floors'] = Floor::whereStatus(1)->get();
+			// $data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		} else {
 			$place_id = auth()->user()->place_id;
+			$data['drivers'] = User::whereHas('roles', function($query) {
+					$query->where('id', 4);
+				})
+				->with('place', 'category', 'tariff', 'floor', 'slot')
+				->where('status', 1)
+				->get();
+			$data['tariffs'] = Tariff::where('status', 1)->get();
 			$data['categories'] = Category::where('status', 1)->where('place_id', $place_id)->get();
 			$data['currently_parking'] = Parking::where('out_time', NULL)->where('place_id', $place_id)->count();
 			$data['parking'] = $parking_crud;
@@ -377,8 +439,19 @@ class ParkingController extends Controller
 				})
 				->whereHas('category', function ($query) {
 					$query->where('status', '1');
-				})->with('active_parking')->count();
+				})
+				->with('active_parking')
+				->count();
+			
+			$data['agents'] = User::whereHas('roles', function($query) {
+					$query->where('id', 2);
+				})
+				->where('status', 1)
+				->get();
+			$data['floors'] = Floor::whereStatus(1)->get();
+			$data['slots'] = CategoryWiseFloorSlot::whereStatus(1)->get();
 		}
+
 		return view('content.parking.edit')->with($data);
 	}
 
@@ -394,25 +467,30 @@ class ParkingController extends Controller
 		$validated = $request->validated();
 
 		try {
-			if ($parking_crud->status > 2)
+			if ($parking_crud->status > 2) {
 				return redirect()
 					->back()
 					->withInput()
 					->with(['flashMsg' => ['msg' => "You are not allow to update parking.", 'type' => 'warning']]);
+			}
+				
 			$rfidVehicle = RfidVehicle::where('vehicle_no',$validated['vehicle_no'])->where('category_id',$validated['category_id'])->first();
-			$parking = Parking::where('id', $parking_crud->id)->update([
-				'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
-				'tariff_id'    	=> $validated['tariff_id'],
-				'slot_id'    	=> $validated['slot_id'],
-				'vehicle_no'    => $validated['vehicle_no'],
-				'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
-				'category_id'   => $validated['category_id'],
-				'driver_name'   => $validated['driver_name'],
-				'driver_mobile' => $validated['driver_mobile'],
-				'agent_name' 	=> $validated['agent_name'],
-				'status' 		=> 2,
-				'modified_by'   => $request->user()->id
-			]);
+
+			Parking::where('id', $parking_crud->id)
+				->update([
+					'place_id'    	=> auth()->user()->hasAllPermissions(allpermissions()) ? $validated['place_id'] : auth()->user()->place_id,
+					'tariff_id'    	=> $validated['tariff_id'],
+					'slot_id'    	=> $validated['slot_id'],
+					'vehicle_no'    => $validated['vehicle_no'],
+					'rfid_no'		=> (($rfidVehicle) ? $rfidVehicle->rfid_no : null),
+					'category_id'   => $validated['category_id'],
+					'driver_id'   	=> $validated['driver_id'],
+					'driver_mobile' => $validated['driver_mobile'],
+					'agent_id' 		=> $validated['agent_id'] ?? 0,
+					'id_number' 	=> $validated['id_number'],
+					'status' 		=> 2,
+					'modified_by'   => $request->user()->id
+				]);
 		} catch (\PDOException $e) {
 
 			return redirect()
@@ -449,9 +527,13 @@ class ParkingController extends Controller
 	public function end(Request $request, Parking $parking)
 	{
 		$viewData = [];
+		$viewData['amt'] = 0;
+		$viewData['fine_amount'] = 0;
+		$viewData['total_duration'] = 0;
 		if ($parking->status <= 2) {
 			try {
 				$tariff = $parking->tariff;
+
 				if ($tariff == NULL) {
 					return redirect()
 						->back()
@@ -466,6 +548,18 @@ class ParkingController extends Controller
 
 				// \Exceptio\Utlt::look($dateDiff);
 				$amt = $tariff->min_amount + $tariff->amount;
+
+				$now = now();
+				$endDate = Carbon::parse($parking->in_time)->addDays($parking->tariff->type);
+
+				if($now->gt($endDate)) {
+					$differenceDay = $now->diffInDays($endDate);
+					$backlogDay = (round($differenceDay / $parking->tariff->type));
+					$viewData['fine_amount'] = round($amt * $backlogDay, 2);
+					$amt = $amt + $viewData['fine_amount'];
+					$viewData['total_duration'] = $differenceDay;
+				}
+
 				// $hour = $dateDiff->h;
 				// if ($dateDiff->days > 0)
 				// 	$hour = $dateDiff->h + ($dateDiff->days * 24);
@@ -476,7 +570,16 @@ class ParkingController extends Controller
 				// Session::put('eAmt_' . $parking->id, $amt);
 				$viewData['parking'] = $parking;
 				$viewData['amt'] = $amt;
+				
 				// $viewData['amt'] = $tariff->min_amount > $amt ? $tariff->min_amount : $amt;
+
+				// print_r("<pre>");
+				// print_r($viewData);die();
+
+				$viewData['setting'] = Setting::orderBy('created_at', 'desc')->first();
+
+				// $viewData['logo'] = $setting->logo ?? "";
+				
 				return view('content.parking.end')->with($viewData);
 			} catch (Exception $e) {
 
@@ -499,6 +602,13 @@ class ParkingController extends Controller
 	 */
 	public function barcode(Parking $parking)
 	{
+		$setting = Setting::orderBy('created_at', 'desc')->first();
+
+		$parking->logo = $setting->logo ?? "";
+
+		// print_r("<pre>");
+		// print_r($parking->driver);die();
+
 		return view('content.parking.barcode')->with(['parking' => $parking]);
 	}
 
@@ -519,6 +629,15 @@ class ParkingController extends Controller
 				$tariff = $parking->tariff;
 				$amt = $tariff->min_amount + $tariff->amount;
 
+				// $totalAmount = $amt;
+				$paidAmt = $validated['paid_amt'];
+
+				// if($totalAmount != $paidAmt) {
+				// 	return redirect()
+				// 	->back()
+				// 	->withInput()
+				// 	->with(['flashMsg' => ['msg' => "Partial payment is not available. Please pay full amount.", 'type' => 'error']]);
+				// }
 				// //amount 
 				// if (Session::has('eAmt_' . $parking->id)) {
 				// 	$amt = Session::get('eAmt_' . $parking->id);
@@ -536,8 +655,10 @@ class ParkingController extends Controller
 				// }
 
 				$parking->amount = $amt;
+				$parking->fine_amount = $request->fine_amount;
+				$parking->fine_count_at = now();
 				$parking->modified_by = $request->user()->id;
-				$parking->paid = $validated['paid_amt'];
+				$parking->paid = $paidAmt;
 				$parking->status = 4;
 				$parking->update();
 

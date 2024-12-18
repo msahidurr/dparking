@@ -55,7 +55,11 @@ class StoreUserInformation extends FormRequest
         $rules['city_id'] = '';
         $rules['phone_number'] = '';
         $rules['address'] = '';
-        
+        $rules['id_number'] = '';
+        $rules['vehicle_no'] = ''; 
+        $rules['driver_owner_id'] = ''; 
+        $rules['owner_phone_no'] = '';
+        $rules['category_id'] = '';
 
         return $rules;
     }
@@ -68,7 +72,7 @@ class StoreUserInformation extends FormRequest
                 $userParam = $userParam->id;
             if (
                 $this::user()->id == $userParam
-                && !Hash::check($validator->getData()['currentPassword'], $this::user()->makeVisible('password')->password)
+                && !Hash::check($validator->getData()['currentPassword'] ?? '', $this::user()->makeVisible('password')->password)
             ) {
                 $validator->errors()->add('currentPassword', 'Current Password is not matched.');
             } elseif (
@@ -80,7 +84,7 @@ class StoreUserInformation extends FormRequest
                 $validator->errors()->add('currentPassword', 'Current Password is not matched.');
             }
 
-            if ((!$this::user() || !$this->route('user')) && !$validator->getData()['password']) {
+            if (isset($validator->getData()['password']) && (! $this::user() || ! $this->route('user')) && ! $validator->getData()['password']) {
                 $validator->errors()->add('password', 'Password is required.');
             }
         });

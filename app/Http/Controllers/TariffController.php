@@ -57,7 +57,7 @@ class TariffController extends Controller
                 $search['start_date'] = $request->input('search')['value'];
                 $search['end_date'] = $request->input('search')['value'];
                 $search['amount'] = $request->input('search')['value'];
-                $search['min_amount'] = $request->input('search')['value'];
+                // $search['min_amount'] = $request->input('search')['value'];
             }
 
             if ($request->input('where')) {
@@ -102,7 +102,7 @@ class TariffController extends Controller
                 'type'          => $validated['type'],
                 'start_date'    => $validated['start_date'],
                 'end_date'      => $validated['end_date'],                
-                'min_amount'    => $validated['min_amount'],                
+                // 'min_amount'    => $validated['min_amount'],                
                 'amount'        => $validated['amount'],                
                 'status'        => $validated['status'],                
                 'created_by'    => $request->user()->id,
@@ -110,7 +110,6 @@ class TariffController extends Controller
             ]);
 
         } catch(\PDOException $e) {
-
             return redirect()
                             ->back()
                             ->withInput()
@@ -167,7 +166,7 @@ class TariffController extends Controller
                 'category_id'   => $validated['category_id'],
                 'start_date'    => $validated['start_date'],
                 'end_date'      => $validated['end_date'],                
-                'min_amount'    => $validated['min_amount'],                
+                // 'min_amount'    => $validated['min_amount'],                
                 'amount'        => $validated['amount'],                
                 'status'        => $validated['status'],             
                 'modified_by'   => $request->user()->id

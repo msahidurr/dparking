@@ -30,7 +30,7 @@ class UpdateTariffRequest extends FormRequest
             'category_id'   => 'bail|required|integer',
             'start_date'    => 'bail|required|date',
             'end_date'      => 'bail|required|date|after:start_date',
-            'min_amount'    => 'bail|required|numeric|min:1',
+            // 'min_amount'    => 'bail|required|numeric|min:1',
             'amount'        => 'bail|required|numeric|min:1',            
             'status'        => 'bail|required|boolean',
         ];

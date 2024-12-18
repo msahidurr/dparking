@@ -83,7 +83,7 @@
                     <tr>
                         <th>{{ __('application.report.summary_serial') }}</th>
                         <th>{{ __('application.report.summary_category') }}</th>
-                        <th class="tc">{{ __('application.report.summary_total_parked') }}</th>
+                        <th class="tc">{{ __('Total Customer') }}</th>
                         <th class="tr">{{ __('application.report.summary_total_collection') }} ({{ __('application.report.currency') }})</th>
                     </tr>
                     @php

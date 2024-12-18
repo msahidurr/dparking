@@ -22,9 +22,9 @@
                                     <th>{{__('application.tariff.place')}}</th>
                                     <th>{{__('application.tariff.name')}}</th>
                                     <th>{{__('application.tariff.type')}}</th>
-                                    <th>{{__('application.tariff.start_date')}}</th>
-                                    <th>{{__('application.tariff.end_date')}}</th>
-                                    <th>{{__('application.tariff.min_amount')}}</th>
+                                    {{-- <th>{{__('application.tariff.start_date')}}</th> --}}
+                                    {{-- <th>{{__('application.tariff.end_date')}}</th> --}}
+                                    {{-- <th>{{__('application.tariff.min_amount')}}</th> --}}
                                     <th>{{__('application.tariff.amount')}}</th>
                                     <th>{{__('application.tariff.status')}}</th>
                                     <th>{{__('application.table.option')}}</th>
@@ -73,9 +73,9 @@
                         { name: "place.name", data: "place.name" },
                         { name: "name", data: "name" },
                         { name: "category.type", data: "category.type" },
-                        { name: "start_date", data: "start_date" },
-                        { name: "end_date", data: "end_date" },
-                        { name: "min_amount", data: "min_amount" },
+                        // { name: "start_date", data: "start_date" },
+                        // { name: "end_date", data: "end_date" },
+                        // { name: "min_amount", data: "min_amount" },
                         { name: "amount", data: "amount" },
                         {
                             name: "status",
@@ -117,7 +117,7 @@
                         {
                             searchable: false,
                             orderable: false,
-                            targets: [0,1, 3, 8,9],
+                            targets: [0,1, 3],
                         },
                     ],
                     responsive: true,

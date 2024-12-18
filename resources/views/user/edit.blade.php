@@ -217,9 +217,9 @@
                                 </select>
                                 <input type="hidden" name="required_role" value="true">
                                 @if ($errors->has('role'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('role') }}</strong>
-                                </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -234,9 +234,9 @@
                                     name="password">
 
                                 @if ($errors->has('password'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                             <div class="col-md-9">
                                 <input id="currentPassword" type="password"
                                     class="form-control{{ $errors->has('currentPassword') ? ' is-invalid' : '' }}"
-                                    name="currentPassword" required>
+                                    name="currentPassword">
                                 <span class="form-text text-muted">
                                     You need to provide your current password to update profile
                                 </span>

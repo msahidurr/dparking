@@ -140,9 +140,24 @@ class ReportController extends Controller
      */
     public function slotsReport(Request $request)
     {
+
         $slots = CategoryWiseFloorSlot::where('category_wise_floor_slots.status', 1);
 
         if (count($request->all())) {
+
+            // $users = User::where('role_id', 4)
+            //     ->when($request->place_id != 'all', function($query) use ($request) {
+            //         $query->where('category_wise_floor_slot_id', $request->place_id);
+            //     })
+            //     ->when($request->category_id != NULL, function($query) use ($request) {
+            //         $query->where('category_id', $request->category_id);
+            //     })
+            //     ->when($request->floor_id != NULL, function($query) use ($request) {
+            //         $query->where('floor_id', $request->floor_id);
+            //     })
+            //     ->get();
+
+                
             if ($request->place_id != 'all') {
                 $slots->where('category_wise_floor_slots.place_id', $request->place_id);
             }

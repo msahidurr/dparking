@@ -4,36 +4,63 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ModelCommonMethodTrait;
+use Carbon\Carbon;
+use App\User;
 
 class Parking extends Model
 {
 	use ModelCommonMethodTrait;
+
+	protected $with = ['tariff', 'driver'];
+
+	protected $appends = ['tariff_start_at', 'tariff_end_at'];
+
 	protected $fillable = [
-				'id',
-				'place_id',
-				'slot_id',
-				'category_id',
-				'vehicle_no',
-				'rfid_no',
-				'barcode',
-				'driver_name',
-				'driver_mobile',
-				'in_time',
-				'out_time',
-				'amount',
-				'paid',
-				'status',
-				'tariff_id',
-				'created_by',
-				'modified_by',
-				'agent_name'
-			];
+		'id',
+		'place_id',
+		'slot_id',
+		'category_id',
+		'vehicle_no',
+		'rfid_no',
+		'barcode',
+		'driver_id',
+		'driver_mobile',
+		'in_time',
+		'out_time',
+		'amount',
+		'paid',
+		'status',
+		'tariff_id',
+		'created_by',
+		'modified_by',
+		'agent_id',
+		'id_number',
+		'fine_amount',
+	];
+	
 	protected $guarded = [];
 
 	protected $casts = [
 		'in_time' => 'datetime:m-d-Y H:i:s',
 		'out_time' => 'datetime:m-d-Y H:i:s',
-	];	
+	];
+
+	public function getTariffStartAtAttribute()
+	{
+		if($this->in_time) {
+			return Carbon::parse($this->in_time)->format(env('DATE_FORMAT','m-d-Y h:i A'));
+		}
+		return "";
+	}
+
+	public function getTariffEndAtAttribute()
+	{
+		if(isset($this->tariff->type)) {
+			return Carbon::parse($this->in_time)->addDays($this->tariff->type)->format(env('DATE_FORMAT','m-d-Y h:i A'));
+		}
+
+		return "";
+	}
 
 	public function category()
 	{
@@ -67,5 +94,10 @@ class Parking extends Model
 	public function rfid_entry()
 	{
 		return $this->hasOne('App\Models\RfidDeviceEntry');
+	}
+
+	public function driver()
+	{
+		return $this->hasOne(User::class, 'id', 'driver_id');
 	}
 }

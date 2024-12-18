@@ -92,7 +92,10 @@ class RoleController extends Controller
         ];
 
         $role = Role::create($data);
-        $role->permissions()->sync($validated['permissions']);
+
+        if(isset($validated['permissions']) && $validated['permissions']) {
+            $role->permissions()->sync($validated['permissions']);
+        }
         
         return redirect()
         ->route('roles.index')
@@ -140,7 +143,10 @@ class RoleController extends Controller
         $role->update([
             'name'     => $validated['name']
         ]);
-        $role->permissions()->sync($validated['permissions']);
+
+        if(isset($validated['permissions']) && $validated['permissions']) {
+            $role->permissions()->sync($validated['permissions']);
+        }
 
         return redirect()
             ->route('roles.index')

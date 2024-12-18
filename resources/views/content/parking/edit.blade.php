@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        {{--  <div class="col-sm-12 col-md-3 mb-2">
+        {{-- <div class="col-sm-12 col-md-3 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5>{{ __('application.parking.total_available') }}</h5>
@@ -35,7 +35,7 @@
                     <h1>{{$total_slots - $currently_parking}}</h1>
                 </div>
             </div>
-        </div>  --}}
+        </div> --}}
         <div class="col-md-3 col-sm-12 mb-2">
             <div class="card customEqualEl">
                 <div class="card-header">{{ __('application.parking.quick_checkout') }}</div>
@@ -56,6 +56,7 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
@@ -69,33 +70,114 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="row">
+
                                     <div class="col-12">
-                                        @if(auth()->user()->hasAllPermissions(allpermissions()))
+                                        <div class="form-group mb-1">
+                                            <label for="driver_id" class="col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.driver_name')
+                                                }}</label>
+                                        </div>
+                                        <select id="driver_id" type="text"
+                                            class="form-control {{ $errors->has('driver_id') ? ' is-invalid' : '' }}"
+                                            name="driver_id" value="{{ old('driver_id') }}" required>
+                                            <option value="">Select</option>
+                                            @isset($drivers)
+                                            @foreach($drivers as $driver)
+                                            <option value="{{$driver->id}}" @if($driver->id == old('driver_id',
+                                                $parking->driver_id)) selected @endif>{{ $driver->name }}</option>
+                                            @endforeach
+                                            @endisset
+                                        </select>
+
+                                        @if ($errors->has('driver_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('driver_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="agent_id" class="col-form-label text-md-right">{{
+                                                __('application.parking.agent_name') }}</label>
+
+                                            <select id="agent_id" type="text"
+                                                class="form-control {{ $errors->has('agent_id') ? ' is-invalid' : '' }}"
+                                                name="agent_id" value="{{ old('agent_id') }}">
+                                                <option value="">Select</option>
+                                                @isset($agents)
+                                                @foreach($agents as $agent)
+                                                <option value="{{$agent->id}}" @if($agent->id == $parking->agent_id)
+                                                    selected @endif>{{$agent->name}}</option>
+                                                @endforeach
+
+                                                @endisset
+                                            </select>
+
+                                            @if ($errors->has('agent_id'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('agent_id') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="place_id"
                                                 class="col-md-4 col-form-label col-form-label text-md-right"><span
                                                     class="tcr i-req">*</span>{{ __('application.parking.place')
                                                 }}</label>
-                                            <select name="place_id" id="place_id"
-                                                class="select2 form-control{{ $errors->has('place_id') ? ' is-invalid' : '' }}"
-                                                required>
-                                                <?php
-                                                foreach ($places as $key => $value) {
-                                                    echo '<option value="' . $value->id . '" ' . (old('place_id', $parking->place_id) == $value->id ? ' selected' : '') . '>' . $value->name . '</option>';
-                                                }
-                                                ?>
-                                            </select>
+                                            <input type="text" id="place_id_text" class="form-control" required
+                                                readonly />
 
-                                            @if ($errors->has('place_id'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('place_id') }}</strong>
-                                            </span>
-                                            @endif
+                                            <input id="place_id" name="place_id" type="hidden" />
                                         </div>
-                                        @else
-                                        <input type="hidden" id="place_id" name="place_id" value="{{auth()->user()->place_id}}">
-                                        @endif
                                     </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="category_id"
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.type')
+                                                }}</label>
+                                            <input type="text" id="category_id_text" class="form-control" required
+                                                readonly />
+                                            <input type="hidden" name="category_id" id="category_id" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group mb-1">
+                                            <label for="tariff_id"
+                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
+                                                    class="tcr i-req">*</span>{{ __('application.parking.tariff')
+                                                }}</label>
+                                            <input type="text" name="tariff_id" id="tariff_id_text" class="form-control"
+                                                required readonly>
+                                            <input type="hidden" name="tariff_id" id="tariff_id" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label for="floor_id" class="col-form-label text-md-right">{{
+                                                __('application.customer.floor') }}<span
+                                                    class="tcr i-req"></span></label>
+                                            <input type="text" id="floor_id_text" class="form-control" readonly />
+                                            <input type="hidden" id="floor_id" name="floor_id" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="slot_id" class="col-md-12 col-form-label text-md-right">{{
+                                            __('application.customer.lot') }}<span class="tcr i-req"></span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" id="slot_id_text" class="form-control" readonly>
+                                            <input type="hidden" id="slot_id" name="slot_id">
+                                        </div>
+                                    </div>
+
                                     <div class="col-12">
                                         <div class="form-group mb-1">
                                             <label for="vehicle_no" class="col-form-label text-md-right"><span
@@ -103,8 +185,8 @@
                                                 }}</label>
                                             <input id="vehicle_no" type="text"
                                                 class="form-control {{ $errors->has('vehicle_no') ? ' is-invalid' : '' }}"
-                                                name="vehicle_no" value="{{ old('vehicle_no', $parking->vehicle_no) }}"
-                                                autocomplete="off" required>
+                                                name="vehicle_no" value="{{ old('vehicle_no') }}" autocomplete="off"
+                                                required readonly>
 
                                             @if ($errors->has('vehicle_no'))
                                             <span class="invalid-feedback" role="alert">
@@ -113,71 +195,15 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="category_id"
-                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
-                                                    class="tcr i-req">*</span>{{ __('application.parking.type')
-                                                }}</label>
-                                            <select name="category_id" id="category_id"
-                                                class="select2 form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}"
-                                                required>
-                                                <option value="{{ $parking->category_id }}">{{ $parking->category->type
-                                                    }}</option>
-                                            </select>
 
-                                            @if ($errors->has('category_id'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('category_id') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="tariff_id"
-                                                class="col-md-4 col-form-label col-form-label text-md-right"><span
-                                                    class="tcr i-req">*</span>{{ __('application.parking.tariff')
-                                                }}</label>
-                                            <select name="tariff_id" id="tariff_id"
-                                                class="select2 form-control{{ $errors->has('tariff_id') ? ' is-invalid' : '' }}"
-                                                required>
-                                                <option value="{{ $parking->tariff_id }}">{{ $parking->tariff->name
-                                                    }}</option>
-                                            </select>
-
-                                            @if ($errors->has('tariff_id'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('tariff_id') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group mb-1">
-                                            <label for="driver_name" class="col-form-label text-md-right">{{
-                                                __('application.parking.driver_name') }}</label>
-                                        </div>
-                                        <input id="driver_name" type="text"
-                                            class="form-control {{ $errors->has('driver_name') ? ' is-invalid' : '' }}"
-                                            name="driver_name" value="{{ old('driver_name', $parking->driver_name) }}"
-                                            autocomplete="off">
-
-                                        @if ($errors->has('driver_name'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('driver_name') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="driver_mobile" class="col-form-label text-md-right">{{
                                                 __('application.parking.driver_mobile') }}</label>
                                             <input id="driver_mobile" type="number"
                                                 class="form-control {{ $errors->has('driver_mobile') ? ' is-invalid' : '' }}"
-                                                name="driver_mobile"
-                                                value="{{ old('driver_mobile', $parking->driver_mobile) }}"
-                                                autocomplete="off">
+                                                name="driver_mobile" value="{{ old('driver_mobile') }}"
+                                                autocomplete="off" readonly>
 
                                             @if ($errors->has('driver_mobile'))
                                             <span class="invalid-feedback" role="alert">
@@ -186,36 +212,43 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="agent_name" class="col-form-label text-md-right">{{
-                                                __('application.parking.agent_name') }}</label>
-                                            <input id="agent_name" type="text"
-                                                class="form-control {{ $errors->has('agent_name') ? ' is-invalid' : '' }}"
-                                                name="agent_name"
-                                                value="{{ old('agent_name', $parking->agent_name) }}"
-                                                autocomplete="off">
+                                            <label for="id_number" class="col-form-label text-md-right">{{
+                                                __('application.parking.id_number') }}</label>
+                                            <input id="id_number" type="text"
+                                                class="form-control {{ $errors->has('id_number') ? ' is-invalid' : '' }}"
+                                                name="id_number" value="{{ old('id_number') }}" autocomplete="off"
+                                                readonly>
 
-                                            @if ($errors->has('agent_name'))
+                                            @if ($errors->has('id_number'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('agent_name') }}</strong>
+                                                <strong>{{ $errors->first('id_number') }}</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="period" class="col-form-label text-md-right">{{
+                                                __('application.tariff.period') }}</label>
+                                            <input id="period" type="text"
+                                                class="form-control {{ $errors->has('period') ? ' is-invalid' : '' }}"
+                                                name="period" value="{{ old('period') }}" autocomplete="off" readonly>
+
+                                            @if ($errors->has('period'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('period') }}</strong>
                                             </span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-7 parkingUI">
-                                <div class="plane">
-                                    <div class="cockpit">
-                                        <h3>{{ __('application.parking.please_select_a_slot') }}</h3>
-                                    </div>
-                                    <div id="slotSection">
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
+                            <div class="col-md-12">
                                 <div class="pull-right">
                                     <button type="reset" class="btn btn-secondary" id="frmClear">
                                         {{ __('application.parking.clear') }}
@@ -241,6 +274,19 @@
                     <div class="table-responsive">
 
                         <table class="table table-borderd table-condenced w-100 f12" id="parkingDatatable">
+                            <thead>
+                                <tr>
+                                    <th>{{__('application.table.serial')}}</th>
+                                    <th>{{__('application.parking.barcode')}}</th>
+                                    <th>{{__('application.parking.vehicle_no')}}</th>
+                                    <th>{{__('application.parking.type')}}</th>
+                                    <th>{{__('application.parking.in_time')}}</th>
+                                    <th>{{__('application.parking.out_time')}}</th>
+                                    <th>{{__('application.parking.paid_amount')}}</th>
+                                    <th>{{__('application.parking.parking_slot')}}</th>
+                                    <th>{{__('application.table.option')}}</th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
 
@@ -253,7 +299,13 @@
 @push('scripts')
 <script>
     var id = {{ $parking->id }}
-    var categories = @json($categories);
+    // const tariff_id = {{$parking->tariff_id}}
+    var categories = @json([]);
+    var tariffs = @json([]);
+    var drivers = @json($drivers);
+    var floors = @json([]);
+    var driverId = @json(old('driver_id', $parking->driver_id));
+    // var agents = @json($agents);
 </script>
 <script src="{{ assetz('js/custom/settings/parking.js') }}"></script>
 @endpush

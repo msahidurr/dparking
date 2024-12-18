@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddNewFieldParkingTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('parkings', function (Blueprint $table) {
+            $table->integer('driver_id')->nullable();
+            $table->integer('agent_id')->nullable();
+            $table->decimal('fine_amount',8,2)->default(0);
+            $table->string('id_number')->nullable();
+            $table->dateTime('fine_count_at')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('parkings', function (Blueprint $table) {
+            $table->dropColumns(['driver_id', 'owner_id', 'id_number']);
+        });
+    }
+}

@@ -274,7 +274,7 @@
         let category = categories.filter(val => val.place_id == $(this).val());
         var html = '';
         $.each(category, function(ind,val){
-            html += `<option value="${val.id}">${val.type}</option>`;
+            html += `<option value="${val.id}" ${category_id == val.id ? 'selected' : ''}>${val.type}</option>`;
         });
 
         $(document).find('#category_id').html(html);
@@ -284,11 +284,124 @@
         let tariff = tariffs.filter(val => ( val.place_id == $(this).val()));
         var html = '';
         $.each(tariff, function(ind,val){
-            html += `<option value="${val.id}">${val.name}</option>`;
+            html += `<option value="${val.id}" ${tariff_id == val.id ? 'selected' : ''}>${val.name}</option>`;
         });
 
         $(document).find('#tariff_id').html(html);
         $('#tariff_id').trigger('change');
+
+        let floor = floors.filter(val => val.place_id == $(this).val());
+        var html2 = '';
+        $.each(floor, function(ind,val){
+            html2 += `<option value="${val.id}" ${floor_id == val.id? 'selected' : ''}>${val.name}</option>`;
+        });
+
+        $(document).find('#floor_id').html(html2);
+
+        $('#floor_id').trigger('change');
+    });
+
+    if(driverId) {
+        let driver = drivers.filter(val => val.id == driverId);
+
+        if(driver.length > 0) {
+
+            const details = driver[0]
+
+            $("#vehicle_no").val(details.vehicle_no)
+            $("#driver_mobile").val(details.phone_number)
+            $("#id_number").val(details.id_number)
+
+            if(details.place) {
+                $("#place_id").val(details.place.id)
+                $("#place_id_text").val(details.place.name)
+            }
+
+            if(details.category) {
+                $("#category_id").val(details.category.id)
+                $("#category_id_text").val(details.category.type)
+            }
+
+            if(details.tariff) {
+                $("#tariff_id").val(details.tariff.id)
+                $("#tariff_id_text").val(details.tariff.name)
+            }
+
+            if(details.floor) {
+                $("#floor_id").val(details.floor.id)
+                $("#floor_id_text").val(details.floor.name)
+            }
+
+            if(details.floor) {
+                $("#slot_id").val(details.slot.id)
+                $("#slot_id_text").val(details.slot.slot_name)
+            }
+
+            if(details.period) {
+                $("#period").val(details.period)
+                $("#period").val(details.period)
+            }
+
+            // console.log(details)
+            // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+
+            // var html = '';
+            // $.each(owner, function(ind,val){
+            //     html += `<option value="${val.id}">${val.name}</option>`;
+            // });
+
+            // $(document).find('#owner_id').html(html);
+            // $('#owner_id').trigger('change');
+        }
+    }
+    $(document).on('change', '#driver_id', function(){
+        let driver = drivers.filter(val => val.id == $(this).val());
+
+        if(driver.length > 0) {
+            const details = driver[0]
+            $("#vehicle_no").val(details.vehicle_no)
+            $("#driver_mobile").val(details.phone_number)
+            $("#id_number").val(details.id_number)
+
+            if(details.place) {
+                $("#place_id").val(details.place.id)
+                $("#place_id_text").val(details.place.name)
+            }
+
+            if(details.category) {
+                $("#category_id").val(details.category.id)
+                $("#category_id_text").val(details.category.type)
+            }
+
+            if(details.tariff) {
+                $("#tariff_id").val(details.tariff.id)
+                $("#tariff_id_text").val(details.tariff.name)
+            }
+
+            if(details.floor) {
+                $("#floor_id").val(details.floor.id)
+                $("#floor_id_text").val(details.floor.name)
+            }
+
+            if(details.floor) {
+                $("#slot_id").val(details.slot.id)
+                $("#slot_id_text").val(details.slot.slot_name)
+            }
+
+            if(details.period) {
+                $("#period").val(details.period)
+                $("#period").val(details.period)
+            }
+
+            // let owner = owners.filter(val => ( val.id == driver[0].driver_owner_id));
+
+            // var html = '';
+            // $.each(owner, function(ind,val){
+            //     html += `<option value="${val.id}">${val.name}</option>`;
+            // });
+
+            
+        }
     });
 
     $(document).on('click', '#frm-rfid', function(){
